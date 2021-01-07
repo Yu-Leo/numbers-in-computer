@@ -1,5 +1,8 @@
+# Файл с механикой работы приложения
+
 import tkinter as tk
 import config
+
 
 def calculate(entries):
     if config.translate_type == 0:

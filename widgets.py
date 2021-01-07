@@ -1,13 +1,54 @@
 # Файл с классами списков виджетов
 
 import tkinter as tk
-from PIL import Image as PilImage
-from PIL import ImageTk
 import text
 import config
 
 
-class LabelsList:
+class Widgets:
+    def __init__(self, window, calculate_func):
+        self.num_type_menu = NumTypeMenu(window)
+        self.int_entries_names = IntLabels(window)
+        self.int_entries_radiobuttons = IntRadiobuttons(window)
+        self.int_entries = IntEntries(window)
+        self.actions_menu = ActionsMenu(window, self.int_entries.clear,
+                                        lambda: calculate_func(self.int_entries))
+
+    def draw_int(self):
+        """Отрисовка при целочисленном режиме"""
+        self.num_type_menu.draw()
+        self.int_entries_names.draw()
+        self.int_entries_radiobuttons.draw()
+        self.int_entries.draw()
+        self.actions_menu.draw()
+
+
+class NumTypeMenu:
+    """Меню целые / вещественные числа"""
+
+    def __init__(self, window):
+        self.numbers_type = tk.IntVar(value=0)  # Контроллер значений радио-кнопок
+        self.int_type_button = tk.Radiobutton(window,
+                                              text=text.int_nums_text,
+                                              variable=self.numbers_type,
+                                              value=0,
+                                              font="Arial 12")
+
+        self.float_type_button = tk.Radiobutton(window,
+                                                text=text.float_nums_text,
+                                                variable=self.numbers_type,
+                                                value=1,
+                                                font="Arial 12",
+                                                state=tk.DISABLED)
+
+    def draw(self):
+        self.int_type_button.grid(row=0, column=0)
+        self.float_type_button.grid(row=0, column=2)
+
+
+class IntLabels:
+    """Список лэйблов при целочисленном режиме"""
+
     def __init__(self, window):
         self.list = []  # Список лэйблов
         for name in text.int_labels_text:
@@ -16,55 +57,58 @@ class LabelsList:
                                       font=("Arial", 12),
                                       anchor=tk.W))
 
+    def draw(self):
+        for i in range(6):
+            self.list[i].grid(row=i + 1, column=0, sticky=tk.W, padx=20,
+                              pady=10)
 
-class RadiobuttonsList:
+
+class IntRadiobuttons:
+    """Список радио-кнопок при целочисленном режиме"""
+
+    @staticmethod
+    def __change_translate_type(i):
+        config.translate_type = i
+
     def __init__(self, window):
-        self.numbers_type = tk.IntVar(value=0)  # Целые числа / вещественные
         self.translate_type = tk.IntVar(value=0)  # Тип перевода
         self.list = []  # Список радио-кнопок
-        self.list.append(tk.Radiobutton(window,
-                                        text=text.int_nums_text,
-                                        variable=self.numbers_type,
-                                        value=0,
-                                        font="Arial 12"))
-        self.list.append(tk.Radiobutton(window,
-                                        text=text.float_nums_text,
-                                        variable=self.numbers_type,
-                                        value=1,
-                                        font="Arial 12",
-                                        state=tk.DISABLED))
 
         self.list.append(tk.Radiobutton(window,
                                         variable=self.translate_type,
                                         value=0,
                                         command=lambda:
-                                        self.change_translate_type(0)))
+                                        IntRadiobuttons.__change_translate_type(0)))
         self.list.append(tk.Radiobutton(window,
                                         variable=self.translate_type,
                                         value=1,
                                         command=lambda:
-                                        self.change_translate_type(1)))
+                                        IntRadiobuttons.__change_translate_type(1)))
         self.list.append(tk.Radiobutton(window,
                                         variable=self.translate_type,
                                         value=2,
                                         command=lambda:
-                                        self.change_translate_type(2)))
+                                        IntRadiobuttons.__change_translate_type(2)))
         self.list.append(tk.Radiobutton(window,
                                         variable=self.translate_type,
                                         value=3,
                                         command=lambda:
-                                        self.change_translate_type(3)))
+                                        IntRadiobuttons.__change_translate_type(3)))
         self.list.append(tk.Radiobutton(window,
                                         variable=self.translate_type,
                                         value=4,
                                         command=lambda:
-                                        self.change_translate_type(4)))
-
-    def change_translate_type(self, i):
-        config.translate_type = i
+                                        IntRadiobuttons.__change_translate_type(4)))
 
 
-class EntriesList:
+    def draw(self):
+        for i in range(5):
+            self.list[i].grid(row=(2 + i), column=1)
+
+
+class IntEntries:
+    """Список полей ввода-вывода при целочисленном режиме"""
+
     def __init__(self, window):
         self.list = []  # Список полей для ввода
         self.list.append(tk.Entry(window, font=("Arial", 12), width=5))
@@ -72,28 +116,27 @@ class EntriesList:
         for i in range(1, text.entries_count):
             self.list.append(tk.Entry(window, font=("Arial", 12)))
 
+    def clear(self):
+        """Очищает все поля, кроме задающих настройки"""
+        for i in range(1, len(self.list)):
+            self.list[i].delete(0, tk.END)
 
-class ButtonsList:
+    def draw(self):
+        self.list[0].grid(row=1, column=2, sticky=tk.W, padx=20)
+        for i in range(1, 6):
+            self.list[i].grid(row=(1 + i), column=2)
+
+
+class ActionsMenu:
+    """Меню кнопок очистить / рассчитать"""
+
     def __init__(self, window, clear_func, calculate_func):
-        clear_image = PilImage.open(r"img/clear_icon32.ico")
-        clear_image = clear_image.resize((20, 20), PilImage.ANTIALIAS)
-        self.clear_image = ImageTk.PhotoImage(clear_image)
-
-        # self.clear_button = tk.Button(window, text=text.buttons_text[0],
-        #                              width=200, command=clear_func,
-        #                              image=self.clear_image, compound=tk.LEFT)
-
         self.clear_button = tk.Button(window, text=text.buttons_text[0],
                                       width=25, command=clear_func)
 
         self.calculate_button = tk.Button(window, text=text.buttons_text[1],
                                           width=25, command=calculate_func)
 
-
-        self.copy_buttons_list = []  # Список кнопок для копирования значений
-        copy_image = PilImage.open(r"img/copy_icon32.ico")
-        copy_image = copy_image.resize((20, 20), PilImage.ANTIALIAS)
-        self.copy_image = ImageTk.PhotoImage(copy_image)
-
-        self.copy_buttons_list.append(tk.Button(window,
-                                                image=self.copy_image))
+    def draw(self):
+        self.clear_button.grid(row=7, column=0, sticky=tk.W, padx=20, pady=10)
+        self.calculate_button.grid(row=7, column=2, padx=20, pady=10)

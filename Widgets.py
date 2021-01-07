@@ -14,14 +14,20 @@ class LabelsList:
 
 class RadiobuttonsList:
     def __init__(self, window):
-        self.choice = tk.IntVar(value=0)
+        self.numbers_type = tk.IntVar(value=0)
+        self.translate_type = tk.IntVar(value=0)
         self.list = []
         for i in range(len(text.radiobuttons_text)):
             self.list.append(tk.Radiobutton(window,
                                             text=text.radiobuttons_text[i],
-                                            variable=self.choice,
+                                            variable=self.numbers_type,
                                             value=i,
                                             font="Arial 12"))
+
+        for i in range(5):
+            self.list.append(tk.Radiobutton(window,
+                                            variable=self.translate_type,
+                                            value=i))
 
 
 class EntriesList:

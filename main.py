@@ -13,24 +13,28 @@ class Window:
         self.__root.resizable(*self.__parameters.get_resizable())
         self.__root.iconbitmap(self.__parameters.get_ico_path())
 
+        self.choice2 = tk.IntVar(value=0)
+
         self.labels = LabelsList(self.__root)
         self.radiobuttons = RadiobuttonsList(self.__root)
         self.entries = EntriesList(self.__root)
         self.buttons = ButtonsList(self.__root)
 
     def draw_widgets(self):
-        for i in range(2):
-            self.radiobuttons.list[i].grid(row=0, column=i)
+        self.radiobuttons.list[0].grid(row=0, column=0)
+        self.radiobuttons.list[1].grid(row=0, column=2)
 
         for i in range(6):
             self.labels.list[i].grid(row=i + 1, column=0, sticky=tk.W, padx=20,
                                      pady=10)
+        for i in range(5):
+            self.radiobuttons.list[2 + i].grid(row=(2 + i), column=1)
         for i in range(6):
-            self.entries.list[i].grid(row=i + 1, column=1)
+            self.entries.list[i].grid(row=i + 1, column=2)
 
         self.buttons.list[0].grid(row=7, column=0, sticky=tk.W, padx=20,
                                   pady=10)
-        self.buttons.list[1].grid(row=7, column=1, padx=20, pady=10)
+        self.buttons.list[1].grid(row=7, column=2, padx=20, pady=10)
 
     def run(self):
         self.draw_widgets()

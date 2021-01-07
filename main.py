@@ -1,11 +1,14 @@
-import tkinter as tk
+# Главный код приложения
 
+import tkinter as tk
 from windowParametes import WindowParameters
 from widgets import *
 from mechanics import calculate
 
 
 class Window:
+    """Окно приложения"""
+
     def __init__(self):
         self.__root = tk.Tk()
         self.__root.title("Numbers in computer")
@@ -13,8 +16,6 @@ class Window:
         self.__root.geometry(self.__parameters.get_geometry())
         self.__root.resizable(*self.__parameters.get_resizable())
         self.__root.iconbitmap(self.__parameters.get_ico_path())
-
-        self.choice2 = tk.IntVar(value=0)
 
         self.labels = LabelsList(self.__root)
         self.radiobuttons = RadiobuttonsList(self.__root)

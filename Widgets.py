@@ -1,3 +1,5 @@
+# Файл с классами списков виджетов
+
 import tkinter as tk
 import text
 import config
@@ -5,7 +7,7 @@ import config
 
 class LabelsList:
     def __init__(self, window):
-        self.list = []
+        self.list = []  # Список лэйблов
         for name in text.int_labels_text:
             self.list.append(tk.Label(window,
                                       text=name,
@@ -15,9 +17,9 @@ class LabelsList:
 
 class RadiobuttonsList:
     def __init__(self, window):
-        self.numbers_type = tk.IntVar(value=0)
-        self.translate_type = tk.IntVar(value=0)
-        self.list = []
+        self.numbers_type = tk.IntVar(value=0)  # Целые числа / вещественные
+        self.translate_type = tk.IntVar(value=0)  # Тип перевода
+        self.list = []  # Список радио-кнопок
         self.list.append(tk.Radiobutton(window,
                                         text=text.int_nums_text,
                                         variable=self.numbers_type,
@@ -62,7 +64,7 @@ class RadiobuttonsList:
 
 class EntriesList:
     def __init__(self, window):
-        self.list = []
+        self.list = []  # Список полей для ввода
         self.list.append(tk.Entry(window, font=("Arial", 12), width=5))
         self.list[0].insert(0, "8")
         for i in range(1, text.entries_count):

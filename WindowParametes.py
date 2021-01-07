@@ -1,3 +1,5 @@
+# Файл с классом параметров окна приложения
+
 class WindowParameters:
     def __init__(self):
         self.__width = 500

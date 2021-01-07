@@ -7,7 +7,7 @@ class WindowParameters:
         self.__padx = 100
         self.__pady = 100
         self.__resizable = (False, False)
-        self.__ico_path = "img/icon64.ico"
+        self.__ico_path = "img/program_icon64.ico"
 
     def get_geometry(self):
         return f"{self.__width}x{self.__height}+{self.__padx}+{self.__pady}"

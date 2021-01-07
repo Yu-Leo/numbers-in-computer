@@ -17,11 +17,14 @@ class Window:
         self.__root.resizable(*self.__parameters.get_resizable())
         self.__root.iconbitmap(self.__parameters.get_ico_path())
 
+
         self.labels = LabelsList(self.__root)
         self.radiobuttons = RadiobuttonsList(self.__root)
         self.entries = EntriesList(self.__root)
         self.buttons = ButtonsList(self.__root, self.clear_entries,
                                    lambda: calculate(self.entries))
+
+
 
     def clear_entries(self):
         """Очищает все поля кроме задающих настройки"""
@@ -41,7 +44,7 @@ class Window:
         self.entries.list[0].grid(row=1, column=2, sticky=tk.W, padx=20)
 
         for i in range(1, 6):
-            self.entries.list[i].grid(row=i + 1, column=2)
+            self.entries.list[i].grid(row=(1 + i), column=2)
 
         self.buttons.clear_button.grid(row=7, column=0, sticky=tk.W, padx=20,
                                        pady=10)

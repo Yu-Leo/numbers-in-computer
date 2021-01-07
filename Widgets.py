@@ -33,12 +33,14 @@ class RadiobuttonsList:
 class EntriesList:
     def __init__(self, window):
         self.list = []
-        for i in range(text.entries_count):
+        self.list.append(tk.Entry(window, font=("Arial", 12), width=5))
+        for i in range(1, text.entries_count):
             self.list.append(tk.Entry(window, font=("Arial", 12)))
 
 
 class ButtonsList:
-    def __init__(self, window):
-        self.list = []
-        for name in text.buttons_text:
-            self.list.append(tk.Button(window, text=name, width=25))
+    def __init__(self, window, clear_func, calculate_func):
+        self.clear_button = tk.Button(window, text=text.buttons_text[0],
+                                      width=25, command=clear_func)
+        self.calculate_button = tk.Button(window, text=text.buttons_text[1],
+                                      width=25, command=calculate_func)

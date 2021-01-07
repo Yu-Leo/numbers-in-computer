@@ -1,7 +1,7 @@
 import tkinter as tk
 
-from WindowParametes import WindowParameters
-from Widgets import *
+from windowParametes import WindowParameters
+from widgets import *
 
 
 def calculate():

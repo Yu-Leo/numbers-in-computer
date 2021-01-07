@@ -2,10 +2,7 @@ import tkinter as tk
 
 from windowParametes import WindowParameters
 from widgets import *
-
-
-def calculate():
-    pass
+from mechanics import calculate
 
 
 class Window:
@@ -22,7 +19,8 @@ class Window:
         self.labels = LabelsList(self.__root)
         self.radiobuttons = RadiobuttonsList(self.__root)
         self.entries = EntriesList(self.__root)
-        self.buttons = ButtonsList(self.__root, self.clear_entries, calculate)
+        self.buttons = ButtonsList(self.__root, self.clear_entries,
+                                   lambda: calculate(self.entries))
 
     def clear_entries(self):
         """Очищает все поля кроме задающих настройки"""

@@ -1,6 +1,8 @@
 # Файл с классами списков виджетов
 
 import tkinter as tk
+from PIL import Image as PilImage
+from PIL import ImageTk
 import text
 import config
 
@@ -73,7 +75,25 @@ class EntriesList:
 
 class ButtonsList:
     def __init__(self, window, clear_func, calculate_func):
+        clear_image = PilImage.open(r"img/clear_icon32.ico")
+        clear_image = clear_image.resize((20, 20), PilImage.ANTIALIAS)
+        self.clear_image = ImageTk.PhotoImage(clear_image)
+
+        # self.clear_button = tk.Button(window, text=text.buttons_text[0],
+        #                              width=200, command=clear_func,
+        #                              image=self.clear_image, compound=tk.LEFT)
+
         self.clear_button = tk.Button(window, text=text.buttons_text[0],
                                       width=25, command=clear_func)
+
         self.calculate_button = tk.Button(window, text=text.buttons_text[1],
                                           width=25, command=calculate_func)
+
+
+        self.copy_buttons_list = []  # Список кнопок для копирования значений
+        copy_image = PilImage.open(r"img/copy_icon32.ico")
+        copy_image = copy_image.resize((20, 20), PilImage.ANTIALIAS)
+        self.copy_image = ImageTk.PhotoImage(copy_image)
+
+        self.copy_buttons_list.append(tk.Button(window,
+                                                image=self.copy_image))

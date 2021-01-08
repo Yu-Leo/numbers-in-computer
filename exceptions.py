@@ -22,3 +22,11 @@ class BinNumTypeError(TypeError):
 
 class BinNumValueCodesWarning(Warning):
     pass
+
+
+class StrCodeTypeError(TypeError):
+    pass
+
+
+class StrCodeValueError(ValueError):
+    pass

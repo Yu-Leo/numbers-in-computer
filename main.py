@@ -48,6 +48,13 @@ class Window:
             self.int_widgets.int_entries.clear_all_except(c.Int.BIN_SIZE_INDEX, c.Int.DEC_NUM_INDEX,
                                                           c.Int.BIN_NUM_INDEX)
 
+        except e.StrCodeTypeError:
+            Mb.StrCodeTypeError.show()
+            self.int_widgets.int_entries.clear_all_except(c.Int.BIN_SIZE_INDEX)
+        except e.StrCodeValueError:
+            Mb.StrCodeValueError.show()
+            self.int_widgets.int_entries.clear_all_except(c.Int.BIN_SIZE_INDEX)
+
     def copy_to_buffer(self, index):
         intMechanics.copy_val_to_buffer(self.int_widgets.int_entries, index)
 

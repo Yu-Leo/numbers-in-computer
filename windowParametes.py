@@ -2,7 +2,7 @@
 
 class WindowParameters:
     def __init__(self):
-        self.__width = 500
+        self.__width = 550
         self.__height = 500
         self.__padx = 100
         self.__pady = 100

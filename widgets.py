@@ -1,18 +1,23 @@
 # Файл с классами списков виджетов
 
 import tkinter as tk
+from PIL import Image as PilImage
+from PIL import ImageTk
+
 import text
 import config
+import const as c
 
 
 class Widgets:
-    def __init__(self, window, calculate_func):
+    def __init__(self, window, calculate_func, copy_func):
         self.__num_type_menu = NumTypeMenu(window)
         self.__int_entries_names = IntLabels(window)
         self.__int_entries_radiobuttons = IntRadiobuttons(window)
         self.__int_entries = IntEntries(window)
+        self.__int_copy_buttons = IntCopyButtons(window, copy_func)
         self.__actions_menu = ActionsMenu(window,
-                                          lambda: self.__int_entries.clear_all_except(0),
+                                          lambda: self.__int_entries.clear_all_except(c.Int.BIN_SIZE_INDEX),
                                           calculate_func)
 
     @property
@@ -26,6 +31,7 @@ class Widgets:
         self.__int_entries_radiobuttons.draw()
         self.__int_entries.draw()
         self.__actions_menu.draw()
+        self.__int_copy_buttons.draw()
 
 
 class NumTypeMenu:
@@ -83,27 +89,27 @@ class IntRadiobuttons:
                                           variable=self.__translate_type,
                                           value=0,
                                           command=lambda:
-                                          IntRadiobuttons.__change_translate_type(0)))
+                                          IntRadiobuttons.__change_translate_type(c.Int.DEC_NUM_INDEX)))
         self.__list.append(tk.Radiobutton(window,
                                           variable=self.__translate_type,
                                           value=1,
                                           command=lambda:
-                                          IntRadiobuttons.__change_translate_type(1)))
+                                          IntRadiobuttons.__change_translate_type(c.Int.BIN_NUM_INDEX)))
         self.__list.append(tk.Radiobutton(window,
                                           variable=self.__translate_type,
                                           value=2,
                                           command=lambda:
-                                          IntRadiobuttons.__change_translate_type(2)))
+                                          IntRadiobuttons.__change_translate_type(c.Int.STRAIGHT_CODE_INDEX)))
         self.__list.append(tk.Radiobutton(window,
                                           variable=self.__translate_type,
                                           value=3,
                                           command=lambda:
-                                          IntRadiobuttons.__change_translate_type(3)))
+                                          IntRadiobuttons.__change_translate_type(c.Int.REVERSED_CODE_INDEX)))
         self.__list.append(tk.Radiobutton(window,
                                           variable=self.__translate_type,
                                           value=4,
                                           command=lambda:
-                                          IntRadiobuttons.__change_translate_type(4)))
+                                          IntRadiobuttons.__change_translate_type(c.Int.ADDITIONAL_CODE_INDEX)))
 
     def draw(self):
         for i in range(5):
@@ -130,22 +136,22 @@ class IntEntries:
         return str(self.__list[index].get())
 
     def get_bin_size(self):
-        return self.__get(0)
+        return self.__get(c.Int.BIN_SIZE_INDEX)
 
     def get_dec_num(self):
-        return self.__get(1)
+        return self.__get(c.Int.DEC_NUM_INDEX)
 
     def get_bin_num(self):
-        return self.__get(2)
+        return self.__get(c.Int.BIN_NUM_INDEX)
 
     def get_straight_code(self):
-        return self.__get(3)
+        return self.__get(c.Int.STRAIGHT_CODE_INDEX)
 
     def get_reversed_code(self):
-        return self.__get(4)
+        return self.__get(c.Int.REVERSED_CODE_INDEX)
 
     def get_additional_code(self):
-        return self.__get(5)
+        return self.__get(c.Int.ADDITIONAL_CODE_INDEX)
 
     def write(self, index, value):
         self.__list[index].delete(0, tk.END)
@@ -155,6 +161,36 @@ class IntEntries:
         self.__list[0].grid(row=1, column=2, sticky=tk.W, padx=20)
         for i in range(1, 6):
             self.__list[i].grid(row=(1 + i), column=2)
+
+
+class IntCopyButtons:
+    def __init__(self, window, copy_func):
+        self.__list = []  # Список кнопок
+        self.copy_image = self.__get_copy_image()
+        self.__list.append(tk.Button(window,
+                                     image=self.copy_image,
+                                     command=lambda: copy_func(c.Int.DEC_NUM_INDEX)))
+        self.__list.append(tk.Button(window,
+                                     image=self.copy_image,
+                                     command=lambda: copy_func(c.Int.BIN_NUM_INDEX)))
+        self.__list.append(tk.Button(window,
+                                     image=self.copy_image,
+                                     command=lambda: copy_func(c.Int.STRAIGHT_CODE_INDEX)))
+        self.__list.append(tk.Button(window,
+                                     image=self.copy_image,
+                                     command=lambda: copy_func(c.Int.REVERSED_CODE_INDEX)))
+        self.__list.append(tk.Button(window,
+                                     image=self.copy_image,
+                                     command=lambda: copy_func(c.Int.ADDITIONAL_CODE_INDEX)))
+
+    def __get_copy_image(self):
+        image = PilImage.open(r"img/copy_icon32.ico")
+        image = image.resize((18, 18), PilImage.ANTIALIAS)
+        return ImageTk.PhotoImage(image)
+
+    def draw(self):
+        for i in range(5):
+            self.__list[i].grid(row=(2 + i), column=3)
 
 
 class ActionsMenu:

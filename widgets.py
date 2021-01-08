@@ -6,7 +6,7 @@ from PIL import ImageTk
 
 import text
 import config
-import const as c
+import constants as c
 
 
 class Widgets:
@@ -99,17 +99,17 @@ class IntRadiobuttons:
                                           variable=self.__translate_type,
                                           value=2,
                                           command=lambda:
-                                          IntRadiobuttons.__change_translate_type(c.Int.STRAIGHT_CODE_INDEX)))
+                                          IntRadiobuttons.__change_translate_type(c.Int.STR_CODE_INDEX)))
         self.__list.append(tk.Radiobutton(window,
                                           variable=self.__translate_type,
                                           value=3,
                                           command=lambda:
-                                          IntRadiobuttons.__change_translate_type(c.Int.REVERSED_CODE_INDEX)))
+                                          IntRadiobuttons.__change_translate_type(c.Int.REV_CODE_INDEX)))
         self.__list.append(tk.Radiobutton(window,
                                           variable=self.__translate_type,
                                           value=4,
                                           command=lambda:
-                                          IntRadiobuttons.__change_translate_type(c.Int.ADDITIONAL_CODE_INDEX)))
+                                          IntRadiobuttons.__change_translate_type(c.Int.ADD_CODE_INDEX)))
 
     def draw(self):
         for i in range(5):
@@ -137,15 +137,15 @@ class IntEntries:
                                               lambda x: self.__call_calc(c.Int.DEC_NUM_INDEX, calculate_func))
         self.__list[c.Int.BIN_NUM_INDEX].bind("<Return>",
                                               lambda x: self.__call_calc(c.Int.BIN_NUM_INDEX, calculate_func))
-        self.__list[c.Int.STRAIGHT_CODE_INDEX].bind("<Return>",
-                                                    lambda x: self.__call_calc(c.Int.STRAIGHT_CODE_INDEX,
-                                                                               calculate_func))
-        self.__list[c.Int.REVERSED_CODE_INDEX].bind("<Return>",
-                                                    lambda x: self.__call_calc(c.Int.REVERSED_CODE_INDEX,
-                                                                               calculate_func))
-        self.__list[c.Int.ADDITIONAL_CODE_INDEX].bind("<Return>",
-                                                      lambda x: self.__call_calc(c.Int.ADDITIONAL_CODE_INDEX,
-                                                                                 calculate_func))
+        self.__list[c.Int.STR_CODE_INDEX].bind("<Return>",
+                                               lambda x: self.__call_calc(c.Int.STR_CODE_INDEX,
+                                                                          calculate_func))
+        self.__list[c.Int.REV_CODE_INDEX].bind("<Return>",
+                                               lambda x: self.__call_calc(c.Int.REV_CODE_INDEX,
+                                                                          calculate_func))
+        self.__list[c.Int.ADD_CODE_INDEX].bind("<Return>",
+                                               lambda x: self.__call_calc(c.Int.ADD_CODE_INDEX,
+                                                                          calculate_func))
 
     def clear_all_except(self, *args):
         """Очищает все поля кроме тех, которые указаны в аргументах"""
@@ -167,13 +167,13 @@ class IntEntries:
         return self.__get(c.Int.BIN_NUM_INDEX)
 
     def get_straight_code(self):
-        return self.__get(c.Int.STRAIGHT_CODE_INDEX)
+        return self.__get(c.Int.STR_CODE_INDEX)
 
     def get_reversed_code(self):
-        return self.__get(c.Int.REVERSED_CODE_INDEX)
+        return self.__get(c.Int.REV_CODE_INDEX)
 
     def get_additional_code(self):
-        return self.__get(c.Int.ADDITIONAL_CODE_INDEX)
+        return self.__get(c.Int.ADD_CODE_INDEX)
 
     def write(self, index, value):
         """Запись значения в поля по его индексу"""
@@ -198,13 +198,13 @@ class IntCopyButtons:
                                      command=lambda: copy_func(c.Int.BIN_NUM_INDEX)))
         self.__list.append(tk.Button(window,
                                      image=self.copy_image,
-                                     command=lambda: copy_func(c.Int.STRAIGHT_CODE_INDEX)))
+                                     command=lambda: copy_func(c.Int.STR_CODE_INDEX)))
         self.__list.append(tk.Button(window,
                                      image=self.copy_image,
-                                     command=lambda: copy_func(c.Int.REVERSED_CODE_INDEX)))
+                                     command=lambda: copy_func(c.Int.REV_CODE_INDEX)))
         self.__list.append(tk.Button(window,
                                      image=self.copy_image,
-                                     command=lambda: copy_func(c.Int.ADDITIONAL_CODE_INDEX)))
+                                     command=lambda: copy_func(c.Int.ADD_CODE_INDEX)))
 
     def __get_copy_image(self):
         image = PilImage.open(r"img/copy_icon32.ico")

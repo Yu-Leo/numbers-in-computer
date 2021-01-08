@@ -3,7 +3,7 @@
 import config
 import exceptions as e
 import pyperclip  # Модуль для работы с буффером
-import const as c
+import constants as c
 
 MAX_BIN_SIZE = 100  # Максимальное кол-во двоичных разрядов
 
@@ -14,11 +14,11 @@ def copy_val_to_buffer(entries, index):
         pyperclip.copy(entries.get_dec_num())
     elif index == c.Int.BIN_NUM_INDEX:
         pyperclip.copy(entries.get_bin_num())
-    elif index == c.Int.STRAIGHT_CODE_INDEX:
+    elif index == c.Int.STR_CODE_INDEX:
         pyperclip.copy(entries.get_straight_code())
-    elif index == c.Int.REVERSED_CODE_INDEX:
+    elif index == c.Int.REV_CODE_INDEX:
         pyperclip.copy(entries.get_reversed_code())
-    elif index == c.Int.ADDITIONAL_CODE_INDEX:
+    elif index == c.Int.ADD_CODE_INDEX:
         pyperclip.copy(entries.get_additional_code())
 
 
@@ -30,7 +30,7 @@ def calculate(entries):
         entries.clear_all_except(c.Int.BIN_SIZE_INDEX, c.Int.DEC_NUM_INDEX)
         dec_num = get_dec_num(entries)
         answer = get_all_by_dec_num(bin_size, dec_num)
-        for i in range(c.Int.BIN_NUM_INDEX, c.Int.ADDITIONAL_CODE_INDEX + 1):
+        for i in range(c.Int.BIN_NUM_INDEX, c.Int.ADD_CODE_INDEX + 1):
             entries.write(i, answer[i])
         if codes_error(answer):
             raise e.DecNumValueCodesWarning
@@ -40,11 +40,14 @@ def calculate(entries):
         dec_num = get_dec_by_bin_num(entries)
         entries.write(c.Int.DEC_NUM_INDEX, dec_num)
         answer = get_all_by_dec_num(bin_size, dec_num)
-        for i in range(c.Int.BIN_NUM_INDEX, c.Int.ADDITIONAL_CODE_INDEX + 1):
+        for i in range(c.Int.BIN_NUM_INDEX, c.Int.ADD_CODE_INDEX + 1):
             entries.write(i, answer[i])
-
         if codes_error(answer):
             raise e.BinNumValueCodesWarning
+
+
+def codes_error(answer):
+    return answer[c.Int.STR_CODE_INDEX] == "-"
 
 
 def get_bin_size(entries):
@@ -100,9 +103,9 @@ def get_all_by_dec_num(bin_size, dec_num):
             additional_code = get_additional_by_reversed(reversed_code)
 
     return {c.Int.BIN_NUM_INDEX: bin_num,
-            c.Int.STRAIGHT_CODE_INDEX: straight_code,
-            c.Int.REVERSED_CODE_INDEX: reversed_code,
-            c.Int.ADDITIONAL_CODE_INDEX: additional_code}
+            c.Int.STR_CODE_INDEX: straight_code,
+            c.Int.REV_CODE_INDEX: reversed_code,
+            c.Int.ADD_CODE_INDEX: additional_code}
 
 
 def get_reversed_by_straight(straight_code):
@@ -138,7 +141,3 @@ def bin_sum(a, b):
     if add_digit:
         s = "1" + s
     return s
-
-
-def codes_error(answer):
-    return answer[c.Int.STRAIGHT_CODE_INDEX] == "-"

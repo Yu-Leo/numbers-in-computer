@@ -6,7 +6,7 @@ from messageboxes import Messageboxes as Mb
 from windowParametes import WindowParameters
 from widgets import Widgets
 import mechanics
-import const as c
+import constants as c
 import exceptions as e
 
 

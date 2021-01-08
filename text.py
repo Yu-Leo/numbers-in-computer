@@ -15,9 +15,19 @@ entries_count = 6
 buttons_text = ["Очистить", "Рассчитать"]
 
 
+class ExceptionTexts:
+    def __init__(self, title="", type_error="", value_error=""):
+        self.title = title
+        self.type_error = type_error
+        self.value_error = value_error
+
+
 class Exceptions:
     """Фразы для messagebox-ов при вызове соответсвующих исключений"""
-    bin_size_type_error = 'Ошибка в поле "Число двоичных разрядов". Невозможно преобразовать в int'
-    bin_size_value_error = 'Ошибка в поле "Число двоичных разрядов". Значение выходит за границы заданного диапазона'
-    dec_num_type_error = 'Ошибка в поле "Число (10)". Невозможно преобразовать в int'
-    dec_num_value_error = 'Ошибка в поле "Число (10)". Значение выходит за границы диапазона, заданого числом двоичных разрядов'
+    bin_size = ExceptionTexts(title='Ошибка в поле "Число двоичных разрядов".',
+                              type_error='Невозможно преобразовать в целое число.',
+                              value_error='Значение выходит за границы заданного диапазона.')
+
+    dec_num = ExceptionTexts(title='Ошибка в поле "Число (10)".',
+                             type_error='Невозможно преобразовать в целое число.',
+                             value_error='Значение выходит за границы диапазона, заданого числом двоичных разрядов.')

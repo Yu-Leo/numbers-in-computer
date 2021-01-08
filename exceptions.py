@@ -14,3 +14,11 @@ class DecNumTypeError(TypeError):
 
 class DecNumValueCodesWarning(Warning):
     pass
+
+
+class BinNumTypeError(TypeError):
+    pass
+
+
+class BinNumValueCodesWarning(Warning):
+    pass

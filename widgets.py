@@ -9,7 +9,7 @@ import config
 import constants as c
 
 
-class Widgets:
+class IntWidgets:
     def __init__(self, window, calculate_func, copy_func):
         self.__num_type_menu = NumTypeMenu(window)
         self.__int_entries_names = IntLabels(window)

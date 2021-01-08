@@ -31,11 +31,19 @@ class Window:
         except e.BinSizeValueError:
             Mb.BinSizeValueError.show()
             self.widgets.int_entries.clear_all_except(c.Int.BIN_SIZE_INDEX)
+
         except e.DecNumTypeError:
             Mb.DecNumTypeError.show()
             self.widgets.int_entries.clear_all_except(c.Int.BIN_SIZE_INDEX)
         except e.DecNumValueCodesWarning:
             Mb.DecNumValueCodesWarning.show()
+            self.widgets.int_entries.clear_all_except(c.Int.BIN_SIZE_INDEX, c.Int.DEC_NUM_INDEX, c.Int.BIN_NUM_INDEX)
+
+        except e.BinNumTypeError:
+            Mb.BinNumTypeError.show()
+            self.widgets.int_entries.clear_all_except(c.Int.BIN_SIZE_INDEX)
+        except e.BinNumValueCodesWarning:
+            Mb.BinNumValueCodesWarning.show()
             self.widgets.int_entries.clear_all_except(c.Int.BIN_SIZE_INDEX, c.Int.DEC_NUM_INDEX, c.Int.BIN_NUM_INDEX)
 
     def copy_to_buffer(self, index):

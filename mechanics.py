@@ -32,9 +32,19 @@ def calculate(entries):
         answer = get_all_by_dec_num(bin_size, dec_num)
         for i in range(c.Int.BIN_NUM_INDEX, c.Int.ADDITIONAL_CODE_INDEX + 1):
             entries.write(i, answer[i])
-
         if codes_error(answer):
             raise e.DecNumValueCodesWarning
+
+    elif config.translate_type == c.Int.BIN_NUM_INDEX:  # Исходное значение - число в двоичной сс
+        entries.clear_all_except(c.Int.BIN_SIZE_INDEX, c.Int.BIN_NUM_INDEX)
+        dec_num = get_dec_by_bin_num(entries)
+        entries.write(c.Int.DEC_NUM_INDEX, dec_num)
+        answer = get_all_by_dec_num(bin_size, dec_num)
+        for i in range(c.Int.BIN_NUM_INDEX, c.Int.ADDITIONAL_CODE_INDEX + 1):
+            entries.write(i, answer[i])
+
+        if codes_error(answer):
+            raise e.BinNumValueCodesWarning
 
 
 def get_bin_size(entries):
@@ -56,6 +66,15 @@ def get_dec_num(entries):
         dec_num = int(input_data)
     except ValueError:
         raise e.DecNumTypeError
+    return dec_num
+
+
+def get_dec_by_bin_num(entries):
+    input_data = entries.get_bin_num()
+    try:
+        dec_num = int(input_data, base=2)
+    except ValueError:
+        raise e.BinNumTypeError
     return dec_num
 
 

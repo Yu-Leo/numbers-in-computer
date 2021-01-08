@@ -6,6 +6,7 @@ from text import Exceptions
 
 class Warning:
     """Мessagebox типа Warning"""
+
     def __init__(self, title, message):
         self.title = title
         self.message = message
@@ -16,6 +17,7 @@ class Warning:
 
 class Error:
     """Мessagebox типа Error"""
+
     def __init__(self, title, message):
         self.title = title
         self.message = message
@@ -37,3 +39,9 @@ class Messageboxes:
 
     DecNumValueCodesWarning = Warning(title=Exceptions.dec_num.title,
                                       message=Exceptions.dec_num.value_error)
+
+    BinNumTypeError = Error(title=Exceptions.bin_num.title,
+                            message=Exceptions.bin_num.type_error)
+
+    BinNumValueCodesWarning = Warning(title=Exceptions.bin_num.title,
+                                      message=Exceptions.bin_num.value_error)

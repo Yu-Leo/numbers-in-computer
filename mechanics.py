@@ -28,14 +28,9 @@ def calculate(entries):
     if config.translate_type == c.Int.DEC_NUM_INDEX:  # Исходное значение - число в десятичной сс
         entries.clear_all_except(c.Int.BIN_SIZE_INDEX, c.Int.DEC_NUM_INDEX)
         dec_num = get_dec_num(entries)
-        bin_num = bin(dec_num)[2:]
-        entries.write(c.Int.BIN_NUM_INDEX, bin_num)
-
-        if dec_num >= 0:
-            if dec_num > 2 ** (bin_size - 1):
-                raise e.DecNumValueError
-            for i in range(c.Int.STRAIGHT_CODE_INDEX, c.Int.ADDITIONAL_CODE_INDEX + 1):
-                entries.write(i, bin_num.rjust(bin_size, "0"))
+        answer = get_all_by_dec_num(bin_size, dec_num)
+        for i in range(c.Int.BIN_NUM_INDEX, c.Int.ADDITIONAL_CODE_INDEX + 1):
+            entries.write(i, answer[i])
 
 
 def get_bin_size(entries):
@@ -58,3 +53,60 @@ def get_dec_num(entries):
     except ValueError:
         raise e.DecNumTypeError
     return dec_num
+
+
+def get_all_by_dec_num(bin_size, dec_num):
+    if dec_num >= 0:
+        if dec_num > 2 ** (bin_size - 1):
+            raise e.DecNumValueError
+        bin_num = bin(dec_num)[2:]
+        return {c.Int.BIN_NUM_INDEX: bin_num,
+                c.Int.STRAIGHT_CODE_INDEX: bin_num.rjust(bin_size, "0"),
+                c.Int.REVERSED_CODE_INDEX: bin_num.rjust(bin_size, "0"),
+                c.Int.ADDITIONAL_CODE_INDEX: bin_num.rjust(bin_size, "0")}
+    else:  # dec_num < 0
+        if dec_num < -1 * (2 ** (bin_size - 1) - 1):
+            raise e.DecNumValueError
+
+        bin_num = bin(dec_num)[3:]
+        straight_code = "1" + bin_num.rjust(bin_size - 1, "0")
+        reversed_code = get_reversed_by_straight(straight_code)
+        additional_code = get_additional_by_reversed(reversed_code)
+        return {c.Int.BIN_NUM_INDEX: "-" + bin_num,
+                c.Int.STRAIGHT_CODE_INDEX: straight_code,
+                c.Int.REVERSED_CODE_INDEX: reversed_code,
+                c.Int.ADDITIONAL_CODE_INDEX: additional_code}
+
+
+def get_reversed_by_straight(straight_code):
+    rev_code = straight_code[0]
+    for i in range(1, len(straight_code)):
+        rev_code += ("1" if straight_code[i] == "0" else "0")
+    return rev_code
+
+
+def get_additional_by_reversed(reversed_code):
+    return bin_sum(reversed_code, "1")
+
+
+def bin_sum(a, b):
+    add_digit = False
+    n = max(len(a), len(b))
+    a = a.rjust(n, "0")
+    b = b.rjust(n, "0")
+    s = a
+    for i in range(n - 1, 0, -1):
+        if a[i] != b[i]:
+            if add_digit:
+                s = s[:i] + "0" + s[i + 1:]
+            else:
+                s = s[:i] + "1" + s[i + 1:]
+        else:
+            if add_digit:
+                s = s[:i] + "1" + s[i + 1:]
+            else:
+                s = s[:i] + "0" + s[i + 1:]
+            add_digit = a[i] == "1"
+    if add_digit:
+        s = "1" + s
+    return s

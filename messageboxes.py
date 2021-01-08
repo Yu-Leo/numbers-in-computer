@@ -45,3 +45,9 @@ class Messageboxes:
 
     BinNumValueCodesWarning = Warning(title=Exceptions.bin_num.title,
                                       message=Exceptions.bin_num.value_error)
+
+    StrCodeTypeError = Error(title=Exceptions.str_code.title,
+                             message=Exceptions.str_code.type_error)
+
+    StrCodeValueError = Error(title=Exceptions.str_code.title,
+                              message=Exceptions.str_code.value_error)

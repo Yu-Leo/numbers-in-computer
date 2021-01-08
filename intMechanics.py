@@ -28,6 +28,13 @@ def calculate(entries):
         if kit.codes_error():
             raise e.BinNumValueCodesWarning
 
+    elif config.translate_type == c.Int.STR_CODE_INDEX:  # Исходное значение - прямой код числа
+        entries.clear_all_except(c.Int.BIN_SIZE_INDEX, c.Int.STR_CODE_INDEX)
+        str_code = get_str_code(entries, bin_size)
+        kit = IntKit(str_code=str_code)
+        kit.by_str_code(bin_size)
+        kit.print(entries)
+
 
 def get_bin_size(entries):
     str_bin_size = entries.get_bin_size()
@@ -56,6 +63,20 @@ def get_bin_num(entries):
     except ValueError:
         raise e.BinNumTypeError
     return input_data
+
+
+def get_str_code(entries, bin_size):
+    str_code = entries.get_str_code()
+    try:
+        t_bin = int(str_code[1:], base=2)
+        t_full = int(str_code, base=2)  # Если 0й символ не 0 или 1, вызовется ошибка ValueError
+    except ValueError:
+        raise e.StrCodeTypeError
+
+    if len(str_code) != bin_size:
+        raise e.StrCodeValueError
+
+    return str_code
 
 
 def copy_val_to_buffer(entries, index):

@@ -62,7 +62,10 @@ class IntKit:
         return "-" + bin(self.__dec_num)[3:]
 
     def __straight_by_bin(self, bin_size):
-        return "1" + self.__bin_num[1:].rjust(bin_size - 1, "0")
+        if self.__bin_num[0] == "-":
+            return "1" + self.__bin_num[1:].rjust(bin_size - 1, "0")
+        else:
+            return self.__bin_num.rjust(bin_size, "0")
 
     def __reversed_by_straight(self):
         rev_code = self.__str_code[0]

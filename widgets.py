@@ -12,26 +12,26 @@ import constants as c
 class IntWidgets:
     def __init__(self, window, calculate_func, copy_func):
         self.__num_type_menu = NumTypeMenu(window)
-        self.__int_entries_names = IntLabels(window)
-        self.__int_entries_radiobuttons = IntRadiobuttons(window)
-        self.__int_entries = IntEntries(window, calculate_func)
-        self.__int_copy_buttons = IntCopyButtons(window, copy_func)
+        self.__entries_names = IntLabels(window)
+        self.__entries_radiobuttons = IntRadiobuttons(window)
+        self.__entries = IntEntries(window, calculate_func)
+        self.__copy_buttons = IntCopyButtons(window, copy_func)
         self.__actions_menu = ActionsMenu(window,
-                                          lambda: self.__int_entries.clear_all_except(c.Int.BIN_SIZE_INDEX),
+                                          lambda: self.__entries.clear_all_except(c.Int.BIN_SIZE_INDEX),
                                           calculate_func)
 
     @property
     def int_entries(self):
-        return self.__int_entries
+        return self.__entries
 
     def draw_int(self):
         """Отрисовка при целочисленном режиме"""
         self.__num_type_menu.draw()
-        self.__int_entries_names.draw()
-        self.__int_entries_radiobuttons.draw()
-        self.__int_entries.draw()
+        self.__entries_names.draw()
+        self.__entries_radiobuttons.draw()
+        self.__entries.draw()
         self.__actions_menu.draw()
-        self.__int_copy_buttons.draw()
+        self.__copy_buttons.draw()
 
 
 class NumTypeMenu:
@@ -166,13 +166,13 @@ class IntEntries:
     def get_bin_num(self):
         return self.__get(c.Int.BIN_NUM_INDEX)
 
-    def get_straight_code(self):
+    def get_str_code(self):
         return self.__get(c.Int.STR_CODE_INDEX)
 
-    def get_reversed_code(self):
+    def get_rev_code(self):
         return self.__get(c.Int.REV_CODE_INDEX)
 
-    def get_additional_code(self):
+    def get_add_code(self):
         return self.__get(c.Int.ADD_CODE_INDEX)
 
     def write(self, index, value):

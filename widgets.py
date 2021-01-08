@@ -14,7 +14,7 @@ class Widgets:
         self.__num_type_menu = NumTypeMenu(window)
         self.__int_entries_names = IntLabels(window)
         self.__int_entries_radiobuttons = IntRadiobuttons(window)
-        self.__int_entries = IntEntries(window)
+        self.__int_entries = IntEntries(window, calculate_func)
         self.__int_copy_buttons = IntCopyButtons(window, copy_func)
         self.__actions_menu = ActionsMenu(window,
                                           lambda: self.__int_entries.clear_all_except(c.Int.BIN_SIZE_INDEX),
@@ -119,12 +119,33 @@ class IntRadiobuttons:
 class IntEntries:
     """Список полей ввода-вывода при целочисленном режиме"""
 
-    def __init__(self, window):
+    def __call_calc(self, i, calculate_func):
+        """Если режим перевода совпадает с полем, в котором нажали Enter, переводим"""
+        if config.translate_type == i:
+            calculate_func()
+
+    def __init__(self, window, calculate_func):
         self.__list = []  # Список полей для ввода
         self.__list.append(tk.Entry(window, font=("Arial", 12), width=5))
-        self.__list[0].insert(0, "8")
+        self.__list[0].insert(0, "8")  # Число двоичных разрядов поумолчанию
+
         for i in range(1, text.entries_count):
             self.__list.append(tk.Entry(window, font=("Arial", 12)))
+
+        # Биндим на нажатие Enter в соотв. поле
+        self.__list[c.Int.DEC_NUM_INDEX].bind("<Return>",
+                                              lambda x: self.__call_calc(c.Int.DEC_NUM_INDEX, calculate_func))
+        self.__list[c.Int.BIN_NUM_INDEX].bind("<Return>",
+                                              lambda x: self.__call_calc(c.Int.BIN_NUM_INDEX, calculate_func))
+        self.__list[c.Int.STRAIGHT_CODE_INDEX].bind("<Return>",
+                                                    lambda x: self.__call_calc(c.Int.STRAIGHT_CODE_INDEX,
+                                                                               calculate_func))
+        self.__list[c.Int.REVERSED_CODE_INDEX].bind("<Return>",
+                                                    lambda x: self.__call_calc(c.Int.REVERSED_CODE_INDEX,
+                                                                               calculate_func))
+        self.__list[c.Int.ADDITIONAL_CODE_INDEX].bind("<Return>",
+                                                      lambda x: self.__call_calc(c.Int.ADDITIONAL_CODE_INDEX,
+                                                                                 calculate_func))
 
     def clear_all_except(self, *args):
         """Очищает все поля кроме тех, которые указаны в аргументах"""
@@ -133,6 +154,7 @@ class IntEntries:
                 self.__list[i].delete(0, tk.END)
 
     def __get(self, index):
+        """Получение значения из поля по его индексу"""
         return str(self.__list[index].get())
 
     def get_bin_size(self):
@@ -154,6 +176,7 @@ class IntEntries:
         return self.__get(c.Int.ADDITIONAL_CODE_INDEX)
 
     def write(self, index, value):
+        """Запись значения в поля по его индексу"""
         self.__list[index].delete(0, tk.END)
         self.__list[index].insert(0, value)
 

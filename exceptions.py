@@ -12,5 +12,5 @@ class DecNumTypeError(TypeError):
     pass
 
 
-class DecNumValueError(TypeError):
+class DecNumValueCodesWarning(Warning):
     pass

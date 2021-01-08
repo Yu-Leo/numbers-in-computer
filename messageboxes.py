@@ -1,8 +1,11 @@
+# Файл с messagebox-ами
+
 import tkinter.messagebox as mb
 from text import Exceptions
 
 
 class Warning:
+    """Мessagebox типа Warning"""
     def __init__(self, title, message):
         self.title = title
         self.message = message
@@ -12,6 +15,7 @@ class Warning:
 
 
 class Error:
+    """Мessagebox типа Error"""
     def __init__(self, title, message):
         self.title = title
         self.message = message
@@ -21,6 +25,7 @@ class Error:
 
 
 class Messageboxes:
+    """Мessagebox-ы самописных ошибок"""
     BinSizeTypeError = Error(title=Exceptions.bin_size.title,
                              message=Exceptions.bin_size.type_error)
 
@@ -30,5 +35,5 @@ class Messageboxes:
     DecNumTypeError = Error(title=Exceptions.dec_num.title,
                             message=Exceptions.dec_num.type_error)
 
-    DecNumValueError = Error(title=Exceptions.dec_num.title,
-                             message=Exceptions.dec_num.value_error)
+    DecNumValueCodesWarning = Warning(title=Exceptions.dec_num.title,
+                                      message=Exceptions.dec_num.value_error)

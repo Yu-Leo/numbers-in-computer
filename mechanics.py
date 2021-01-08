@@ -1,6 +1,5 @@
 # Файл с механикой работы приложения
 
-import tkinter as tk
 import config
 import exceptions as e
 import pyperclip  # Модуль для работы с буффером
@@ -10,6 +9,7 @@ MAX_BIN_SIZE = 100  # Максимальное кол-во двоичных ра
 
 
 def copy_val_to_buffer(entries, index):
+    """Скопировать значение из поля по его индексу"""
     if index == c.Int.DEC_NUM_INDEX:
         pyperclip.copy(entries.get_dec_num())
     elif index == c.Int.BIN_NUM_INDEX:
@@ -23,6 +23,7 @@ def copy_val_to_buffer(entries, index):
 
 
 def calculate(entries):
+    """Основная ф-ция перевода"""
     bin_size = get_bin_size(entries)  # Кол-во двоичных разрядов
 
     if config.translate_type == c.Int.DEC_NUM_INDEX:  # Исходное значение - число в десятичной сс
@@ -31,6 +32,9 @@ def calculate(entries):
         answer = get_all_by_dec_num(bin_size, dec_num)
         for i in range(c.Int.BIN_NUM_INDEX, c.Int.ADDITIONAL_CODE_INDEX + 1):
             entries.write(i, answer[i])
+
+        if codes_error(answer):
+            raise e.DecNumValueCodesWarning
 
 
 def get_bin_size(entries):
@@ -56,26 +60,30 @@ def get_dec_num(entries):
 
 
 def get_all_by_dec_num(bin_size, dec_num):
+    """Перевод во все представления по числу в 10й сс"""
     if dec_num >= 0:
-        if dec_num > 2 ** (bin_size - 1):
-            raise e.DecNumValueError
         bin_num = bin(dec_num)[2:]
-        return {c.Int.BIN_NUM_INDEX: bin_num,
-                c.Int.STRAIGHT_CODE_INDEX: bin_num.rjust(bin_size, "0"),
-                c.Int.REVERSED_CODE_INDEX: bin_num.rjust(bin_size, "0"),
-                c.Int.ADDITIONAL_CODE_INDEX: bin_num.rjust(bin_size, "0")}
-    else:  # dec_num < 0
-        if dec_num < -1 * (2 ** (bin_size - 1) - 1):
-            raise e.DecNumValueError
+        if dec_num > 2 ** (bin_size - 1):
+            all_codes = "-"
+        else:
+            all_codes = bin_num.rjust(bin_size, "0")
 
-        bin_num = bin(dec_num)[3:]
-        straight_code = "1" + bin_num.rjust(bin_size - 1, "0")
-        reversed_code = get_reversed_by_straight(straight_code)
-        additional_code = get_additional_by_reversed(reversed_code)
-        return {c.Int.BIN_NUM_INDEX: "-" + bin_num,
-                c.Int.STRAIGHT_CODE_INDEX: straight_code,
-                c.Int.REVERSED_CODE_INDEX: reversed_code,
-                c.Int.ADDITIONAL_CODE_INDEX: additional_code}
+        straight_code = reversed_code = additional_code = all_codes
+
+    else:  # dec_num < 0
+        bin_num = "-" + bin(dec_num)[3:]
+        if dec_num < -1 * (2 ** (bin_size - 1) - 1):
+            all_codes = "-"
+            straight_code = reversed_code = additional_code = all_codes
+        else:
+            straight_code = "1" + bin_num[1:].rjust(bin_size - 1, "0")
+            reversed_code = get_reversed_by_straight(straight_code)
+            additional_code = get_additional_by_reversed(reversed_code)
+
+    return {c.Int.BIN_NUM_INDEX: bin_num,
+            c.Int.STRAIGHT_CODE_INDEX: straight_code,
+            c.Int.REVERSED_CODE_INDEX: reversed_code,
+            c.Int.ADDITIONAL_CODE_INDEX: additional_code}
 
 
 def get_reversed_by_straight(straight_code):
@@ -90,6 +98,7 @@ def get_additional_by_reversed(reversed_code):
 
 
 def bin_sum(a, b):
+    """Сложение двух чисел в двоичной системе"""
     add_digit = False
     n = max(len(a), len(b))
     a = a.rjust(n, "0")
@@ -110,3 +119,7 @@ def bin_sum(a, b):
     if add_digit:
         s = "1" + s
     return s
+
+
+def codes_error(answer):
+    return answer[c.Int.STRAIGHT_CODE_INDEX] == "-"

@@ -1,6 +1,6 @@
-# Файл с функциями переводом (+ ф-ция копирования в буффер)
+# Файл с функциями переводом (+ ф-ция копирования в буфер)
 
-import pyperclip  # Модуль для работы с буффером
+import pyperclip  # Модуль для работы с буфером
 import config
 import exceptions as e
 import constants as c

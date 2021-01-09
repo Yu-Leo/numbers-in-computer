@@ -7,7 +7,7 @@ class Type:
 
 class Int:
     MAX_BIN_SIZE = 100  # Максимальное число двоичных разрядов
-    DEFAULT_BIN_SIZE = 8  # Число двоичных разрядов по умоллчанию
+    DEFAULT_BIN_SIZE = 8  # Число двоичных разрядов по умолчанию
 
     BIN_SIZE_INDEX = 0
     DEC_NUM_INDEX = 1

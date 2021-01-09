@@ -5,43 +5,51 @@ import constants as c
 
 class IntKit:
     def __init__(self, dec_num=0, bin_num="0", str_code="0", rev_code="0", add_code="0"):
-        self.__dec_num = dec_num
-        self.__bin_num = bin_num
-        self.__str_code = str_code
-        self.__rev_code = rev_code
-        self.__add_code = add_code
+        self.__dec_num = dec_num  # Число в 10й сс
+        self.__bin_num = bin_num  # Число в 2й сс
+        self.__str_code = str_code  # Прямой код числа
+        self.__rev_code = rev_code  # Обратный код числа
+        self.__add_code = add_code  # Дополнительный код числа
 
     def by_dec_num(self, bin_size):
         """Перевод во все представления по числу в 10й сс"""
-        if self.__dec_num >= 0:
+        if self.__dec_num >= 0:  # Положительное число
             self.__bin_num = self.__bin_by_dec()
-            if self.__dec_num > 2 ** (bin_size - 1):  # Вне допустимого диапазона
-                self.__fill_codes_errors(self, c.Int.STR_CODE_INDEX, c.Int.REV_CODE_INDEX, c.Int.ADD_CODE_INDEX)
-                return 1
-            self.__str_code = self.__rev_code = self.__add_code = self.__straight_by_bin(bin_size)
+            if self.__dec_num > c.Int.MAX_POSITIVE(bin_size):  # Вне допустимого диапазона
+                self.__fill_codes_errors(self, c.Int.STR_CODE_INDEX,
+                                         c.Int.REV_CODE_INDEX,
+                                         c.Int.ADD_CODE_INDEX)
+            else:
+                self.__str_code = self.__rev_code = self.__add_code = self.__straight_by_bin(bin_size)
 
-        else:  # dec_num < 0
+        else:  # Отрицательное число
             self.__bin_num = self.__bin_by_dec()
-            if self.__dec_num < -1 * (2 ** (bin_size - 1) - 1):  # Вне допустимого диапазона
-                self.__fill_codes_errors(self, c.Int.STR_CODE_INDEX, c.Int.REV_CODE_INDEX, c.Int.ADD_CODE_INDEX)
-                return 1
-            self.__str_code = self.__straight_by_bin(bin_size)
-            self.__rev_code = self.__reversed_by_straight()
-            self.__add_code = self.__additional_by_reversed()
+            if self.__dec_num < c.Int.MAX_NEGATIVE(bin_size):  # Вне допустимого диапазона
+                self.__fill_codes_errors(self, c.Int.STR_CODE_INDEX,
+                                         c.Int.REV_CODE_INDEX,
+                                         c.Int.ADD_CODE_INDEX)
+            else:
+                self.__str_code = self.__straight_by_bin(bin_size)
+                self.__rev_code = self.__reversed_by_straight()
+                self.__add_code = self.__additional_by_reversed()
 
     def by_bin_num(self, bin_size):
+        """Перевод во все представления по числу в 2й сс"""
         self.__dec_num = int(self.__bin_num, base=2)
         self.by_dec_num(bin_size)
 
     def by_str_code(self, bin_size):
+        """Перевод во все представления по прямому коду числа"""
         self.__bin_num = self.__bin_by_straight()
         self.by_bin_num(bin_size)
 
     def by_rev_code(self, bin_size):
+        """Перевод во все представления по обратному коду числа"""
         self.__str_code = self.__straight_by_reversed()
         self.by_str_code(bin_size)
 
     def by_add_code(self, bin_size):
+        """Перевод во все представления по дополнительному коду числа"""
         self.__str_code = self.__straight_by_additional()
         self.by_str_code(bin_size)
 
@@ -65,15 +73,14 @@ class IntKit:
             self.__add_code = "-"
 
     def __bin_by_dec(self):
-        if self.__dec_num >= 0:
+        if self.__dec_num >= 0:  # Положительное число
             return bin(self.__dec_num)[2:]
         return "-" + bin(self.__dec_num)[3:]
 
     def __straight_by_bin(self, bin_size):
-        if self.__bin_num[0] == "-":
-            return "1" + self.__bin_num[1:].rjust(bin_size - 1, "0")
-        else:
+        if self.__bin_num[0] != "-":  # Положительное число
             return self.__bin_num.rjust(bin_size, "0")
+        return "1" + self.__bin_num[1:].rjust(bin_size - 1, "0")
 
     def __reversed_by_straight(self):
         if self.__str_code[0] == "0":  # Положительное число

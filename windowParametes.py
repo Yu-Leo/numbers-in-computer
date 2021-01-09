@@ -3,13 +3,14 @@
 class WindowParameters:
     def __init__(self):
         self.__width = 550
-        self.__height = 500
-        self.__padx = 100
-        self.__pady = 100
+        self.__height = 400
+        self.__padx = 100  # Отступ по горизонтали от верхнего левого угра экрана
+        self.__pady = 100  # Отступ по вертикали от верхнего левого угра экрана
         self.__resizable = (False, False)
         self.__ico_path = "img/program_icon64.ico"
 
     def get_geometry(self):
+        """Геометрия окна по стандарту tkinter-a"""
         return f"{self.__width}x{self.__height}+{self.__padx}+{self.__pady}"
 
     def get_resizable(self):

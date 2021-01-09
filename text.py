@@ -16,34 +16,19 @@ buttons_text = ["Очистить", "Рассчитать"]
 
 
 class ExceptionTexts:
-    def __init__(self, title="", type_error="", value_error=""):
-        self.title = title
+    def __init__(self, field_name="",
+                 type_error="Невозможно преобразовать в целое число.",
+                 value_error="Значение выходит за границы диапазона, заданого числом двоичных разрядов."):
+        self.title = f'Ошибка в поле "{field_name}".'
         self.type_error = type_error
         self.value_error = value_error
 
 
 class Exceptions:
     """Фразы для messagebox-ов при вызове соответсвующих исключений"""
-    bin_size = ExceptionTexts(title='Ошибка в поле "Число двоичных разрядов".',
-                              type_error='Невозможно преобразовать в целое число.',
-                              value_error='Значение выходит за границы заданного диапазона.')
-
-    dec_num = ExceptionTexts(title='Ошибка в поле "Число (10)".',
-                             type_error='Невозможно преобразовать в целое число.',
-                             value_error='Значение выходит за границы диапазона, заданого числом двоичных разрядов.')
-
-    bin_num = ExceptionTexts(title='Ошибка в поле "Число (2)".',
-                             type_error='Невозможно преобразовать в целое двоичное число.',
-                             value_error='Значение выходит за границы диапазона, заданого числом двоичных разрядов.')
-
-    str_code = ExceptionTexts(title='Ошибка в поле "Прямой код числа".',
-                              type_error='Невозможно преобразовать в целое двоичное число.',
-                              value_error='Значение выходит за границы диапазона, заданого числом двоичных разрядов.')
-
-    rev_code = ExceptionTexts(title='Ошибка в поле "Обратный код числа".',
-                              type_error='Невозможно преобразовать в целое двоичное число.',
-                              value_error='Значение выходит за границы диапазона, заданого числом двоичных разрядов.')
-
-    add_code = ExceptionTexts(title='Ошибка в поле "Дополнительный код числа".',
-                              type_error='Невозможно преобразовать в целое двоичное число.',
-                              value_error='Значение выходит за границы диапазона, заданого числом двоичных разрядов.')
+    bin_size = ExceptionTexts(field_name='Число двоичных разрядов')
+    dec_num = ExceptionTexts(field_name='Число (10)')
+    bin_num = ExceptionTexts(field_name='Число (2)')
+    str_code = ExceptionTexts(field_name='Прямой код числа')
+    rev_code = ExceptionTexts(field_name='Обратный код числа')
+    add_code = ExceptionTexts(field_name='Дополнительный код числа')

@@ -21,8 +21,11 @@ class IntWidgets:
                                           calculate_func)
 
     @property
-    def int_entries(self):
+    def entries(self):
         return self.__entries
+
+    def clear_entries_except(self, *args):
+        self.__entries.clear_all_except(*args)
 
     def draw_int(self):
         """Отрисовка при целочисленном режиме"""

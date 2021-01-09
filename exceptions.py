@@ -1,4 +1,4 @@
-# Файл с самописными исключениями
+# Файл с исключениями
 
 class BinSizeTypeError(TypeError):
     pass

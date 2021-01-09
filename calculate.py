@@ -1,49 +1,98 @@
-# Файл с механикой перевода целых чисел (+ ф-ция копирования в буффер)
+# Файл с функциями переводом (+ ф-ция копирования в буффер)
 
+import pyperclip  # Модуль для работы с буффером
 import config
 import exceptions as e
-import pyperclip  # Модуль для работы с буффером
 import constants as c
 from numbersKits import IntKit
+from messageboxes import Messageboxes as Mb
 
 
-def calculate(entries):
-    """Основная ф-ция перевода целых чисел"""
-    bin_size = get_bin_size(entries)  # Кол-во двоичных разрядов
+def int_calculate(entries):
+    """Расчёт в целочисленном режиме"""
+    try:
+        int_calc(entries)
+    except e.BinSizeTypeError:
+        Mb.BinSizeTypeError.show()
+        entries.clear_all_except()
+    except e.BinSizeValueError:
+        Mb.BinSizeValueError.show()
+        entries.clear_all_except(c.Int.BIN_SIZE_INDEX)
+
+    except e.DecNumTypeError:
+        Mb.DecNumTypeError.show()
+        entries.clear_all_except(c.Int.BIN_SIZE_INDEX)
+    except e.DecNumValueCodesWarning:
+        Mb.DecNumValueCodesWarning.show()
+        entries.clear_all_except(c.Int.BIN_SIZE_INDEX, c.Int.DEC_NUM_INDEX,
+                                 c.Int.BIN_NUM_INDEX)
+
+    except e.BinNumTypeError:
+        Mb.BinNumTypeError.show()
+        entries.clear_all_except(c.Int.BIN_SIZE_INDEX)
+    except e.BinNumValueCodesWarning:
+        Mb.BinNumValueCodesWarning.show()
+        entries.clear_all_except(c.Int.BIN_SIZE_INDEX, c.Int.DEC_NUM_INDEX,
+                                 c.Int.BIN_NUM_INDEX)
+
+    except e.StrCodeTypeError:
+        Mb.StrCodeTypeError.show()
+        entries.clear_all_except(c.Int.BIN_SIZE_INDEX)
+    except e.StrCodeValueError:
+        Mb.StrCodeValueError.show()
+        entries.clear_all_except(c.Int.BIN_SIZE_INDEX)
+
+    except e.RevCodeTypeError:
+        Mb.RevCodeTypeError.show()
+        entries.clear_all_except(c.Int.BIN_SIZE_INDEX)
+    except e.RevCodeValueError:
+        Mb.RevCodeValueError.show()
+        entries.clear_all_except(c.Int.BIN_SIZE_INDEX)
+    except e.AddCodeTypeError:
+        Mb.AddCodeTypeError.show()
+        entries.clear_all_except(c.Int.BIN_SIZE_INDEX)
+    except e.AddCodeValueError:
+        Mb.AddCodeValueError.show()
+        entries.clear_all_except(c.Int.BIN_SIZE_INDEX)
+
+
+def int_calc(entries):
+    """Перевод целых чисел"""
+    bin_size = get_bin_size(entries)  # Числе двоичных разрядов
+    # Очистка от старых значений
+    entries.clear_all_except(c.Int.BIN_SIZE_INDEX, config.translate_type)
+
     if config.translate_type == c.Int.DEC_NUM_INDEX:  # Исходное значение - число в десятичной сс
-        entries.clear_all_except(c.Int.BIN_SIZE_INDEX, c.Int.DEC_NUM_INDEX)
         dec_num = get_dec_num(entries)
         kit = IntKit(dec_num=dec_num)
         kit.by_dec_num(bin_size)
         kit.print(entries)
+        # Если евозможно рассчитать представления при данном числе двоичных разрядов
         if kit.codes_error():
             raise e.DecNumValueCodesWarning
 
     elif config.translate_type == c.Int.BIN_NUM_INDEX:  # Исходное значение - число в двоичной сс
-        entries.clear_all_except(c.Int.BIN_SIZE_INDEX, c.Int.BIN_NUM_INDEX)
         bin_num = get_bin_num(entries)
         kit = IntKit(bin_num=bin_num)
         kit.by_bin_num(bin_size)
         kit.print(entries)
+        # Если евозможно рассчитать представления при данном числе двоичных разрядов
         if kit.codes_error():
             raise e.BinNumValueCodesWarning
 
     elif config.translate_type == c.Int.STR_CODE_INDEX:  # Исходное значение - прямой код числа
-        entries.clear_all_except(c.Int.BIN_SIZE_INDEX, c.Int.STR_CODE_INDEX)
         str_code = get_str_code(entries, bin_size)
         kit = IntKit(str_code=str_code)
         kit.by_str_code(bin_size)
         kit.print(entries)
 
     elif config.translate_type == c.Int.REV_CODE_INDEX:  # Исходное значение - обратный код числа
-        entries.clear_all_except(c.Int.BIN_SIZE_INDEX, c.Int.REV_CODE_INDEX)
         rev_code = get_rev_code(entries, bin_size)
         kit = IntKit(rev_code=rev_code)
         kit.by_rev_code(bin_size)
         kit.print(entries)
 
     elif config.translate_type == c.Int.ADD_CODE_INDEX:  # Исходное значение - дополнительный код числа
-        entries.clear_all_except(c.Int.BIN_SIZE_INDEX, c.Int.ADD_CODE_INDEX)
         add_code = get_add_code(entries, bin_size)
         kit = IntKit(add_code=add_code)
         kit.by_add_code(bin_size)
@@ -82,7 +131,6 @@ def get_bin_num(entries):
 def get_str_code(entries, bin_size):
     str_code = entries.get_str_code()
     try:
-        t_bin = int(str_code[1:], base=2)
         t_full = int(str_code, base=2)  # Если 0й символ не 0 или 1, вызовется ValueError
     except ValueError:
         raise e.StrCodeTypeError
@@ -94,7 +142,6 @@ def get_str_code(entries, bin_size):
 def get_rev_code(entries, bin_size):
     rev_code = entries.get_rev_code()
     try:
-        t_bin = int(rev_code[1:], base=2)
         t_full = int(rev_code, base=2)  # Если 0й символ не 0 или 1, вызовется ValueError
     except ValueError:
         raise e.RevCodeTypeError
@@ -106,7 +153,6 @@ def get_rev_code(entries, bin_size):
 def get_add_code(entries, bin_size):
     add_code = entries.get_add_code()
     try:
-        t_bin = int(add_code[1:], base=2)
         t_full = int(add_code, base=2)  # Если 0й символ не 0 или 1, вызовется ValueError
     except ValueError:
         raise e.AddCodeTypeError
@@ -122,8 +168,8 @@ def copy_val_to_buffer(entries, index):
     elif index == c.Int.BIN_NUM_INDEX:
         pyperclip.copy(entries.get_bin_num())
     elif index == c.Int.STR_CODE_INDEX:
-        pyperclip.copy(entries.get_straight_code())
+        pyperclip.copy(entries.get_str_code())
     elif index == c.Int.REV_CODE_INDEX:
-        pyperclip.copy(entries.get_reversed_code())
+        pyperclip.copy(entries.get_rev_code())
     elif index == c.Int.ADD_CODE_INDEX:
-        pyperclip.copy(entries.get_additional_code())
+        pyperclip.copy(entries.get_add_code())

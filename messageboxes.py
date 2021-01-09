@@ -1,4 +1,4 @@
-# Файл с messagebox-ами
+# Файл с классами messagebox-ов
 
 import tkinter.messagebox as mb
 from text import Exceptions

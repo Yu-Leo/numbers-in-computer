@@ -37,6 +37,14 @@ class IntKit:
         self.__bin_num = self.__bin_by_straight()
         self.by_bin_num(bin_size)
 
+    def by_rev_code(self, bin_size):
+        self.__str_code = self.__straight_by_reversed()
+        self.by_str_code(bin_size)
+
+    def by_add_code(self, bin_size):
+        self.__str_code = self.__straight_by_additional()
+        self.by_str_code(bin_size)
+
     def print(self, fields):
         """Вывод всего комплекта в поля ввода-вывода"""
         fields.write(c.Int.DEC_NUM_INDEX, self.__dec_num)
@@ -68,17 +76,37 @@ class IntKit:
             return self.__bin_num.rjust(bin_size, "0")
 
     def __reversed_by_straight(self):
+        if self.__str_code[0] == "0":  # Положительное число
+            return self.__str_code
         rev_code = self.__str_code[0]
         for i in range(1, len(self.__str_code)):
             rev_code += ("1" if self.__str_code[i] == "0" else "0")
         return rev_code
 
     def __additional_by_reversed(self):
+        if self.__rev_code[0] == "0":  # Положительное число
+            return self.__rev_code
         return bin_sum(self.__rev_code, "1")
 
     def __bin_by_straight(self):
         sign = "-" if self.__str_code[0] == "1" else ""
         return sign + self.__str_code[1:]
+
+    def __straight_by_reversed(self):
+        if self.__rev_code[0] == "0":  # Положительное число
+            return self.__rev_code
+        str_code = self.__rev_code[0]
+        for i in range(1, len(self.__rev_code)):
+            str_code += ("1" if self.__rev_code[i] == "0" else "0")
+        return str_code
+
+    def __straight_by_additional(self):
+        if self.__add_code[0] == "0":  # Положительное число
+            return self.__add_code
+        str_code = self.__add_code[0]
+        for i in range(1, len(self.__add_code)):
+            str_code += ("1" if self.__add_code[i] == "0" else "0")
+        return bin_sum(str_code, "1")
 
 
 def bin_sum(a, b):

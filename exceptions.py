@@ -30,3 +30,19 @@ class StrCodeTypeError(TypeError):
 
 class StrCodeValueError(ValueError):
     pass
+
+
+class RevCodeTypeError(TypeError):
+    pass
+
+
+class RevCodeValueError(ValueError):
+    pass
+
+
+class AddCodeTypeError(TypeError):
+    pass
+
+
+class AddCodeValueError(ValueError):
+    pass

@@ -35,6 +35,20 @@ def calculate(entries):
         kit.by_str_code(bin_size)
         kit.print(entries)
 
+    elif config.translate_type == c.Int.REV_CODE_INDEX:  # Исходное значение - обратный код числа
+        entries.clear_all_except(c.Int.BIN_SIZE_INDEX, c.Int.REV_CODE_INDEX)
+        rev_code = get_rev_code(entries, bin_size)
+        kit = IntKit(rev_code=rev_code)
+        kit.by_rev_code(bin_size)
+        kit.print(entries)
+
+    elif config.translate_type == c.Int.ADD_CODE_INDEX:  # Исходное значение - дополнительный код числа
+        entries.clear_all_except(c.Int.BIN_SIZE_INDEX, c.Int.ADD_CODE_INDEX)
+        add_code = get_add_code(entries, bin_size)
+        kit = IntKit(add_code=add_code)
+        kit.by_add_code(bin_size)
+        kit.print(entries)
+
 
 def get_bin_size(entries):
     str_bin_size = entries.get_bin_size()
@@ -69,14 +83,36 @@ def get_str_code(entries, bin_size):
     str_code = entries.get_str_code()
     try:
         t_bin = int(str_code[1:], base=2)
-        t_full = int(str_code, base=2)  # Если 0й символ не 0 или 1, вызовется ошибка ValueError
+        t_full = int(str_code, base=2)  # Если 0й символ не 0 или 1, вызовется ValueError
     except ValueError:
         raise e.StrCodeTypeError
-
     if len(str_code) != bin_size:
         raise e.StrCodeValueError
-
     return str_code
+
+
+def get_rev_code(entries, bin_size):
+    rev_code = entries.get_rev_code()
+    try:
+        t_bin = int(rev_code[1:], base=2)
+        t_full = int(rev_code, base=2)  # Если 0й символ не 0 или 1, вызовется ValueError
+    except ValueError:
+        raise e.RevCodeTypeError
+    if len(rev_code) != bin_size:
+        raise e.RevCodeValueError
+    return rev_code
+
+
+def get_add_code(entries, bin_size):
+    add_code = entries.get_add_code()
+    try:
+        t_bin = int(add_code[1:], base=2)
+        t_full = int(add_code, base=2)  # Если 0й символ не 0 или 1, вызовется ValueError
+    except ValueError:
+        raise e.AddCodeTypeError
+    if len(add_code) != bin_size:
+        raise e.AddCodeValueError
+    return add_code
 
 
 def copy_val_to_buffer(entries, index):

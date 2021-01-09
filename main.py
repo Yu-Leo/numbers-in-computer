@@ -38,7 +38,7 @@ class Window:
         except e.DecNumValueCodesWarning:
             Mb.DecNumValueCodesWarning.show()
             self.int_widgets.clear_entries_except(c.Int.BIN_SIZE_INDEX, c.Int.DEC_NUM_INDEX,
-                                                          c.Int.BIN_NUM_INDEX)
+                                                  c.Int.BIN_NUM_INDEX)
 
         except e.BinNumTypeError:
             Mb.BinNumTypeError.show()
@@ -46,13 +46,27 @@ class Window:
         except e.BinNumValueCodesWarning:
             Mb.BinNumValueCodesWarning.show()
             self.int_widgets.clear_entries_except(c.Int.BIN_SIZE_INDEX, c.Int.DEC_NUM_INDEX,
-                                                          c.Int.BIN_NUM_INDEX)
+                                                  c.Int.BIN_NUM_INDEX)
 
         except e.StrCodeTypeError:
             Mb.StrCodeTypeError.show()
             self.int_widgets.clear_entries_except(c.Int.BIN_SIZE_INDEX)
         except e.StrCodeValueError:
             Mb.StrCodeValueError.show()
+            self.int_widgets.clear_entries_except(c.Int.BIN_SIZE_INDEX)
+
+        except e.RevCodeTypeError:
+            Mb.RevCodeTypeError.show()
+            self.int_widgets.clear_entries_except(c.Int.BIN_SIZE_INDEX)
+        except e.RevCodeValueError:
+            Mb.RevCodeValueError.show()
+            self.int_widgets.clear_entries_except(c.Int.BIN_SIZE_INDEX)
+
+        except e.AddCodeTypeError:
+            Mb.AddCodeTypeError.show()
+            self.int_widgets.clear_entries_except(c.Int.BIN_SIZE_INDEX)
+        except e.AddCodeValueError:
+            Mb.AddCodeValueError.show()
             self.int_widgets.clear_entries_except(c.Int.BIN_SIZE_INDEX)
 
     def copy_to_buffer(self, index):

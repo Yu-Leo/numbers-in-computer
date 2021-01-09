@@ -51,3 +51,15 @@ class Messageboxes:
 
     StrCodeValueError = Error(title=Exceptions.str_code.title,
                               message=Exceptions.str_code.value_error)
+
+    RevCodeTypeError = Error(title=Exceptions.rev_code.title,
+                             message=Exceptions.rev_code.type_error)
+
+    RevCodeValueError = Error(title=Exceptions.rev_code.title,
+                              message=Exceptions.rev_code.value_error)
+
+    AddCodeTypeError = Error(title=Exceptions.add_code.title,
+                             message=Exceptions.add_code.type_error)
+
+    AddCodeValueError = Error(title=Exceptions.add_code.title,
+                              message=Exceptions.add_code.value_error)

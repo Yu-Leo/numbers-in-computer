@@ -64,8 +64,9 @@ class IntLabels:
         self.__list = []  # Список лэйблов
         for name in text.int_labels_text:
             self.__list.append(tk.Label(window,
-                                        text=name,
+                                        text=name + ":",
                                         font=("Arial", 12),
+
                                         anchor=tk.W))
 
     def draw(self):
@@ -119,7 +120,8 @@ class IntRadiobuttons:
 class IntEntries:
     """Список полей ввода-вывода при целочисленном режиме"""
 
-    def __call_calc(self, i, calculate_func):
+    @staticmethod
+    def __call_calc(i, calculate_func):
         """Если режим перевода совпадает с полем, в котором нажали Enter, переводим"""
         if config.translate_type == i:
             calculate_func()
@@ -127,25 +129,25 @@ class IntEntries:
     def __init__(self, window, calculate_func):
         self.__list = []  # Список полей для ввода
         self.__list.append(tk.Entry(window, font=("Arial", 12), width=5))
-        self.__list[0].insert(0, "8")  # Число двоичных разрядов поумолчанию
+        self.__list[0].insert(0, "8")  # Число двоичных разрядов по умолчанию
 
         for i in range(1, c.Int.ADD_CODE_INDEX + 1):
             self.__list.append(tk.Entry(window, font=("Arial", 12)))
 
         # Биндим на нажатие Enter в соотв. поле
         self.__list[c.Int.DEC_NUM_INDEX].bind("<Return>",
-                                              lambda x: self.__call_calc(c.Int.DEC_NUM_INDEX, calculate_func))
+                                              lambda x: IntEntries.__call_calc(c.Int.DEC_NUM_INDEX, calculate_func))
         self.__list[c.Int.BIN_NUM_INDEX].bind("<Return>",
-                                              lambda x: self.__call_calc(c.Int.BIN_NUM_INDEX, calculate_func))
+                                              lambda x: IntEntries.__call_calc(c.Int.BIN_NUM_INDEX, calculate_func))
         self.__list[c.Int.STR_CODE_INDEX].bind("<Return>",
-                                               lambda x: self.__call_calc(c.Int.STR_CODE_INDEX,
-                                                                          calculate_func))
+                                               lambda x: IntEntries.__call_calc(c.Int.STR_CODE_INDEX,
+                                                                                calculate_func))
         self.__list[c.Int.REV_CODE_INDEX].bind("<Return>",
-                                               lambda x: self.__call_calc(c.Int.REV_CODE_INDEX,
-                                                                          calculate_func))
+                                               lambda x: IntEntries.__call_calc(c.Int.REV_CODE_INDEX,
+                                                                                calculate_func))
         self.__list[c.Int.ADD_CODE_INDEX].bind("<Return>",
-                                               lambda x: self.__call_calc(c.Int.ADD_CODE_INDEX,
-                                                                          calculate_func))
+                                               lambda x: IntEntries.__call_calc(c.Int.ADD_CODE_INDEX,
+                                                                                calculate_func))
 
     def clear_all_except(self, *args):
         """Очищает все поля кроме тех, которые указаны в аргументах"""
@@ -187,9 +189,15 @@ class IntEntries:
 
 
 class IntCopyButtons:
+    @staticmethod
+    def __get_copy_image():
+        image = PilImage.open(r"img/copy_icon32.ico")
+        image = image.resize((18, 18), PilImage.ANTIALIAS)
+        return ImageTk.PhotoImage(image)
+
     def __init__(self, window, copy_func):
         self.__list = []  # Список кнопок
-        self.copy_image = self.__get_copy_image()
+        self.copy_image = IntCopyButtons.__get_copy_image()
         self.__list.append(tk.Button(window,
                                      image=self.copy_image,
                                      command=lambda: copy_func(c.Int.DEC_NUM_INDEX)))
@@ -205,11 +213,6 @@ class IntCopyButtons:
         self.__list.append(tk.Button(window,
                                      image=self.copy_image,
                                      command=lambda: copy_func(c.Int.ADD_CODE_INDEX)))
-
-    def __get_copy_image(self):
-        image = PilImage.open(r"img/copy_icon32.ico")
-        image = image.resize((18, 18), PilImage.ANTIALIAS)
-        return ImageTk.PhotoImage(image)
 
     def draw(self):
         for i in range(5):

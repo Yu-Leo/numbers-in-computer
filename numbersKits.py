@@ -15,7 +15,7 @@ class IntKit:
         """Перевод во все представления по числу в 10й сс"""
         if self.__dec_num >= 0:  # Положительное число
             self.__bin_num = self.__bin_by_dec()
-            if self.__dec_num > c.Int.MAX_POSITIVE(bin_size):  # Вне допустимого диапазона
+            if self.__dec_num > c.Int.max_positive(bin_size):  # Вне допустимого диапазона
                 self.__fill_codes_errors(self, c.Int.STR_CODE_INDEX,
                                          c.Int.REV_CODE_INDEX,
                                          c.Int.ADD_CODE_INDEX)
@@ -24,7 +24,7 @@ class IntKit:
 
         else:  # Отрицательное число
             self.__bin_num = self.__bin_by_dec()
-            if self.__dec_num < c.Int.MAX_NEGATIVE(bin_size):  # Вне допустимого диапазона
+            if self.__dec_num < c.Int.max_negative(bin_size):  # Вне допустимого диапазона
                 self.__fill_codes_errors(self, c.Int.STR_CODE_INDEX,
                                          c.Int.REV_CODE_INDEX,
                                          c.Int.ADD_CODE_INDEX)

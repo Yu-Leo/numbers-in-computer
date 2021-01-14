@@ -12,11 +12,11 @@ class Window:
 
     def __init__(self):
         self.__root = tk.Tk()
-        self.__root.title("Numbers in computer")
         self.__parameters = WindowParameters()
-        self.__root.geometry(self.__parameters.get_geometry())
-        self.__root.resizable(*self.__parameters.get_resizable())
-        self.__root.iconbitmap(self.__parameters.get_ico_path())
+        self.__root.title(self.__parameters.title)
+        self.__root.geometry(self.__parameters.geometry())
+        self.__root.resizable(*self.__parameters.resizable)
+        self.__root.iconbitmap(self.__parameters.ico_path)
         # Виджеты целочисленного режима
         self.int_widgets = IntWidgets(self.__root,
                                       lambda: calculate.int_calculate(self.int_widgets.entries),

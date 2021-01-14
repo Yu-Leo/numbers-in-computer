@@ -17,15 +17,15 @@ class Int:
     ADD_CODE_INDEX = 5
 
     @staticmethod
-    def MAX_POSITIVE(bin_size):
+    def max_positive(bin_size):
         """
         Максимальное положительное целое число, которое можно представить
         данным числом двоичных разрядов.
         """
-        return 2 ** (bin_size - 1)
+        return 2 ** (bin_size - 1) - 1
 
     @staticmethod
-    def MAX_NEGATIVE(bin_size):
+    def max_negative(bin_size):
         """
         Максимальное отрицательное целое число, которое можно представить
         данным числом двоичных разрядов.

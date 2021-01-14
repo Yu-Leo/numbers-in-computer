@@ -21,10 +21,10 @@
    
 ## Код
 ### Используемые модули
-* [tkinter](https://docs.python.org/3/library/tkinter.html)
-* [tkinter.messagebox](https://docs.python.org/3/library/tkinter.messagebox.html)
-* [Pillow (PIL)](https://pypi.org/project/Pillow/)
-* [pyperclip](https://pypi.org/project/pyperclip/)
+* [tkinter](https://docs.python.org/3/library/tkinter.html) - графический интерфейс приложения
+* [tkinter.messagebox](https://docs.python.org/3/library/tkinter.messagebox.html) - всплывающие окна
+* [Pillow (PIL)](https://pypi.org/project/Pillow/) - работа с изображениями
+* [pyperclip](https://pypi.org/project/pyperclip/) - работа с буфером обмена
 
 ### Файлы
 * [main.py](https://github.com/Yu-Leo/numbers-in-computer/blob/main/main.py) - главный код приложения

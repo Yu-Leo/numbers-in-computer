@@ -1,9 +1,9 @@
-# Файл с фразами, которые задействованны в интрефейсе, на русском языке
+# Файл с фразами, которые задействованы в интерфейсе, на русском языке
 
-int_labels_text = ["Число двоичных разрядов:",
-                   "Число (10):",
-                   "Число (2):",
-                   "Прямой код числа:",
+int_labels_text = ["Число двоичных разрядов",
+                   "Число в десятичной с.с.",
+                   "Число в двоичной с.с.",
+                   "Прямой код числа",
                    "Обратный код числа",
                    "Дополнительный код числа"]
 
@@ -26,9 +26,9 @@ class ExceptionTexts:
 
 class Exceptions:
     """Фразы для messagebox-ов при вызове соответсвующих исключений"""
-    bin_size = ExceptionTexts(field_name='Число двоичных разрядов')
-    dec_num = ExceptionTexts(field_name='Число (10)')
-    bin_num = ExceptionTexts(field_name='Число (2)')
-    str_code = ExceptionTexts(field_name='Прямой код числа')
-    rev_code = ExceptionTexts(field_name='Обратный код числа')
-    add_code = ExceptionTexts(field_name='Дополнительный код числа')
+    bin_size = ExceptionTexts(field_name=int_labels_text[0])
+    dec_num = ExceptionTexts(field_name=int_labels_text[1])
+    bin_num = ExceptionTexts(field_name=int_labels_text[2])
+    str_code = ExceptionTexts(field_name=int_labels_text[3])
+    rev_code = ExceptionTexts(field_name=int_labels_text[4])
+    add_code = ExceptionTexts(field_name=int_labels_text[5])

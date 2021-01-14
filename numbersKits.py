@@ -14,7 +14,7 @@ class IntKit:
     def by_dec_num(self, bin_size):
         """Перевод во все представления по числу в 10й сс"""
         if self.__dec_num >= 0:  # Положительное число
-            self.__bin_num = self.__bin_by_dec()
+            self.__bin_num = self.__abs_bin_by_dec()
             if self.__dec_num > c.Int.max_positive(bin_size):  # Вне допустимого диапазона
                 self.__fill_codes_errors(self, c.Int.STR_CODE_INDEX,
                                          c.Int.REV_CODE_INDEX,
@@ -23,7 +23,8 @@ class IntKit:
                 self.__str_code = self.__rev_code = self.__add_code = self.__straight_by_bin(bin_size)
 
         else:  # Отрицательное число
-            self.__bin_num = self.__bin_by_dec()
+            self.__abs_bin_num = self.__abs_bin_by_dec()
+            self.__bin_num = self.__abs_bin_num if self.__dec_num > 0 else "-"
             if self.__dec_num < c.Int.max_negative(bin_size):  # Вне допустимого диапазона
                 self.__fill_codes_errors(self, c.Int.STR_CODE_INDEX,
                                          c.Int.REV_CODE_INDEX,
@@ -72,15 +73,14 @@ class IntKit:
         if c.Int.ADD_CODE_INDEX in args:
             self.__add_code = "-"
 
-    def __bin_by_dec(self):
-        if self.__dec_num >= 0:  # Положительное число
-            return bin(self.__dec_num)[2:]
-        return "-" + bin(self.__dec_num)[3:]
+    def __abs_bin_by_dec(self):
+        """Модуль числа в двоичной с.с."""
+        return bin(abs(self.__dec_num))[2:]
 
     def __straight_by_bin(self, bin_size):
-        if self.__bin_num[0] != "-":  # Положительное число
+        if self.__dec_num > 0:  # Положительное число
             return self.__bin_num.rjust(bin_size, "0")
-        return "1" + self.__bin_num[1:].rjust(bin_size - 1, "0")
+        return "1" + self.__abs_bin_num.rjust(bin_size - 1, "0")
 
     def __reversed_by_straight(self):
         if self.__str_code[0] == "0":  # Положительное число

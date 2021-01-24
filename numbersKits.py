@@ -78,7 +78,7 @@ class IntKit:
         return bin(abs(self.__dec_num))[2:]
 
     def __straight_by_bin(self, bin_size):
-        if self.__dec_num > 0:  # Положительное число
+        if self.__dec_num >= 0:  # Положительное число
             return self.__bin_num.rjust(bin_size, "0")
         return "1" + self.__abs_bin_num.rjust(bin_size - 1, "0")
 

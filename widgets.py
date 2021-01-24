@@ -13,7 +13,6 @@ class IntWidgets:
     def __init__(self, window, calculate_func, copy_func):
         self.__num_type_menu = NumTypeMenu(window)
         self.__entries_names = IntLabels(window)
-        self.__entries_radiobuttons = IntRadiobuttons(window)
         self.__entries = IntEntries(window, calculate_func)
         self.__copy_buttons = IntCopyButtons(window, copy_func)
         self.__actions_menu = ActionsMenu(window,
@@ -28,7 +27,6 @@ class IntWidgets:
         """Отрисовка при целочисленном режиме"""
         self.__num_type_menu.draw()
         self.__entries_names.draw()
-        self.__entries_radiobuttons.draw()
         self.__entries.draw()
         self.__actions_menu.draw()
         self.__copy_buttons.draw()
@@ -54,7 +52,7 @@ class NumTypeMenu:
 
     def draw(self):
         self.__int_type_button.grid(row=0, column=0)
-        self.__float_type_button.grid(row=0, column=2)
+        self.__float_type_button.grid(row=0, column=1)
 
 
 class IntLabels:
@@ -75,56 +73,14 @@ class IntLabels:
                                 pady=10)
 
 
-class IntRadiobuttons:
-    """Список радио-кнопок при целочисленном режиме"""
-
-    @staticmethod
-    def __change_translate_type(i):
-        config.translate_type = i
-
-    def __init__(self, window):
-        self.__translate_type = tk.IntVar(value=0)  # Тип перевода
-        self.__list = []  # Список радио-кнопок
-
-        self.__list.append(tk.Radiobutton(window,
-                                          variable=self.__translate_type,
-                                          value=0,
-                                          command=lambda:
-                                          IntRadiobuttons.__change_translate_type(c.Int.DEC_NUM_INDEX)))
-        self.__list.append(tk.Radiobutton(window,
-                                          variable=self.__translate_type,
-                                          value=1,
-                                          command=lambda:
-                                          IntRadiobuttons.__change_translate_type(c.Int.BIN_NUM_INDEX)))
-        self.__list.append(tk.Radiobutton(window,
-                                          variable=self.__translate_type,
-                                          value=2,
-                                          command=lambda:
-                                          IntRadiobuttons.__change_translate_type(c.Int.STR_CODE_INDEX)))
-        self.__list.append(tk.Radiobutton(window,
-                                          variable=self.__translate_type,
-                                          value=3,
-                                          command=lambda:
-                                          IntRadiobuttons.__change_translate_type(c.Int.REV_CODE_INDEX)))
-        self.__list.append(tk.Radiobutton(window,
-                                          variable=self.__translate_type,
-                                          value=4,
-                                          command=lambda:
-                                          IntRadiobuttons.__change_translate_type(c.Int.ADD_CODE_INDEX)))
-
-    def draw(self):
-        for i in range(5):
-            self.__list[i].grid(row=(2 + i), column=1)
-
-
 class IntEntries:
     """Список полей ввода-вывода при целочисленном режиме"""
 
     @staticmethod
     def __call_calc(i, calculate_func):
-        """Если режим перевода совпадает с полем, в котором нажали Enter, переводим"""
-        if config.translate_type == i:
-            calculate_func()
+        """Изменяем режим перевода на тот, в котором нажали Enter, и переводим"""
+        config.translate_type = i
+        calculate_func()
 
     def __init__(self, window, calculate_func):
         self.__list = []  # Список полей для ввода
@@ -183,9 +139,9 @@ class IntEntries:
         self.__list[index].insert(0, value)
 
     def draw(self):
-        self.__list[0].grid(row=1, column=2, sticky=tk.W, padx=20)
+        self.__list[0].grid(row=1, column=1, sticky=tk.W, padx=20)
         for i in range(1, 6):
-            self.__list[i].grid(row=(1 + i), column=2)
+            self.__list[i].grid(row=(1 + i), column=1)
 
 
 class IntCopyButtons:
@@ -231,4 +187,4 @@ class ActionsMenu:
 
     def draw(self):
         self.__clear_button.grid(row=7, column=0, sticky=tk.W, padx=20, pady=10)
-        self.__calculate_button.grid(row=7, column=2, padx=20, pady=10)
+        self.__calculate_button.grid(row=7, column=1, padx=20, pady=10)

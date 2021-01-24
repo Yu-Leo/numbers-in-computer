@@ -10,10 +10,6 @@ int_labels_text = ["Число двоичных разрядов",
 int_nums_text = "Целые числа"
 float_nums_text = "Вещественные числа"
 
-entries_count = 6
-
-buttons_text = ["Очистить"]
-
 
 class ExceptionTexts:
     def __init__(self, field_name="",

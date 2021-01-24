@@ -165,10 +165,6 @@ class ButtonsRow:
         self.calc_image = ButtonsRow.__get_image("calc_icon32")
         self.copy_image = ButtonsRow.__get_image("copy_icon32")
 
-        self.__del_button = tk.Button(window,
-                                      image=self.del_image,
-                                      command=lambda: del_func(row_ind))
-
         self.__calc_button = tk.Button(window,
                                        image=self.calc_image,
                                        state="disabled",
@@ -178,10 +174,14 @@ class ButtonsRow:
                                        image=self.copy_image,
                                        command=lambda: calc_func(copy_func))
 
+        self.__del_button = tk.Button(window,
+                                      image=self.del_image,
+                                      command=lambda: del_func(row_ind))
+
     def draw(self, row_num, start_column_num):
-        self.__del_button.grid(row=row_num, column=start_column_num, padx=5)
-        self.__calc_button.grid(row=row_num, column=start_column_num + 1, padx=5)
-        self.__copy_button.grid(row=row_num, column=start_column_num + 2, padx=5)
+        self.__calc_button.grid(row=row_num, column=start_column_num, padx=5)
+        self.__copy_button.grid(row=row_num, column=start_column_num + 1, padx=5)
+        self.__del_button.grid(row=row_num, column=start_column_num + 2, padx=5)
 
 
 class IntButtons:

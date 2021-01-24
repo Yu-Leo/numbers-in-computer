@@ -89,20 +89,24 @@ class IntEntries:
         for i in range(1, c.Int.ADD_CODE_INDEX + 1):
             self.__list.append(tk.Entry(window, font=("Arial", 12), width=18))
 
+        indexes = [c.Int.DEC_NUM_INDEX, c.Int.BIN_NUM_INDEX,
+                   c.Int.STR_CODE_INDEX, c.Int.REV_CODE_INDEX,
+                   c.Int.ADD_CODE_INDEX]
+        for index in indexes:
+            # Биндим на нажатие Delete в соотв. поле
+            self.__list[index].bind("<Delete>", lambda x: self.clear_all_except(c.Int.BIN_SIZE_INDEX))
+
         # Биндим на нажатие Enter в соотв. поле
         self.__list[c.Int.DEC_NUM_INDEX].bind("<Return>",
                                               lambda x: IntEntries.call_calc(c.Int.DEC_NUM_INDEX, calculate_func))
         self.__list[c.Int.BIN_NUM_INDEX].bind("<Return>",
                                               lambda x: IntEntries.call_calc(c.Int.BIN_NUM_INDEX, calculate_func))
         self.__list[c.Int.STR_CODE_INDEX].bind("<Return>",
-                                               lambda x: IntEntries.call_calc(c.Int.STR_CODE_INDEX,
-                                                                              calculate_func))
+                                               lambda x: IntEntries.call_calc(c.Int.STR_CODE_INDEX, calculate_func))
         self.__list[c.Int.REV_CODE_INDEX].bind("<Return>",
-                                               lambda x: IntEntries.call_calc(c.Int.REV_CODE_INDEX,
-                                                                              calculate_func))
+                                               lambda x: IntEntries.call_calc(c.Int.REV_CODE_INDEX, calculate_func))
         self.__list[c.Int.ADD_CODE_INDEX].bind("<Return>",
-                                               lambda x: IntEntries.call_calc(c.Int.ADD_CODE_INDEX,
-                                                                              calculate_func))
+                                               lambda x: IntEntries.call_calc(c.Int.ADD_CODE_INDEX, calculate_func))
 
     def clear_all_except(self, *args):
         """Очищает все поля кроме тех, которые указаны в аргументах"""

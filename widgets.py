@@ -18,8 +18,6 @@ class IntWidgets:
                                     del_func=lambda i: self.__entries.clear_all_except(c.Int.BIN_SIZE_INDEX),
                                     copy_func=copy_func,
                                     calc_func=lambda i: self.__entries.call_calc(i, calculate_func))
-        self.__actions_menu = ActionsMenu(window,
-                                          lambda: self.__entries.clear_all_except(c.Int.BIN_SIZE_INDEX))
 
     @property
     def entries(self):
@@ -30,7 +28,6 @@ class IntWidgets:
         self.__num_type_menu.draw()
         self.__entries_names.draw()
         self.__entries.draw()
-        self.__actions_menu.draw()
         self.__buttons.draw()
 
 
@@ -200,14 +197,3 @@ class IntButtons:
     def draw(self):
         for i in range(len(self.__list)):
             self.__list[i].draw(row_num=(2 + i), start_column_num=2)
-
-
-class ActionsMenu:
-    """Меню кнопок очистить / рассчитать"""
-
-    def __init__(self, window, clear_func):
-        self.__clear_button = tk.Button(window, text=text.buttons_text[0],
-                                        width=25, command=clear_func)
-
-    def draw(self):
-        self.__clear_button.grid(row=7, column=0, sticky=tk.W, padx=20, pady=10)

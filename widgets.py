@@ -15,9 +15,9 @@ class IntWidgets:
         self.__entries_names = IntLabels(window)
         self.__entries = IntEntries(window, calculate_func)
         self.__buttons = IntButtons(window,
-                                    del_func=lambda i: self.__entries.clear(i),
+                                    del_func=lambda i: self.__entries.clear_all_except(c.Int.BIN_SIZE_INDEX),
                                     copy_func=copy_func,
-                                    calc_func=lambda i: None)
+                                    calc_func=lambda i: self.__entries.call_calc(i, calculate_func))
         self.__actions_menu = ActionsMenu(window,
                                           lambda: self.__entries.clear_all_except(c.Int.BIN_SIZE_INDEX))
 
@@ -79,7 +79,7 @@ class IntEntries:
     """Список полей ввода-вывода при целочисленном режиме"""
 
     @staticmethod
-    def __call_calc(i, calculate_func):
+    def call_calc(i, calculate_func):
         """Изменяем режим перевода на тот, в котором нажали Enter, и переводим"""
         config.translate_type = i
         calculate_func()
@@ -94,18 +94,18 @@ class IntEntries:
 
         # Биндим на нажатие Enter в соотв. поле
         self.__list[c.Int.DEC_NUM_INDEX].bind("<Return>",
-                                              lambda x: IntEntries.__call_calc(c.Int.DEC_NUM_INDEX, calculate_func))
+                                              lambda x: IntEntries.call_calc(c.Int.DEC_NUM_INDEX, calculate_func))
         self.__list[c.Int.BIN_NUM_INDEX].bind("<Return>",
-                                              lambda x: IntEntries.__call_calc(c.Int.BIN_NUM_INDEX, calculate_func))
+                                              lambda x: IntEntries.call_calc(c.Int.BIN_NUM_INDEX, calculate_func))
         self.__list[c.Int.STR_CODE_INDEX].bind("<Return>",
-                                               lambda x: IntEntries.__call_calc(c.Int.STR_CODE_INDEX,
-                                                                                calculate_func))
+                                               lambda x: IntEntries.call_calc(c.Int.STR_CODE_INDEX,
+                                                                              calculate_func))
         self.__list[c.Int.REV_CODE_INDEX].bind("<Return>",
-                                               lambda x: IntEntries.__call_calc(c.Int.REV_CODE_INDEX,
-                                                                                calculate_func))
+                                               lambda x: IntEntries.call_calc(c.Int.REV_CODE_INDEX,
+                                                                              calculate_func))
         self.__list[c.Int.ADD_CODE_INDEX].bind("<Return>",
-                                               lambda x: IntEntries.__call_calc(c.Int.ADD_CODE_INDEX,
-                                                                                calculate_func))
+                                               lambda x: IntEntries.call_calc(c.Int.ADD_CODE_INDEX,
+                                                                              calculate_func))
 
     def clear_all_except(self, *args):
         """Очищает все поля кроме тех, которые указаны в аргументах"""
@@ -167,12 +167,11 @@ class ButtonsRow:
 
         self.__calc_button = tk.Button(window,
                                        image=self.calc_image,
-                                       state="disabled",
                                        command=lambda: calc_func(row_ind))
 
         self.__copy_button = tk.Button(window,
                                        image=self.copy_image,
-                                       command=lambda: calc_func(copy_func))
+                                       command=lambda: copy_func(row_ind))
 
         self.__del_button = tk.Button(window,
                                       image=self.del_image,

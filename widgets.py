@@ -13,7 +13,7 @@ class IntWidgets:
     def __init__(self, window, calculate_func, copy_func):
         self.__num_type_menu = NumTypeMenu(window)
         self.__entries_names = IntLabels(window)
-        self.__entries = IntEntries(window, calculate_func)
+        self.__entries = IntEntries(window, calculate_func, copy_func)
         self.__buttons = IntButtons(window,
                                     del_func=lambda i: self.__entries.clear_all_except(c.Int.BIN_SIZE_INDEX),
                                     copy_func=copy_func,
@@ -81,7 +81,7 @@ class IntEntries:
         config.translate_type = i
         calculate_func()
 
-    def __init__(self, window, calculate_func):
+    def __init__(self, window, calculate_func, copy_func):
         self.__list = []  # Список полей для ввода
         self.__list.append(tk.Entry(window, font=("Arial", 12), width=5))
         self.__list[0].insert(0, "8")  # Число двоичных разрядов по умолчанию
@@ -92,8 +92,8 @@ class IntEntries:
         indexes = [c.Int.DEC_NUM_INDEX, c.Int.BIN_NUM_INDEX,
                    c.Int.STR_CODE_INDEX, c.Int.REV_CODE_INDEX,
                    c.Int.ADD_CODE_INDEX]
+        # Биндим на нажатие Delete
         for index in indexes:
-            # Биндим на нажатие Delete в соотв. поле
             self.__list[index].bind("<Delete>", lambda x: self.clear_all_except(c.Int.BIN_SIZE_INDEX))
 
         # Биндим на нажатие Enter в соотв. поле
@@ -107,6 +107,17 @@ class IntEntries:
                                                lambda x: IntEntries.call_calc(c.Int.REV_CODE_INDEX, calculate_func))
         self.__list[c.Int.ADD_CODE_INDEX].bind("<Return>",
                                                lambda x: IntEntries.call_calc(c.Int.ADD_CODE_INDEX, calculate_func))
+        # Биндим на нажатие Ctrl+C в соотв. поле
+        self.__list[c.Int.DEC_NUM_INDEX].bind("<Control-c>",
+                                              lambda x: copy_func(c.Int.DEC_NUM_INDEX))
+        self.__list[c.Int.BIN_NUM_INDEX].bind("<Control-c>",
+                                              lambda x: copy_func(c.Int.BIN_NUM_INDEX))
+        self.__list[c.Int.STR_CODE_INDEX].bind("<Control-c>",
+                                               lambda x: copy_func(c.Int.STR_CODE_INDEX))
+        self.__list[c.Int.REV_CODE_INDEX].bind("<Control-c>",
+                                               lambda x: copy_func(c.Int.REV_CODE_INDEX))
+        self.__list[c.Int.ADD_CODE_INDEX].bind("<Control-c>",
+                                               lambda x: copy_func(c.Int.ADD_CODE_INDEX))
 
     def clear_all_except(self, *args):
         """Очищает все поля кроме тех, которые указаны в аргументах"""

@@ -12,7 +12,7 @@ float_nums_text = "Вещественные числа"
 
 entries_count = 6
 
-buttons_text = ["Очистить", "Рассчитать"]
+buttons_text = ["Очистить"]
 
 
 class ExceptionTexts:

@@ -3,7 +3,7 @@
 class WindowParameters:
     def __init__(self):
         self.title = "Numbers in computer"
-        self.__width = 500
+        self.__width = 550
         self.__height = 380
         self.__padx = 100  # Отступ по горизонтали от верхнего левого угра экрана
         self.__pady = 100  # Отступ по вертикали от верхнего левого угра экрана

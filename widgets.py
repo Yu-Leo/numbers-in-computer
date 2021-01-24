@@ -14,7 +14,10 @@ class IntWidgets:
         self.__num_type_menu = NumTypeMenu(window)
         self.__entries_names = IntLabels(window)
         self.__entries = IntEntries(window, calculate_func)
-        self.__copy_buttons = IntCopyButtons(window, copy_func)
+        self.__buttons = IntButtons(window,
+                                    del_func=lambda i: self.__entries.clear(i),
+                                    copy_func=copy_func,
+                                    calc_func=lambda i: None)
         self.__actions_menu = ActionsMenu(window,
                                           lambda: self.__entries.clear_all_except(c.Int.BIN_SIZE_INDEX))
 
@@ -28,7 +31,7 @@ class IntWidgets:
         self.__entries_names.draw()
         self.__entries.draw()
         self.__actions_menu.draw()
-        self.__copy_buttons.draw()
+        self.__buttons.draw()
 
 
 class NumTypeMenu:
@@ -110,6 +113,11 @@ class IntEntries:
             if i not in args:
                 self.__list[i].delete(0, tk.END)
 
+    def clear(self, *args):
+        """Очищает поля, которые указаны в аргументах"""
+        for i in args:
+            self.__list[i].delete(0, tk.END)
+
     def __get(self, index):
         """Получение значения из поля по его индексу"""
         return str(self.__list[index].get())
@@ -143,35 +151,56 @@ class IntEntries:
             self.__list[i].grid(row=(1 + i), column=1)
 
 
-class IntCopyButtons:
+class ButtonsRow:
+    """Ряд кнопок 'очистить', 'рассчитать', 'скопировать'."""
+
     @staticmethod
-    def __get_copy_image():
-        image = PilImage.open(r"img/copy_icon32.ico")
+    def __get_image(name):
+        image = PilImage.open(f"img/{name}.ico")
         image = image.resize((18, 18), PilImage.ANTIALIAS)
         return ImageTk.PhotoImage(image)
 
-    def __init__(self, window, copy_func):
-        self.__list = []  # Список кнопок
-        self.copy_image = IntCopyButtons.__get_copy_image()
-        self.__list.append(tk.Button(window,
-                                     image=self.copy_image,
-                                     command=lambda: copy_func(c.Int.DEC_NUM_INDEX)))
-        self.__list.append(tk.Button(window,
-                                     image=self.copy_image,
-                                     command=lambda: copy_func(c.Int.BIN_NUM_INDEX)))
-        self.__list.append(tk.Button(window,
-                                     image=self.copy_image,
-                                     command=lambda: copy_func(c.Int.STR_CODE_INDEX)))
-        self.__list.append(tk.Button(window,
-                                     image=self.copy_image,
-                                     command=lambda: copy_func(c.Int.REV_CODE_INDEX)))
-        self.__list.append(tk.Button(window,
-                                     image=self.copy_image,
-                                     command=lambda: copy_func(c.Int.ADD_CODE_INDEX)))
+    def __init__(self, window, del_func, copy_func, calc_func, row_ind):
+        self.del_image = ButtonsRow.__get_image("del_icon32")
+        self.calc_image = ButtonsRow.__get_image("calc_icon32")
+        self.copy_image = ButtonsRow.__get_image("copy_icon32")
+
+        self.__del_button = tk.Button(window,
+                                      image=self.del_image,
+                                      command=lambda: del_func(row_ind))
+
+        self.__calc_button = tk.Button(window,
+                                       image=self.calc_image,
+                                       state="disabled",
+                                       command=lambda: calc_func(row_ind))
+
+        self.__copy_button = tk.Button(window,
+                                       image=self.copy_image,
+                                       command=lambda: calc_func(copy_func))
+
+    def draw(self, row_num, start_column_num):
+        self.__del_button.grid(row=row_num, column=start_column_num, padx=5)
+        self.__calc_button.grid(row=row_num, column=start_column_num + 1, padx=5)
+        self.__copy_button.grid(row=row_num, column=start_column_num + 2, padx=5)
+
+
+class IntButtons:
+    def __init__(self, window, del_func, copy_func, calc_func):
+        self.__list = []  # Список рядов кнопок
+        self.__list.append(ButtonsRow(window, del_func, copy_func, calc_func,
+                                      c.Int.DEC_NUM_INDEX))
+        self.__list.append(ButtonsRow(window, del_func, copy_func, calc_func,
+                                      c.Int.BIN_NUM_INDEX))
+        self.__list.append(ButtonsRow(window, del_func, copy_func, calc_func,
+                                      c.Int.STR_CODE_INDEX))
+        self.__list.append(ButtonsRow(window, del_func, copy_func, calc_func,
+                                      c.Int.REV_CODE_INDEX))
+        self.__list.append(ButtonsRow(window, del_func, copy_func, calc_func,
+                                      c.Int.ADD_CODE_INDEX))
 
     def draw(self):
-        for i in range(5):
-            self.__list[i].grid(row=(2 + i), column=2)
+        for i in range(len(self.__list)):
+            self.__list[i].draw(row_num=(2 + i), start_column_num=2)
 
 
 class ActionsMenu:

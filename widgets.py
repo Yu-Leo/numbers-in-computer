@@ -16,8 +16,7 @@ class IntWidgets:
         self.__entries = IntEntries(window, calculate_func)
         self.__copy_buttons = IntCopyButtons(window, copy_func)
         self.__actions_menu = ActionsMenu(window,
-                                          lambda: self.__entries.clear_all_except(c.Int.BIN_SIZE_INDEX),
-                                          calculate_func)
+                                          lambda: self.__entries.clear_all_except(c.Int.BIN_SIZE_INDEX))
 
     @property
     def entries(self):
@@ -88,7 +87,7 @@ class IntEntries:
         self.__list[0].insert(0, "8")  # Число двоичных разрядов по умолчанию
 
         for i in range(1, c.Int.ADD_CODE_INDEX + 1):
-            self.__list.append(tk.Entry(window, font=("Arial", 12)))
+            self.__list.append(tk.Entry(window, font=("Arial", 12), width=18))
 
         # Биндим на нажатие Enter в соотв. поле
         self.__list[c.Int.DEC_NUM_INDEX].bind("<Return>",
@@ -139,7 +138,7 @@ class IntEntries:
         self.__list[index].insert(0, value)
 
     def draw(self):
-        self.__list[0].grid(row=1, column=1, sticky=tk.W, padx=20)
+        self.__list[0].grid(row=1, column=1, sticky=tk.W, padx=10)
         for i in range(1, 6):
             self.__list[i].grid(row=(1 + i), column=1)
 
@@ -172,19 +171,15 @@ class IntCopyButtons:
 
     def draw(self):
         for i in range(5):
-            self.__list[i].grid(row=(2 + i), column=3)
+            self.__list[i].grid(row=(2 + i), column=2)
 
 
 class ActionsMenu:
     """Меню кнопок очистить / рассчитать"""
 
-    def __init__(self, window, clear_func, calculate_func):
+    def __init__(self, window, clear_func):
         self.__clear_button = tk.Button(window, text=text.buttons_text[0],
                                         width=25, command=clear_func)
 
-        self.__calculate_button = tk.Button(window, text=text.buttons_text[1],
-                                            width=25, command=calculate_func)
-
     def draw(self):
         self.__clear_button.grid(row=7, column=0, sticky=tk.W, padx=20, pady=10)
-        self.__calculate_button.grid(row=7, column=1, padx=20, pady=10)

@@ -89,14 +89,15 @@ class IntEntries:
         for i in range(1, c.Int.ADD_CODE_INDEX + 1):
             self.__list.append(tk.Entry(window, font=("Arial", 12), width=18))
 
-        indexes = [c.Int.DEC_NUM_INDEX, c.Int.BIN_NUM_INDEX,
-                   c.Int.STR_CODE_INDEX, c.Int.REV_CODE_INDEX,
-                   c.Int.ADD_CODE_INDEX]
-        # Биндим на нажатие Delete
-        for index in indexes:
-            self.__list[index].bind("<Delete>", lambda x: self.clear_all_except(c.Int.BIN_SIZE_INDEX))
+        self.__bind_buttons(calculate_func, copy_func)
 
-        # Биндим на нажатие Enter в соотв. поле
+    def __bind_buttons(self, calculate_func, copy_func):
+        self.__bind_enter(calculate_func)
+        self.__bind_delete()
+        self.__bind_ctrlc(copy_func)
+
+    def __bind_enter(self, calculate_func):
+        """Биндим на нажатие Enter в соотв. поле"""
         self.__list[c.Int.DEC_NUM_INDEX].bind("<Return>",
                                               lambda x: IntEntries.call_calc(c.Int.DEC_NUM_INDEX, calculate_func))
         self.__list[c.Int.BIN_NUM_INDEX].bind("<Return>",
@@ -107,7 +108,17 @@ class IntEntries:
                                                lambda x: IntEntries.call_calc(c.Int.REV_CODE_INDEX, calculate_func))
         self.__list[c.Int.ADD_CODE_INDEX].bind("<Return>",
                                                lambda x: IntEntries.call_calc(c.Int.ADD_CODE_INDEX, calculate_func))
-        # Биндим на нажатие Ctrl+C в соотв. поле
+
+    def __bind_delete(self):
+        """Биндим на нажатие Delete"""
+        indexes = [c.Int.DEC_NUM_INDEX, c.Int.BIN_NUM_INDEX,
+                   c.Int.STR_CODE_INDEX, c.Int.REV_CODE_INDEX,
+                   c.Int.ADD_CODE_INDEX]
+        for index in indexes:
+            self.__list[index].bind("<Delete>", lambda x: self.clear_all_except(c.Int.BIN_SIZE_INDEX))
+
+    def __bind_ctrlc(self, copy_func):
+        """Биндим на нажатие Ctrl+C в соотв. поле"""
         self.__list[c.Int.DEC_NUM_INDEX].bind("<Control-c>",
                                               lambda x: copy_func(c.Int.DEC_NUM_INDEX))
         self.__list[c.Int.BIN_NUM_INDEX].bind("<Control-c>",

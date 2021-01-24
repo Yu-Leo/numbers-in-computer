@@ -13,12 +13,11 @@ class IntWidgets:
     def __init__(self, window, calculate_func, copy_func):
         self.__num_type_menu = NumTypeMenu(window)
         self.__entries_names = IntLabels(window)
-        self.__entries_radiobuttons = IntRadiobuttons(window)
-        self.__entries = IntEntries(window, calculate_func)
-        self.__copy_buttons = IntCopyButtons(window, copy_func)
-        self.__actions_menu = ActionsMenu(window,
-                                          lambda: self.__entries.clear_all_except(c.Int.BIN_SIZE_INDEX),
-                                          calculate_func)
+        self.__entries = IntEntries(window, calculate_func, copy_func)
+        self.__buttons = IntButtons(window,
+                                    del_func=lambda i: self.__entries.clear_all_except(c.Int.BIN_SIZE_INDEX),
+                                    copy_func=copy_func,
+                                    calc_func=lambda i: self.__entries.call_calc(i, calculate_func))
 
     @property
     def entries(self):
@@ -28,10 +27,8 @@ class IntWidgets:
         """Отрисовка при целочисленном режиме"""
         self.__num_type_menu.draw()
         self.__entries_names.draw()
-        self.__entries_radiobuttons.draw()
         self.__entries.draw()
-        self.__actions_menu.draw()
-        self.__copy_buttons.draw()
+        self.__buttons.draw()
 
 
 class NumTypeMenu:
@@ -54,7 +51,7 @@ class NumTypeMenu:
 
     def draw(self):
         self.__int_type_button.grid(row=0, column=0)
-        self.__float_type_button.grid(row=0, column=2)
+        self.__float_type_button.grid(row=0, column=1)
 
 
 class IntLabels:
@@ -75,85 +72,74 @@ class IntLabels:
                                 pady=10)
 
 
-class IntRadiobuttons:
-    """Список радио-кнопок при целочисленном режиме"""
-
-    @staticmethod
-    def __change_translate_type(i):
-        config.translate_type = i
-
-    def __init__(self, window):
-        self.__translate_type = tk.IntVar(value=0)  # Тип перевода
-        self.__list = []  # Список радио-кнопок
-
-        self.__list.append(tk.Radiobutton(window,
-                                          variable=self.__translate_type,
-                                          value=0,
-                                          command=lambda:
-                                          IntRadiobuttons.__change_translate_type(c.Int.DEC_NUM_INDEX)))
-        self.__list.append(tk.Radiobutton(window,
-                                          variable=self.__translate_type,
-                                          value=1,
-                                          command=lambda:
-                                          IntRadiobuttons.__change_translate_type(c.Int.BIN_NUM_INDEX)))
-        self.__list.append(tk.Radiobutton(window,
-                                          variable=self.__translate_type,
-                                          value=2,
-                                          command=lambda:
-                                          IntRadiobuttons.__change_translate_type(c.Int.STR_CODE_INDEX)))
-        self.__list.append(tk.Radiobutton(window,
-                                          variable=self.__translate_type,
-                                          value=3,
-                                          command=lambda:
-                                          IntRadiobuttons.__change_translate_type(c.Int.REV_CODE_INDEX)))
-        self.__list.append(tk.Radiobutton(window,
-                                          variable=self.__translate_type,
-                                          value=4,
-                                          command=lambda:
-                                          IntRadiobuttons.__change_translate_type(c.Int.ADD_CODE_INDEX)))
-
-    def draw(self):
-        for i in range(5):
-            self.__list[i].grid(row=(2 + i), column=1)
-
-
 class IntEntries:
     """Список полей ввода-вывода при целочисленном режиме"""
 
     @staticmethod
-    def __call_calc(i, calculate_func):
-        """Если режим перевода совпадает с полем, в котором нажали Enter, переводим"""
-        if config.translate_type == i:
-            calculate_func()
+    def call_calc(i, calculate_func):
+        """Изменяем режим перевода на тот, в котором нажали Enter, и переводим"""
+        config.translate_type = i
+        calculate_func()
 
-    def __init__(self, window, calculate_func):
+    def __init__(self, window, calculate_func, copy_func):
         self.__list = []  # Список полей для ввода
         self.__list.append(tk.Entry(window, font=("Arial", 12), width=5))
         self.__list[0].insert(0, "8")  # Число двоичных разрядов по умолчанию
 
         for i in range(1, c.Int.ADD_CODE_INDEX + 1):
-            self.__list.append(tk.Entry(window, font=("Arial", 12)))
+            self.__list.append(tk.Entry(window, font=("Arial", 12), width=18))
 
-        # Биндим на нажатие Enter в соотв. поле
+        self.__bind_buttons(calculate_func, copy_func)
+
+    def __bind_buttons(self, calculate_func, copy_func):
+        self.__bind_enter(calculate_func)
+        self.__bind_delete()
+        self.__bind_ctrlc(copy_func)
+
+    def __bind_enter(self, calculate_func):
+        """Биндим на нажатие Enter в соотв. поле"""
         self.__list[c.Int.DEC_NUM_INDEX].bind("<Return>",
-                                              lambda x: IntEntries.__call_calc(c.Int.DEC_NUM_INDEX, calculate_func))
+                                              lambda x: IntEntries.call_calc(c.Int.DEC_NUM_INDEX, calculate_func))
         self.__list[c.Int.BIN_NUM_INDEX].bind("<Return>",
-                                              lambda x: IntEntries.__call_calc(c.Int.BIN_NUM_INDEX, calculate_func))
+                                              lambda x: IntEntries.call_calc(c.Int.BIN_NUM_INDEX, calculate_func))
         self.__list[c.Int.STR_CODE_INDEX].bind("<Return>",
-                                               lambda x: IntEntries.__call_calc(c.Int.STR_CODE_INDEX,
-                                                                                calculate_func))
+                                               lambda x: IntEntries.call_calc(c.Int.STR_CODE_INDEX, calculate_func))
         self.__list[c.Int.REV_CODE_INDEX].bind("<Return>",
-                                               lambda x: IntEntries.__call_calc(c.Int.REV_CODE_INDEX,
-                                                                                calculate_func))
+                                               lambda x: IntEntries.call_calc(c.Int.REV_CODE_INDEX, calculate_func))
         self.__list[c.Int.ADD_CODE_INDEX].bind("<Return>",
-                                               lambda x: IntEntries.__call_calc(c.Int.ADD_CODE_INDEX,
-                                                                                calculate_func))
+                                               lambda x: IntEntries.call_calc(c.Int.ADD_CODE_INDEX, calculate_func))
+
+    def __bind_delete(self):
+        """Биндим на нажатие Delete"""
+        indexes = [c.Int.DEC_NUM_INDEX, c.Int.BIN_NUM_INDEX,
+                   c.Int.STR_CODE_INDEX, c.Int.REV_CODE_INDEX,
+                   c.Int.ADD_CODE_INDEX]
+        for index in indexes:
+            self.__list[index].bind("<Delete>", lambda x: self.clear_all_except(c.Int.BIN_SIZE_INDEX))
+
+    def __bind_ctrlc(self, copy_func):
+        """Биндим на нажатие Ctrl+C в соотв. поле"""
+        self.__list[c.Int.DEC_NUM_INDEX].bind("<Control-c>",
+                                              lambda x: copy_func(c.Int.DEC_NUM_INDEX))
+        self.__list[c.Int.BIN_NUM_INDEX].bind("<Control-c>",
+                                              lambda x: copy_func(c.Int.BIN_NUM_INDEX))
+        self.__list[c.Int.STR_CODE_INDEX].bind("<Control-c>",
+                                               lambda x: copy_func(c.Int.STR_CODE_INDEX))
+        self.__list[c.Int.REV_CODE_INDEX].bind("<Control-c>",
+                                               lambda x: copy_func(c.Int.REV_CODE_INDEX))
+        self.__list[c.Int.ADD_CODE_INDEX].bind("<Control-c>",
+                                               lambda x: copy_func(c.Int.ADD_CODE_INDEX))
 
     def clear_all_except(self, *args):
         """Очищает все поля кроме тех, которые указаны в аргументах"""
         for i in range(len(self.__list)):
             if i not in args:
                 self.__list[i].delete(0, tk.END)
+
+    def clear(self, *args):
+        """Очищает поля, которые указаны в аргументах"""
+        for i in args:
+            self.__list[i].delete(0, tk.END)
 
     def __get(self, index):
         """Получение значения из поля по его индексу"""
@@ -183,52 +169,57 @@ class IntEntries:
         self.__list[index].insert(0, value)
 
     def draw(self):
-        self.__list[0].grid(row=1, column=2, sticky=tk.W, padx=20)
+        self.__list[0].grid(row=1, column=1, sticky=tk.W, padx=10)
         for i in range(1, 6):
-            self.__list[i].grid(row=(1 + i), column=2)
+            self.__list[i].grid(row=(1 + i), column=1)
 
 
-class IntCopyButtons:
+class ButtonsRow:
+    """Ряд кнопок 'очистить', 'рассчитать', 'скопировать'."""
+
     @staticmethod
-    def __get_copy_image():
-        image = PilImage.open(r"img/copy_icon32.ico")
+    def __get_image(name):
+        image = PilImage.open(f"img/{name}.ico")
         image = image.resize((18, 18), PilImage.ANTIALIAS)
         return ImageTk.PhotoImage(image)
 
-    def __init__(self, window, copy_func):
-        self.__list = []  # Список кнопок
-        self.copy_image = IntCopyButtons.__get_copy_image()
-        self.__list.append(tk.Button(window,
-                                     image=self.copy_image,
-                                     command=lambda: copy_func(c.Int.DEC_NUM_INDEX)))
-        self.__list.append(tk.Button(window,
-                                     image=self.copy_image,
-                                     command=lambda: copy_func(c.Int.BIN_NUM_INDEX)))
-        self.__list.append(tk.Button(window,
-                                     image=self.copy_image,
-                                     command=lambda: copy_func(c.Int.STR_CODE_INDEX)))
-        self.__list.append(tk.Button(window,
-                                     image=self.copy_image,
-                                     command=lambda: copy_func(c.Int.REV_CODE_INDEX)))
-        self.__list.append(tk.Button(window,
-                                     image=self.copy_image,
-                                     command=lambda: copy_func(c.Int.ADD_CODE_INDEX)))
+    def __init__(self, window, del_func, copy_func, calc_func, row_ind):
+        self.del_image = ButtonsRow.__get_image("del_icon32")
+        self.calc_image = ButtonsRow.__get_image("calc_icon32")
+        self.copy_image = ButtonsRow.__get_image("copy_icon32")
+
+        self.__calc_button = tk.Button(window,
+                                       image=self.calc_image,
+                                       command=lambda: calc_func(row_ind))
+
+        self.__copy_button = tk.Button(window,
+                                       image=self.copy_image,
+                                       command=lambda: copy_func(row_ind))
+
+        self.__del_button = tk.Button(window,
+                                      image=self.del_image,
+                                      command=lambda: del_func(row_ind))
+
+    def draw(self, row_num, start_column_num):
+        self.__calc_button.grid(row=row_num, column=start_column_num, padx=5)
+        self.__copy_button.grid(row=row_num, column=start_column_num + 1, padx=5)
+        self.__del_button.grid(row=row_num, column=start_column_num + 2, padx=5)
+
+
+class IntButtons:
+    def __init__(self, window, del_func, copy_func, calc_func):
+        self.__list = []  # Список рядов кнопок
+        self.__list.append(ButtonsRow(window, del_func, copy_func, calc_func,
+                                      c.Int.DEC_NUM_INDEX))
+        self.__list.append(ButtonsRow(window, del_func, copy_func, calc_func,
+                                      c.Int.BIN_NUM_INDEX))
+        self.__list.append(ButtonsRow(window, del_func, copy_func, calc_func,
+                                      c.Int.STR_CODE_INDEX))
+        self.__list.append(ButtonsRow(window, del_func, copy_func, calc_func,
+                                      c.Int.REV_CODE_INDEX))
+        self.__list.append(ButtonsRow(window, del_func, copy_func, calc_func,
+                                      c.Int.ADD_CODE_INDEX))
 
     def draw(self):
-        for i in range(5):
-            self.__list[i].grid(row=(2 + i), column=3)
-
-
-class ActionsMenu:
-    """Меню кнопок очистить / рассчитать"""
-
-    def __init__(self, window, clear_func, calculate_func):
-        self.__clear_button = tk.Button(window, text=text.buttons_text[0],
-                                        width=25, command=clear_func)
-
-        self.__calculate_button = tk.Button(window, text=text.buttons_text[1],
-                                            width=25, command=calculate_func)
-
-    def draw(self):
-        self.__clear_button.grid(row=7, column=0, sticky=tk.W, padx=20, pady=10)
-        self.__calculate_button.grid(row=7, column=2, padx=20, pady=10)
+        for i in range(len(self.__list)):
+            self.__list[i].draw(row_num=(2 + i), start_column_num=2)

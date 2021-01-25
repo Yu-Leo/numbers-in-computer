@@ -63,13 +63,12 @@ class IntLabels:
             self.__list.append(tk.Label(window,
                                         text=name + ":",
                                         font=("Arial", 12),
-
                                         anchor=tk.W))
 
     def draw(self):
-        for i in range(6):
-            self.__list[i].grid(row=i + 1, column=0, sticky=tk.W, padx=20,
-                                pady=10)
+        self.__list[0].grid(row=1, column=0, sticky=tk.W, padx=20, pady=(10, 20))
+        for i in range(1, 6):
+            self.__list[i].grid(row=i + 1, column=0, sticky=tk.W, padx=20, pady=10)
 
 
 class IntEntries:
@@ -84,8 +83,7 @@ class IntEntries:
     def __init__(self, window, calculate_func, copy_func):
         self.__list = []  # Список полей для ввода
         self.__list.append(tk.Entry(window, font=("Arial", 12), width=5))
-        self.__list[0].insert(0, "8")  # Число двоичных разрядов по умолчанию
-
+        self.__list[0].insert(0, "8")  # Число двоичных разрядов по умолчани
         for i in range(1, c.Int.ADD_CODE_INDEX + 1):
             self.__list.append(tk.Entry(window, font=("Arial", 12), width=18))
 
@@ -169,7 +167,7 @@ class IntEntries:
         self.__list[index].insert(0, value)
 
     def draw(self):
-        self.__list[0].grid(row=1, column=1, sticky=tk.W, padx=10)
+        self.__list[0].grid(row=1, column=1, sticky=tk.W, padx=10, pady=(0, 10))
         for i in range(1, 6):
             self.__list[i].grid(row=(1 + i), column=1)
 

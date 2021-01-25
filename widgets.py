@@ -179,19 +179,23 @@ class ButtonsRow:
 
     @staticmethod
     def __get_image(name):
-        image = PilImage.open(f"img/{name}.ico")
-        image = image.resize((18, 18), PilImage.ANTIALIAS)
-        return ImageTk.PhotoImage(image)
+        try:
+            image = PilImage.open(f"img/{name}.ico")
+            image = image.resize((18, 18), PilImage.ANTIALIAS)
+            return ImageTk.PhotoImage(image)
+        except FileNotFoundError:
+            return None
 
     def __init__(self, window, del_func, copy_func, calc_func, row_ind):
-        self.del_image = ButtonsRow.__get_image("del_icon32")
         self.calc_image = ButtonsRow.__get_image("calc_icon32")
+
+        self.del_image = ButtonsRow.__get_image("del_icon32")
+
         self.copy_image = ButtonsRow.__get_image("copy_icon32")
 
         self.__calc_button = tk.Button(window,
                                        image=self.calc_image,
                                        command=lambda: calc_func(row_ind))
-
         self.__copy_button = tk.Button(window,
                                        image=self.copy_image,
                                        command=lambda: copy_func(row_ind))
@@ -199,6 +203,19 @@ class ButtonsRow:
         self.__del_button = tk.Button(window,
                                       image=self.del_image,
                                       command=lambda: del_func(row_ind))
+
+        # Если файлы с иконками кнопок не найдены
+        if self.calc_image is None:
+            self.__calc_button["width"] = 2
+            self.__calc_button["text"] = "calc"
+
+        if self.del_image is None:
+            self.__del_button["width"] = 2
+            self.__del_button["text"] = "del"
+
+        if self.copy_image is None:
+            self.__copy_button["width"] = 3
+            self.__copy_button["text"] = "copy"
 
     def draw(self, row_num, start_column_num):
         self.__calc_button.grid(row=row_num, column=start_column_num, padx=5)

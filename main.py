@@ -16,7 +16,10 @@ class Window:
         self.__root.title(self.__parameters.title)
         self.__root.geometry(self.__parameters.geometry())
         self.__root.resizable(*self.__parameters.resizable)
-        self.__root.iconbitmap(self.__parameters.ico_path)
+        try:
+            self.__root.iconbitmap(self.__parameters.ico_path)
+        except tk.TclError:  # Ошибка отображения иконки (её отсутствие)
+            pass  # Иконка по умолчанию
         # Виджеты целочисленного режима
         self.int_widgets = IntWidgets(self.__root,
                                       lambda: calculate.int_calculate(self.int_widgets.entries),

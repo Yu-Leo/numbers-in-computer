@@ -1,11 +1,12 @@
 # Файл с функциями переводом (+ ф-ция копирования в буфер)
 
 import pyperclip  # Модуль для работы с буфером
+
 import config
-import exceptions as e
 import constants as c
-from numbersKits import IntKit
+import exceptions as e
 from messageboxes import Messageboxes as Mb
+from numbersKits import IntKit
 
 
 def int_calculate(entries):
@@ -67,16 +68,14 @@ def int_calc(entries):
         kit = IntKit(dec_num=dec_num)
         kit.by_dec_num(bin_size)
         kit.print(entries)
-        # Если евозможно рассчитать представления при данном числе двоичных разрядов
-        if kit.codes_error():
-            raise e.DecNumValueCodesWarning
+        # Если невозможно рассчитать представления при данном числе двоичных разрядов
 
     elif config.translate_type == c.Int.BIN_NUM_INDEX:  # Исходное значение - число в двоичной сс
         bin_num = get_bin_num(entries)
         kit = IntKit(bin_num=bin_num)
         kit.by_bin_num(bin_size)
         kit.print(entries)
-        # Если евозможно рассчитать представления при данном числе двоичных разрядов
+        # Если невозможно рассчитать представления при данном числе двоичных разрядов
         if kit.codes_error():
             raise e.BinNumValueCodesWarning
 
@@ -131,7 +130,7 @@ def get_bin_num(entries):
 def get_str_code(entries, bin_size):
     str_code = entries.get_str_code()
     try:
-        t_full = int(str_code, base=2)  # Если 0й символ не 0 или 1, вызовется ValueError
+        t_full = int(str_code, base=2)
     except ValueError:
         raise e.StrCodeTypeError
     if len(str_code) != bin_size:
@@ -142,7 +141,7 @@ def get_str_code(entries, bin_size):
 def get_rev_code(entries, bin_size):
     rev_code = entries.get_rev_code()
     try:
-        t_full = int(rev_code, base=2)  # Если 0й символ не 0 или 1, вызовется ValueError
+        t_full = int(rev_code, base=2)
     except ValueError:
         raise e.RevCodeTypeError
     if len(rev_code) != bin_size:
@@ -153,7 +152,7 @@ def get_rev_code(entries, bin_size):
 def get_add_code(entries, bin_size):
     add_code = entries.get_add_code()
     try:
-        t_full = int(add_code, base=2)  # Если 0й символ не 0 или 1, вызовется ValueError
+        t_full = int(add_code, base=2)
     except ValueError:
         raise e.AddCodeTypeError
     if len(add_code) != bin_size:

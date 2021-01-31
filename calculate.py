@@ -133,7 +133,7 @@ def get_str_code(entries, bin_size):
         t_full = int(str_code, base=2)
     except ValueError:
         raise e.StrCodeTypeError
-    if len(str_code) != bin_size:
+    if len(str_code) != bin_size or bin_size < 2:
         raise e.StrCodeValueError
     return str_code
 
@@ -144,7 +144,7 @@ def get_rev_code(entries, bin_size):
         t_full = int(rev_code, base=2)
     except ValueError:
         raise e.RevCodeTypeError
-    if len(rev_code) != bin_size:
+    if len(rev_code) != bin_size or bin_size < 2:
         raise e.RevCodeValueError
     return rev_code
 
@@ -155,7 +155,7 @@ def get_add_code(entries, bin_size):
         t_full = int(add_code, base=2)
     except ValueError:
         raise e.AddCodeTypeError
-    if len(add_code) != bin_size:
+    if len(add_code) != bin_size or bin_size < 2:
         raise e.AddCodeValueError
     return add_code
 

@@ -5,7 +5,7 @@ from text import Exceptions
 
 
 class Warning:
-    """Мessagebox типа Warning"""
+    """Messagebox типа Warning"""
 
     def __init__(self, title, message):
         self.title = title
@@ -16,7 +16,7 @@ class Warning:
 
 
 class Error:
-    """Мessagebox типа Error"""
+    """Messagebox типа Error"""
 
     def __init__(self, title, message):
         self.title = title
@@ -27,7 +27,7 @@ class Error:
 
 
 class Messageboxes:
-    """Мessagebox-ы самописных ошибок"""
+    """Messagebox-ы самописных ошибок"""
     BinSizeTypeError = Error(title=Exceptions.bin_size.title,
                              message=Exceptions.bin_size.type_error)
 

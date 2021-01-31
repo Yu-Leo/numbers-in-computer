@@ -1,12 +1,13 @@
 # Файл с классами списков виджетов
 
 import tkinter as tk
+
 from PIL import Image as PilImage
 from PIL import ImageTk
 
-import text
 import config
 import constants as c
+import text
 
 
 class IntWidgets:
@@ -161,10 +162,18 @@ class IntEntries:
     def get_add_code(self):
         return self.__get(c.Int.ADD_CODE_INDEX)
 
-    def write(self, index, value):
+    def __write(self, index, value):
         """Запись значения в поля по его индексу"""
         self.__list[index].delete(0, tk.END)
         self.__list[index].insert(0, value)
+
+    def print(self, kit):
+        """Вывод всего комплекта чисел в поля ввода-вывода"""
+        self.__write(c.Int.DEC_NUM_INDEX, kit["dec_num"])
+        self.__write(c.Int.BIN_NUM_INDEX, kit["bin_num"])
+        self.__write(c.Int.STR_CODE_INDEX, kit["str_code"])
+        self.__write(c.Int.REV_CODE_INDEX, kit["rev_code"])
+        self.__write(c.Int.ADD_CODE_INDEX, kit["add_code"])
 
     def draw(self):
         self.__list[0].grid(row=1, column=1, sticky=tk.W, padx=10, pady=(0, 10))

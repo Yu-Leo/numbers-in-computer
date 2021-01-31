@@ -11,6 +11,14 @@ class IntKit:
         self.__rev_code = rev_code  # Обратный код числа
         self.__add_code = add_code  # Дополнительный код числа
 
+    def __getitem__(self, key):
+        kit_dict = {"dec_num": self.__dec_num,
+                    "bin_num": self.__bin_num,
+                    "str_code": self.__str_code,
+                    "rev_code": self.__rev_code,
+                    "add_code": self.__add_code}
+        return kit_dict.get(key, "ERROR")
+
     def by_dec_num(self, bin_size):
         """Перевод во все представления по числу в 10й сс"""
         if self.__dec_num >= 0:  # Положительное число
@@ -56,14 +64,6 @@ class IntKit:
         """Перевод во все представления по дополнительному коду числа"""
         self.__str_code = self.__straight_by_additional()
         self.by_str_code(bin_size)
-
-    def print(self, fields):
-        """Вывод всего комплекта в поля ввода-вывода"""
-        fields.write(c.Int.DEC_NUM_INDEX, self.__dec_num)
-        fields.write(c.Int.BIN_NUM_INDEX, self.__bin_num)
-        fields.write(c.Int.STR_CODE_INDEX, self.__str_code)
-        fields.write(c.Int.REV_CODE_INDEX, self.__rev_code)
-        fields.write(c.Int.ADD_CODE_INDEX, self.__add_code)
 
     def codes_error(self):
         return self.__str_code == "-"

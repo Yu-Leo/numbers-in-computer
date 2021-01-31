@@ -67,14 +67,14 @@ def int_calc(entries):
         dec_num = get_dec_num(entries)
         kit = IntKit(dec_num=dec_num)
         kit.by_dec_num(bin_size)
-        kit.print(entries)
+        entries.print(kit)
         # Если невозможно рассчитать представления при данном числе двоичных разрядов
 
     elif config.translate_type == c.Int.BIN_NUM_INDEX:  # Исходное значение - число в двоичной сс
         bin_num = get_bin_num(entries)
         kit = IntKit(bin_num=bin_num)
         kit.by_bin_num(bin_size)
-        kit.print(entries)
+        entries.print(kit)
         # Если невозможно рассчитать представления при данном числе двоичных разрядов
         if kit.codes_error():
             raise e.BinNumValueCodesWarning
@@ -83,19 +83,19 @@ def int_calc(entries):
         str_code = get_str_code(entries, bin_size)
         kit = IntKit(str_code=str_code)
         kit.by_str_code(bin_size)
-        kit.print(entries)
+        entries.print(kit)
 
     elif config.translate_type == c.Int.REV_CODE_INDEX:  # Исходное значение - обратный код числа
         rev_code = get_rev_code(entries, bin_size)
         kit = IntKit(rev_code=rev_code)
         kit.by_rev_code(bin_size)
-        kit.print(entries)
+        entries.print(kit)
 
     elif config.translate_type == c.Int.ADD_CODE_INDEX:  # Исходное значение - дополнительный код числа
         add_code = get_add_code(entries, bin_size)
         kit = IntKit(add_code=add_code)
         kit.by_add_code(bin_size)
-        kit.print(entries)
+        entries.print(kit)
 
 
 def get_bin_size(entries):

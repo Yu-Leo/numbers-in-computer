@@ -19,11 +19,18 @@
 4. Кнопки, очищающие все поля, кроме числа двоичных разрядов (*аналогично*: нажатие **[Delete]** в любом поле).
    
 ## Код
-### Используемые модули
+### Используемые библиотеки
 * [tkinter](https://docs.python.org/3/library/tkinter.html) - графический интерфейс приложения
-* [tkinter.messagebox](https://docs.python.org/3/library/tkinter.messagebox.html) - всплывающие окна
-* [Pillow (PIL)](https://pypi.org/project/Pillow/) - работа с изображениями
+* [tkinter.messagebox](https://docs.python.org/3/library/tkinter.messagebox.html) - диалоговые окна
+* [Pillow (PIL)](https://pypi.org/project/Pillow/) - работа с изображениями (для отображения иконок на кнопках)
 * [pyperclip](https://pypi.org/project/pyperclip/) - работа с буфером обмена
+
+### Установка библиотек
+[Инструкция по установке библиотек с помощью PIP](https://pythonru.com/baza-znanij/ustanovka-pip-dlja-python-i-bazovye-komandy)
+* tkinter - дополнительная установка не требуется (стандартная библиотека Python)
+* tkinter.messagebox - дополнительная установка не требуется (стандартная библиотека Python)
+* Pillow (PIL) - `pip install Pillow`
+* pyperclip - `pip install pyperclip`
 
 ### Файлы
 * [main.py](https://github.com/Yu-Leo/numbers-in-computer/blob/main/main.py) - главный код приложения

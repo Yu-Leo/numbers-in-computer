@@ -84,7 +84,7 @@ class IntEntries:
     def __init__(self, window, calculate_func, copy_func):
         self.__list = []  # Список полей для ввода
         self.__list.append(tk.Entry(window, font=("Arial", 12), width=5))
-        self.__list[0].insert(0, "8")  # Число двоичных разрядов по умолчани
+        self.__list[0].insert(0, "8")  # Число двоичных разрядов по умолчанию
         for i in range(1, c.Int.ADD_CODE_INDEX + 1):
             self.__list.append(tk.Entry(window, font=("Arial", 12), width=18))
 

@@ -14,14 +14,14 @@ float_nums_text = "Вещественные числа"
 class ExceptionTexts:
     def __init__(self, field_name="",
                  type_error="Невозможно преобразовать в целое число.",
-                 value_error="Значение выходит за границы диапазона, заданого числом двоичных разрядов."):
+                 value_error="Значение выходит за границы диапазона, заданного числом двоичных разрядов."):
         self.title = f'Ошибка в поле "{field_name}".'
         self.type_error = type_error
         self.value_error = value_error
 
 
 class Exceptions:
-    """Фразы для messagebox-ов при вызове соответсвующих исключений"""
+    """Фразы для messagebox-ов при вызове соответствующих исключений"""
     bin_size = ExceptionTexts(field_name=int_labels_text[0])
     dec_num = ExceptionTexts(field_name=int_labels_text[1])
     bin_num = ExceptionTexts(field_name=int_labels_text[2])

@@ -120,22 +120,14 @@ def get_dec_num(entries):
 
 def get_bin_num(entries):
     bin_num = entries.get_bin_num()
-    try:
-        dec = int(bin_num, base=2)
-        if bin_num[0] == "-":  # Блокировка от ввода отрицательных чисел
-            raise ValueError
-    except ValueError:
+    if set(bin_num) != {"0", "1"}:  # Если строка не состоит только из 0 и 1
         raise e.BinNumTypeError
     return bin_num
 
 
 def get_str_code(entries, bin_size):
     str_code = entries.get_str_code()
-    try:
-        t_full = int(str_code, base=2)
-        if str_code[0] == "-":  # Блокировка от ввода чисел с минусом в начале
-            raise ValueError
-    except ValueError:
+    if set(str_code) != {"0", "1"}:  # Если строка не состоит только из 0 и 1
         raise e.StrCodeTypeError
     if len(str_code) != bin_size or bin_size < 2:
         raise e.StrCodeValueError
@@ -144,11 +136,7 @@ def get_str_code(entries, bin_size):
 
 def get_rev_code(entries, bin_size):
     rev_code = entries.get_rev_code()
-    try:
-        t_full = int(rev_code, base=2)
-        if rev_code[0] == "-":  # Блокировка от ввода чисел с минусом в начале
-            raise ValueError
-    except ValueError:
+    if set(rev_code) != {"0", "1"}:  # Если строка не состоит только из 0 и 1
         raise e.RevCodeTypeError
     if len(rev_code) != bin_size or bin_size < 2:
         raise e.RevCodeValueError
@@ -157,11 +145,7 @@ def get_rev_code(entries, bin_size):
 
 def get_add_code(entries, bin_size):
     add_code = entries.get_add_code()
-    try:
-        t_full = int(add_code, base=2)
-        if add_code[0] == "-":  # Блокировка от ввода чисел с минусом в начале
-            raise ValueError
-    except ValueError:
+    if set(add_code) != {"0", "1"}:  # Если строка не состоит только из 0 и 1
         raise e.AddCodeTypeError
     if len(add_code) != bin_size or bin_size < 2:
         raise e.AddCodeValueError

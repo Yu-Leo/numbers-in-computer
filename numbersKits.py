@@ -30,13 +30,8 @@ class IntKit:
                                          c.Int.REV_CODE_INDEX,
                                          c.Int.ADD_CODE_INDEX)
             elif self.__dec_num == c.Int.max_negative(bin_size):  # На границе диапазона
-                # Доп. код = обратный код числа, меньшего данного на 1 по модулю
-                one_less_by_abs = IntKit(dec_num=self.__dec_num + 1)
-                one_less_by_abs.by_dec_num(bin_size)
-
-                self.__fill_codes_errors(self, c.Int.STR_CODE_INDEX,
-                                         c.Int.REV_CODE_INDEX)
-                self.__add_code = one_less_by_abs.__rev_code
+                self.__fill_codes_errors(self, c.Int.STR_CODE_INDEX, c.Int.REV_CODE_INDEX)
+                self.__add_code = self.__get_add_for_lower_bound(bin_size)
             else:
                 self.__str_code = self.__straight_by_bin(bin_size)
                 self.__rev_code = self.__reversed_by_straight()
@@ -122,6 +117,18 @@ class IntKit:
         for i in range(1, len(self.__add_code)):
             str_code += ("1" if self.__add_code[i] == "0" else "0")
         return bin_sum(str_code, "1")
+
+    def __get_add_for_lower_bound(self, bin_size):
+        """
+        Возвращает доп. код для числа, которое является нижней границей
+        допустимого диапазона.
+        """
+        if bin_size == 1 and self.__dec_num == -1:  # Частный случай
+            return "1"
+        # Доп. код = обратный код числа, меньшего данного на 1 по модулю
+        one_less_by_abs = IntKit(dec_num=self.__dec_num + 1)
+        one_less_by_abs.by_dec_num(bin_size)
+        return one_less_by_abs.__rev_code
 
 
 def bin_sum(a, b):

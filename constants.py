@@ -16,6 +16,8 @@ class Int:
     REV_CODE_INDEX = 4
     ADD_CODE_INDEX = 5
 
+    NUMBER_OF_PARAMS = 6
+
     @staticmethod
     def max_positive(bin_size):
         """
@@ -31,3 +33,7 @@ class Int:
         данным числом двоичных разрядов.
         """
         return -1 * (2 ** (bin_size - 1))
+
+
+class Float:
+    NUMBER_OF_PARAMS = 10

@@ -34,12 +34,14 @@ class Widgets:
         self._num_type_menu.draw()
         self._entries_names.draw()
         self._entries.draw()
-        # self._buttons.draw()
+        if isinstance(self, IntWidgets):
+            self._buttons.draw()
 
     def hide(self):
         self._entries_names.hide()
         self._entries.hide()
-        # self._buttons.hide()
+        if isinstance(self, IntWidgets):
+            self._buttons.hide()
 
 
 class IntWidgets(Widgets):
@@ -135,7 +137,7 @@ class IntLabels(Lables):
     def __init__(self, window):
         super().__init__(window, text.int_labels_text)
 
-    def draw(self, *kwargs):
+    def draw(self, **kwargs):
         self._list[0].grid(row=1, column=0, sticky=tk.W, padx=20, pady=(10, 20))
         for i in range(1, 6):
             self._list[i].grid(row=i + 1, column=0, sticky=tk.W, padx=20, pady=10)
@@ -331,24 +333,32 @@ class ButtonsRow:
         self.__del_button.grid_remove()
 
 
-class IntButtons:
+class Buttons:
     def __init__(self, window, del_func, copy_func, calc_func):
-        self.__list = []  # Список рядов кнопок
-        self.__list.append(ButtonsRow(window, del_func, copy_func, calc_func,
-                                      c.Int.DEC_NUM_INDEX))
-        self.__list.append(ButtonsRow(window, del_func, copy_func, calc_func,
-                                      c.Int.BIN_NUM_INDEX))
-        self.__list.append(ButtonsRow(window, del_func, copy_func, calc_func,
-                                      c.Int.STR_CODE_INDEX))
-        self.__list.append(ButtonsRow(window, del_func, copy_func, calc_func,
-                                      c.Int.REV_CODE_INDEX))
-        self.__list.append(ButtonsRow(window, del_func, copy_func, calc_func,
-                                      c.Int.ADD_CODE_INDEX))
+        self._list = []
+        self.__window = window
+        self.__funcs = {"del_func": del_func,
+                        "copy_func": copy_func,
+                        "calc_func": calc_func}
 
-    def draw(self):
-        for i in range(len(self.__list)):
-            self.__list[i].draw(row_num=(2 + i), start_column_num=2)
+    def append(self, index):
+        self._list.append(ButtonsRow(self.__window, self.__funcs["del_func"], self.__funcs["copy_func"],
+                                     self.__funcs["calc_func"], index))
+
+    def draw(self, row=2, column=2):
+        for i in range(len(self._list)):
+            self._list[i].draw(row_num=(row + i), start_column_num=column)
 
     def hide(self):
-        for item in self.__list:
+        for item in self._list:
             item.hide()
+
+
+class IntButtons(Buttons):
+    def __init__(self, window, del_func, copy_func, calc_func):
+        super().__init__(window, del_func, copy_func, calc_func)
+        self.append(c.Int.DEC_NUM_INDEX)
+        self.append(c.Int.BIN_NUM_INDEX)
+        self.append(c.Int.STR_CODE_INDEX)
+        self.append(c.Int.REV_CODE_INDEX)
+        self.append(c.Int.ADD_CODE_INDEX)

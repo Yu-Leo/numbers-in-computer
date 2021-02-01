@@ -148,7 +148,42 @@ class FloatLabels(Lables):
         super().__init__(window, text.float_labels_text)
 
 
-class IntEntries:
+class Entries:
+    def __init__(self, window, number_of_params):
+        self._list = []  # Список полей для ввода
+        for i in range(1, number_of_params + 1):
+            self._list.append(tk.Entry(window, font=("Arial", 12), width=18))
+
+    def draw(self, row=1, column=1):
+        for i in range(len(self._list)):
+            self._list[i].grid(row=(1 + i), column=1)
+
+    def hide(self):
+        for item in self._list:
+            item.grid_remove()
+
+    def clear_all_except(self, *args):
+        """Очищает все поля кроме тех, которые указаны в аргументах"""
+        for i in range(len(self._list)):
+            if i not in args:
+                self._list[i].delete(0, tk.END)
+
+    def clear(self, *args):
+        """Очищает поля, которые указаны в аргументах"""
+        for i in args:
+            self._list[i].delete(0, tk.END)
+
+    def _get(self, index):
+        """Получение значения из поля по его индексу"""
+        return str(self._list[index].get())
+
+    def _write(self, index, value):
+        """Запись значения в поля по его индексу"""
+        self._list[index].delete(0, tk.END)
+        self._list[index].insert(0, value)
+
+
+class IntEntries(Entries):
     """Список полей ввода-вывода при целочисленном режиме"""
 
     @staticmethod
@@ -158,11 +193,9 @@ class IntEntries:
         calculate_func()
 
     def __init__(self, window, calculate_func, copy_func):
-        self.__list = []  # Список полей для ввода
-        self.__list.append(tk.Entry(window, font=("Arial", 12), width=5))
-        self.__list[0].insert(0, "8")  # Число двоичных разрядов по умолчанию
-        for i in range(1, c.Int.ADD_CODE_INDEX + 1):
-            self.__list.append(tk.Entry(window, font=("Arial", 12), width=18))
+        super().__init__(window, c.Int.NUMBER_OF_PARAMS)
+        self._list[0]["width"] = 5
+        self._list[0].insert(0, "8")  # Число двоичных разрядов по умолчанию
 
         self.__bind_buttons(calculate_func, copy_func)
 
@@ -173,16 +206,16 @@ class IntEntries:
 
     def __bind_enter(self, calculate_func):
         """Биндим на нажатие Enter в соотв. поле"""
-        self.__list[c.Int.DEC_NUM_INDEX].bind("<Return>",
-                                              lambda x: IntEntries.call_calc(c.Int.DEC_NUM_INDEX, calculate_func))
-        self.__list[c.Int.BIN_NUM_INDEX].bind("<Return>",
-                                              lambda x: IntEntries.call_calc(c.Int.BIN_NUM_INDEX, calculate_func))
-        self.__list[c.Int.STR_CODE_INDEX].bind("<Return>",
-                                               lambda x: IntEntries.call_calc(c.Int.STR_CODE_INDEX, calculate_func))
-        self.__list[c.Int.REV_CODE_INDEX].bind("<Return>",
-                                               lambda x: IntEntries.call_calc(c.Int.REV_CODE_INDEX, calculate_func))
-        self.__list[c.Int.ADD_CODE_INDEX].bind("<Return>",
-                                               lambda x: IntEntries.call_calc(c.Int.ADD_CODE_INDEX, calculate_func))
+        self._list[c.Int.DEC_NUM_INDEX].bind("<Return>",
+                                             lambda x: IntEntries.call_calc(c.Int.DEC_NUM_INDEX, calculate_func))
+        self._list[c.Int.BIN_NUM_INDEX].bind("<Return>",
+                                             lambda x: IntEntries.call_calc(c.Int.BIN_NUM_INDEX, calculate_func))
+        self._list[c.Int.STR_CODE_INDEX].bind("<Return>",
+                                              lambda x: IntEntries.call_calc(c.Int.STR_CODE_INDEX, calculate_func))
+        self._list[c.Int.REV_CODE_INDEX].bind("<Return>",
+                                              lambda x: IntEntries.call_calc(c.Int.REV_CODE_INDEX, calculate_func))
+        self._list[c.Int.ADD_CODE_INDEX].bind("<Return>",
+                                              lambda x: IntEntries.call_calc(c.Int.ADD_CODE_INDEX, calculate_func))
 
     def __bind_delete(self):
         """Биндим на нажатие Delete"""
@@ -190,75 +223,58 @@ class IntEntries:
                    c.Int.STR_CODE_INDEX, c.Int.REV_CODE_INDEX,
                    c.Int.ADD_CODE_INDEX]
         for index in indexes:
-            self.__list[index].bind("<Delete>", lambda x: self.clear_all_except(c.Int.BIN_SIZE_INDEX))
+            self._list[index].bind("<Delete>", lambda x: self.clear_all_except(c.Int.BIN_SIZE_INDEX))
 
     def __bind_ctrlc(self, copy_func):
         """Биндим на нажатие Ctrl+C в соотв. поле"""
-        self.__list[c.Int.DEC_NUM_INDEX].bind("<Control-c>",
-                                              lambda x: copy_func(c.Int.DEC_NUM_INDEX))
-        self.__list[c.Int.BIN_NUM_INDEX].bind("<Control-c>",
-                                              lambda x: copy_func(c.Int.BIN_NUM_INDEX))
-        self.__list[c.Int.STR_CODE_INDEX].bind("<Control-c>",
-                                               lambda x: copy_func(c.Int.STR_CODE_INDEX))
-        self.__list[c.Int.REV_CODE_INDEX].bind("<Control-c>",
-                                               lambda x: copy_func(c.Int.REV_CODE_INDEX))
-        self.__list[c.Int.ADD_CODE_INDEX].bind("<Control-c>",
-                                               lambda x: copy_func(c.Int.ADD_CODE_INDEX))
-
-    def clear_all_except(self, *args):
-        """Очищает все поля кроме тех, которые указаны в аргументах"""
-        for i in range(len(self.__list)):
-            if i not in args:
-                self.__list[i].delete(0, tk.END)
-
-    def clear(self, *args):
-        """Очищает поля, которые указаны в аргументах"""
-        for i in args:
-            self.__list[i].delete(0, tk.END)
-
-    def __get(self, index):
-        """Получение значения из поля по его индексу"""
-        return str(self.__list[index].get())
+        self._list[c.Int.DEC_NUM_INDEX].bind("<Control-c>",
+                                             lambda x: copy_func(c.Int.DEC_NUM_INDEX))
+        self._list[c.Int.BIN_NUM_INDEX].bind("<Control-c>",
+                                             lambda x: copy_func(c.Int.BIN_NUM_INDEX))
+        self._list[c.Int.STR_CODE_INDEX].bind("<Control-c>",
+                                              lambda x: copy_func(c.Int.STR_CODE_INDEX))
+        self._list[c.Int.REV_CODE_INDEX].bind("<Control-c>",
+                                              lambda x: copy_func(c.Int.REV_CODE_INDEX))
+        self._list[c.Int.ADD_CODE_INDEX].bind("<Control-c>",
+                                              lambda x: copy_func(c.Int.ADD_CODE_INDEX))
 
     def get_bin_size(self):
-        return self.__get(c.Int.BIN_SIZE_INDEX)
+        return self._get(c.Int.BIN_SIZE_INDEX)
 
     def get_dec_num(self):
-        return self.__get(c.Int.DEC_NUM_INDEX)
+        return self._get(c.Int.DEC_NUM_INDEX)
 
     def get_bin_num(self):
-        return self.__get(c.Int.BIN_NUM_INDEX)
+        return self._get(c.Int.BIN_NUM_INDEX)
 
     def get_str_code(self):
-        return self.__get(c.Int.STR_CODE_INDEX)
+        return self._get(c.Int.STR_CODE_INDEX)
 
     def get_rev_code(self):
-        return self.__get(c.Int.REV_CODE_INDEX)
+        return self._get(c.Int.REV_CODE_INDEX)
 
     def get_add_code(self):
-        return self.__get(c.Int.ADD_CODE_INDEX)
-
-    def __write(self, index, value):
-        """Запись значения в поля по его индексу"""
-        self.__list[index].delete(0, tk.END)
-        self.__list[index].insert(0, value)
+        return self._get(c.Int.ADD_CODE_INDEX)
 
     def print(self, kit):
         """Вывод всего комплекта чисел в поля ввода-вывода"""
-        self.__write(c.Int.DEC_NUM_INDEX, kit["dec_num"])
-        self.__write(c.Int.BIN_NUM_INDEX, kit["bin_num"])
-        self.__write(c.Int.STR_CODE_INDEX, kit["str_code"])
-        self.__write(c.Int.REV_CODE_INDEX, kit["rev_code"])
-        self.__write(c.Int.ADD_CODE_INDEX, kit["add_code"])
+        self._write(c.Int.DEC_NUM_INDEX, kit["dec_num"])
+        self._write(c.Int.BIN_NUM_INDEX, kit["bin_num"])
+        self._write(c.Int.STR_CODE_INDEX, kit["str_code"])
+        self._write(c.Int.REV_CODE_INDEX, kit["rev_code"])
+        self._write(c.Int.ADD_CODE_INDEX, kit["add_code"])
 
-    def draw(self):
-        self.__list[0].grid(row=1, column=1, sticky=tk.W, padx=10, pady=(0, 10))
-        for i in range(1, 6):
-            self.__list[i].grid(row=(1 + i), column=1)
+    def draw(self, **kwargs):
+        self._list[0].grid(row=1, column=1, sticky=tk.W, padx=10, pady=(0, 10))
+        for i in range(1, c.Int.NUMBER_OF_PARAMS):
+            self._list[i].grid(row=(1 + i), column=1)
 
-    def hide(self):
-        for item in self.__list:
-            item.grid_remove()
+
+class FloatEntries(Entries):
+    """Список полей ввода-вывода при режиме вещ. чисел"""
+
+    def __init__(self, window):
+        super().__init__(window, c.Float.NUMBER_OF_PARAMS)
 
 
 class ButtonsRow:
@@ -336,23 +352,3 @@ class IntButtons:
     def hide(self):
         for item in self.__list:
             item.hide()
-
-
-class FloatEntries:
-    """Список полей ввода-вывода при режиме вещ. чисел"""
-
-    def __init__(self, window):
-        self.__list = []  # Список полей для ввода
-        self.__list.append(tk.Entry(window, font=("Arial", 12), width=5))
-        self.__list[0].insert(0, "8")  # Число двоичных разрядов по умолчанию
-        for i in range(1, 10):
-            self.__list.append(tk.Entry(window, font=("Arial", 12), width=18))
-
-    def draw(self):
-        self.__list[0].grid(row=1, column=1, sticky=tk.W, padx=10, pady=(0, 10))
-        for i in range(1, 10):
-            self.__list[i].grid(row=(1 + i), column=1)
-
-    def hide(self):
-        for item in self.__list:
-            item.grid_remove()

@@ -13,6 +13,7 @@ import text
 class IntWidgets:
     def __init__(self, window, calculate_func, copy_func):
         self.__num_type_menu = NumTypeMenu(window)
+        self.__num_type_menu.set_funcs(self.draw, self.hide, None, None)
         self.__entries_names = IntLabels(window)
         self.__entries = IntEntries(window, calculate_func, copy_func)
         self.__buttons = IntButtons(window,
@@ -24,35 +25,67 @@ class IntWidgets:
     def entries(self):
         return self.__entries
 
-    def draw_int(self):
+    def draw(self):
         """Отрисовка при целочисленном режиме"""
         self.__num_type_menu.draw()
         self.__entries_names.draw()
         self.__entries.draw()
         self.__buttons.draw()
 
+    def hide(self):
+        self.__entries_names.hide()
+        self.__entries.hide()
+        self.__buttons.hide()
+
 
 class NumTypeMenu:
     """Меню целые / вещественные числа"""
 
     def __init__(self, window):
+
+        # Список ф-ций для управления отрисовкой виджетов
+        self.__funcs = {"draw_int": lambda: None,
+                        "hide_int": lambda: None,
+                        "draw_float": lambda: None,
+                        "hide_float": lambda: None}
         self.__numbers_type = tk.IntVar(value=0)  # Контроллер значений радио-кнопок
         self.__int_type_button = tk.Radiobutton(window,
                                                 text=text.int_nums_text,
                                                 variable=self.__numbers_type,
                                                 value=0,
-                                                font="Arial 12")
+                                                font="Arial 12",
+                                                command=self.__change_type)
 
         self.__float_type_button = tk.Radiobutton(window,
                                                   text=text.float_nums_text,
                                                   variable=self.__numbers_type,
                                                   value=1,
                                                   font="Arial 12",
-                                                  state=tk.DISABLED)
+                                                  command=self.__change_type)
+
+    def set_funcs(self, draw_int, hide_int, draw_float, hide_float):
+        """Инициализируем список ф-ций для управления отрисовкой виджетов"""
+        self.__funcs["draw_int"] = draw_int
+        self.__funcs["hide_int"] = hide_int
+        self.__funcs["draw_float"] = draw_float
+        self.__funcs["hide_float"] = hide_float
 
     def draw(self):
         self.__int_type_button.grid(row=0, column=0)
         self.__float_type_button.grid(row=0, column=1)
+
+    def __change_type(self):
+        """Смена типа чисел"""
+        type = self.__numbers_type.get()
+        config.numbers_type = type  # Устанавливаем тип чисел в конфигурационном файле
+        if type == c.Type.INT:
+            # self.__funcs["hide_float"]()
+            self.__funcs["draw_int"]()
+            print("Выбран тип int")
+        elif type == c.Type.FLOAT:
+            self.__funcs["hide_int"]()
+            # self.__funcs["draw_float"]()
+            print("Выбран тип float")
 
 
 class IntLabels:
@@ -70,6 +103,10 @@ class IntLabels:
         self.__list[0].grid(row=1, column=0, sticky=tk.W, padx=20, pady=(10, 20))
         for i in range(1, 6):
             self.__list[i].grid(row=i + 1, column=0, sticky=tk.W, padx=20, pady=10)
+
+    def hide(self):
+        for item in self.__list:
+            item.grid_remove()
 
 
 class IntEntries:
@@ -180,6 +217,10 @@ class IntEntries:
         for i in range(1, 6):
             self.__list[i].grid(row=(1 + i), column=1)
 
+    def hide(self):
+        for item in self.__list:
+            item.grid_remove()
+
 
 class ButtonsRow:
     """Ряд кнопок 'очистить', 'рассчитать', 'скопировать'."""
@@ -229,6 +270,11 @@ class ButtonsRow:
         self.__copy_button.grid(row=row_num, column=start_column_num + 1, padx=5)
         self.__del_button.grid(row=row_num, column=start_column_num + 2, padx=5)
 
+    def hide(self):
+        self.__calc_button.grid_remove()
+        self.__copy_button.grid_remove()
+        self.__del_button.grid_remove()
+
 
 class IntButtons:
     def __init__(self, window, del_func, copy_func, calc_func):
@@ -247,3 +293,7 @@ class IntButtons:
     def draw(self):
         for i in range(len(self.__list)):
             self.__list[i].draw(row_num=(2 + i), start_column_num=2)
+
+    def hide(self):
+        for item in self.__list:
+            item.hide()

@@ -2,9 +2,11 @@
 
 import tkinter as tk
 
-from windowParameters import WindowParameters
-from widgets import IntWidgets
 import calculate
+import config
+import constants as c
+from widgets import IntWidgets
+from windowParameters import WindowParameters
 
 
 class Window:
@@ -30,7 +32,10 @@ class Window:
 
     def run(self):
         """Запуск приложения"""
-        self.int_widgets.draw_int()
+        if config.numbers_type == c.Type.INT:  # Если по умолчанию выбран тип int
+            self.int_widgets.draw()
+        elif config.numbers_type == c.Type.FLOAT:  # Если по умолчанию выбран тип float
+            pass
         self.__root.mainloop()
 
 

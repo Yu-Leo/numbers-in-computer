@@ -10,34 +10,55 @@ import constants as c
 import text
 
 
-class IntWidgets:
-    def __init__(self, window, calculate_func, copy_func):
-        self.__num_type_menu = NumTypeMenu(window)
-        self.__entries_names = IntLabels(window)
-        self.__entries = IntEntries(window, calculate_func, copy_func)
-        self.__buttons = IntButtons(window,
-                                    del_func=lambda i: self.__entries.clear_all_except(c.Int.BIN_SIZE_INDEX),
-                                    copy_func=copy_func,
-                                    calc_func=lambda i: self.__entries.call_calc(i, calculate_func))
+class Widgets:
+    """Базовый класс для набора виджетов"""
 
-    def set_drawing_funcs(self, float_draw, float_hide):
+    def __init__(self, window):
+        self._num_type_menu = NumTypeMenu(window)
+        self._entries_names = None
+        self._entries = None
+        self._buttons = None
+
+    def set_drawing_funcs(self, draw_func, hide_func):
         """Устанавливает ф-ции для отрисовки и прятания виджетов"""
-        self.__num_type_menu.set_funcs(self.draw, self.hide, float_draw, float_hide)
+        if isinstance(self, IntWidgets):
+            self._num_type_menu.set_funcs(self.draw, self.hide, draw_func, hide_func)
+        elif isinstance(self, FloatWidgets):
+            self._num_type_menu.set_funcs(draw_func, hide_func, self.draw, self.hide)
 
     @property
     def entries(self):
-        return self.__entries
+        return self._entries
 
     def draw(self):
-        self.__num_type_menu.draw()
-        self.__entries_names.draw()
-        self.__entries.draw()
-        self.__buttons.draw()
+        self._num_type_menu.draw()
+        self._entries_names.draw()
+        #self._entries.draw()
+        #self._buttons.draw()
 
     def hide(self):
-        self.__entries_names.hide()
-        self.__entries.hide()
-        self.__buttons.hide()
+        self._entries_names.hide()
+        #self._entries.hide()
+        #self._buttons.hide()
+
+
+class IntWidgets(Widgets):
+    def __init__(self, window, calculate_func, copy_func):
+        super().__init__(window)
+        self._entries_names = IntLabels(window)
+        self._entries = IntEntries(window, calculate_func, copy_func)
+        self._buttons = IntButtons(window,
+                                    del_func=lambda i: self._entries.clear_all_except(c.Int.BIN_SIZE_INDEX),
+                                    copy_func=copy_func,
+                                    calc_func=lambda i: self._entries.call_calc(i, calculate_func))
+
+
+class FloatWidgets(Widgets):
+    def __init__(self, window):
+        super().__init__(window)
+        self._num_type_menu = NumTypeMenu(window)
+        self._entries_names = FloatLabels(window)
+        self._entries = FloatEntries(window)
 
 
 class NumTypeMenu:
@@ -299,41 +320,6 @@ class IntButtons:
     def hide(self):
         for item in self.__list:
             item.hide()
-
-
-class FloatWidgets:
-    def __init__(self, window):
-        self.__num_type_menu = NumTypeMenu(window)
-        self.__entries_names = FloatLabels(window)
-
-        self.__entries = FloatEntries(window)
-        """
-        self.__buttons = FloatButtons(window,
-                                    del_func=lambda i: self.__entries.clear_all_except(c.Int.BIN_SIZE_INDEX),
-                                    copy_func=copy_func,
-                                    calc_func=lambda i: self.__entries.call_calc(i, calculate_func))
-        """
-
-    """
-    @property
-    def entries(self):
-        return self.__entries
-    """
-
-    def set_drawing_funcs(self, int_draw, int_hide):
-        """Устанавливает ф-ции для отрисовки и прятания виджетов"""
-        self.__num_type_menu.set_funcs(int_draw, int_hide, self.draw, self.hide)
-
-    def draw(self):
-        self.__num_type_menu.draw()
-        self.__entries_names.draw()
-        self.__entries.draw()
-        # self.__buttons.draw()
-
-    def hide(self):
-        self.__entries_names.hide()
-        self.__entries.hide()
-        # self.__buttons.hide()
 
 
 class FloatLabels:

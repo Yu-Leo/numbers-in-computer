@@ -36,6 +36,9 @@ class Int:
 
 
 class Float:
+    DEFAULT_MANTISSA_BIN_SIZE = 10  # Число двоичных разрядов для мантиссы по умолчанию
+    DEFAULT_ORDER_BIN_SIZE = 5  # Число двоичных разрядов для порядка по умолчанию
+
     MANTISSA_BIN_SIZE_INDEX = 0
     ORDER_BIN_SIZE_INDEX = 1
     SAVE_FIRST_DIGIT_INDEX = 2

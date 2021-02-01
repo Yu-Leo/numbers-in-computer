@@ -13,25 +13,16 @@ import text
 class Widgets:
     """Базовый класс для набора виджетов"""
 
-    def __init__(self, window):
-        self._num_type_menu = NumTypeMenu(window)
+    def __init__(self):
         self._entries_names = None
         self._entries = None
         self._buttons = None
-
-    def set_drawing_funcs(self, draw_func, hide_func):
-        """Устанавливает ф-ции для отрисовки и прятания виджетов"""
-        if isinstance(self, IntWidgets):
-            self._num_type_menu.set_funcs(self.draw, self.hide, draw_func, hide_func)
-        elif isinstance(self, FloatWidgets):
-            self._num_type_menu.set_funcs(draw_func, hide_func, self.draw, self.hide)
 
     @property
     def entries(self):
         return self._entries
 
     def draw(self):
-        self._num_type_menu.draw()
         self._entries_names.draw()
         self._entries.draw()
         if isinstance(self, IntWidgets):
@@ -46,7 +37,7 @@ class Widgets:
 
 class IntWidgets(Widgets):
     def __init__(self, window, calculate_func, copy_func):
-        super().__init__(window)
+        super().__init__()
         self._entries_names = IntLabels(window)
         self._entries = IntEntries(window, calculate_func, copy_func)
         self._buttons = IntButtons(window,
@@ -57,8 +48,7 @@ class IntWidgets(Widgets):
 
 class FloatWidgets(Widgets):
     def __init__(self, window):
-        super().__init__(window)
-        self._num_type_menu = NumTypeMenu(window)
+        super().__init__()
         self._entries_names = FloatLabels(window)
         self._entries = FloatEntries(window)
 

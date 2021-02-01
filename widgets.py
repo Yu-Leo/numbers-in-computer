@@ -305,8 +305,9 @@ class FloatWidgets:
     def __init__(self, window):
         self.__num_type_menu = NumTypeMenu(window)
         self.__entries_names = FloatLabels(window)
+
+        self.__entries = FloatEntries(window)
         """
-        self.__entries = FloatEntries(window, calculate_func, copy_func)
         self.__buttons = FloatButtons(window,
                                     del_func=lambda i: self.__entries.clear_all_except(c.Int.BIN_SIZE_INDEX),
                                     copy_func=copy_func,
@@ -326,12 +327,12 @@ class FloatWidgets:
     def draw(self):
         self.__num_type_menu.draw()
         self.__entries_names.draw()
-        # self.__entries.draw()
+        self.__entries.draw()
         # self.__buttons.draw()
 
     def hide(self):
         self.__entries_names.hide()
-        # self.__entries.hide()
+        self.__entries.hide()
         # self.__buttons.hide()
 
 
@@ -344,11 +345,32 @@ class FloatLabels:
             self.__list.append(tk.Label(window,
                                         text=name + ":",
                                         font=("Arial", 12),
-                                        anchor=tk.W))
+                                        anchor=tk.W,
+                                        justify=tk.LEFT))
 
     def draw(self):
         for i in range(len(self.__list)):
             self.__list[i].grid(row=i + 1, column=0, sticky=tk.W, padx=20, pady=10)
+
+    def hide(self):
+        for item in self.__list:
+            item.grid_remove()
+
+
+class FloatEntries:
+    """Список полей ввода-вывода при режиме вещ. чисел"""
+
+    def __init__(self, window):
+        self.__list = []  # Список полей для ввода
+        self.__list.append(tk.Entry(window, font=("Arial", 12), width=5))
+        self.__list[0].insert(0, "8")  # Число двоичных разрядов по умолчанию
+        for i in range(1, 10):
+            self.__list.append(tk.Entry(window, font=("Arial", 12), width=18))
+
+    def draw(self):
+        self.__list[0].grid(row=1, column=1, sticky=tk.W, padx=10, pady=(0, 10))
+        for i in range(1, 10):
+            self.__list[i].grid(row=(1 + i), column=1)
 
     def hide(self):
         for item in self.__list:

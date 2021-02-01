@@ -12,15 +12,5 @@ class WindowParameters:
 
     def geometry(self):
         """Геометрия окна по стандарту tkinter-a"""
-        return f"{self.__width}x{self.__height}+{self.__padx}+{self.__pady}"
-
-    def __repr__(self):
-        return f"width: {self.__width}\nheight: {self.__height}\n" + \
-               f"padding_x: {self.__padx}\npadding_y: {self.__pady}\n" + \
-               f"resizable_x: {self.resizable[0]}\nresizable_y: " + \
-               f"{self.resizable[1]}\n" + f"path_to_icon: {self.ico_path}"
-
-
-if __name__ == "__main__":
-    p = WindowParameters()
-    print(p)
+        # return f"{self.__width}x{self.__height}+{self.__padx}+{self.__pady}"
+        return f"+{self.__padx}+{self.__pady}"  # Размер определяется автоматически

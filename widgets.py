@@ -13,7 +13,6 @@ import text
 class IntWidgets:
     def __init__(self, window, calculate_func, copy_func):
         self.__num_type_menu = NumTypeMenu(window)
-        self.__num_type_menu.set_funcs(self.draw, self.hide, None, None)
         self.__entries_names = IntLabels(window)
         self.__entries = IntEntries(window, calculate_func, copy_func)
         self.__buttons = IntButtons(window,
@@ -21,12 +20,15 @@ class IntWidgets:
                                     copy_func=copy_func,
                                     calc_func=lambda i: self.__entries.call_calc(i, calculate_func))
 
+    def set_drawing_funcs(self, float_draw, float_hide):
+        """Устанавливает ф-ции для отрисовки и прятания виджетов"""
+        self.__num_type_menu.set_funcs(self.draw, self.hide, float_draw, float_hide)
+
     @property
     def entries(self):
         return self.__entries
 
     def draw(self):
-        """Отрисовка при целочисленном режиме"""
         self.__num_type_menu.draw()
         self.__entries_names.draw()
         self.__entries.draw()
@@ -42,7 +44,7 @@ class NumTypeMenu:
     """Меню целые / вещественные числа"""
 
     def __init__(self, window):
-
+        self.window = window
         # Список ф-ций для управления отрисовкой виджетов
         self.__funcs = {"draw_int": lambda: None,
                         "hide_int": lambda: None,
@@ -79,12 +81,12 @@ class NumTypeMenu:
         type = self.__numbers_type.get()
         config.numbers_type = type  # Устанавливаем тип чисел в конфигурационном файле
         if type == c.Type.INT:
-            # self.__funcs["hide_float"]()
+            self.__funcs["hide_float"]()
             self.__funcs["draw_int"]()
             print("Выбран тип int")
         elif type == c.Type.FLOAT:
             self.__funcs["hide_int"]()
-            # self.__funcs["draw_float"]()
+            self.__funcs["draw_float"]()
             print("Выбран тип float")
 
 
@@ -297,3 +299,57 @@ class IntButtons:
     def hide(self):
         for item in self.__list:
             item.hide()
+
+
+class FloatWidgets:
+    def __init__(self, window):
+        self.__num_type_menu = NumTypeMenu(window)
+        self.__entries_names = FloatLabels(window)
+        """
+        self.__entries = FloatEntries(window, calculate_func, copy_func)
+        self.__buttons = FloatButtons(window,
+                                    del_func=lambda i: self.__entries.clear_all_except(c.Int.BIN_SIZE_INDEX),
+                                    copy_func=copy_func,
+                                    calc_func=lambda i: self.__entries.call_calc(i, calculate_func))
+        """
+
+    """
+    @property
+    def entries(self):
+        return self.__entries
+    """
+
+    def set_drawing_funcs(self, int_draw, int_hide):
+        """Устанавливает ф-ции для отрисовки и прятания виджетов"""
+        self.__num_type_menu.set_funcs(int_draw, int_hide, self.draw, self.hide)
+
+    def draw(self):
+        self.__num_type_menu.draw()
+        self.__entries_names.draw()
+        # self.__entries.draw()
+        # self.__buttons.draw()
+
+    def hide(self):
+        self.__entries_names.hide()
+        # self.__entries.hide()
+        # self.__buttons.hide()
+
+
+class FloatLabels:
+    """Список лэйблов при режиме вещественных чисел"""
+
+    def __init__(self, window):
+        self.__list = []  # Список лэйблов
+        for name in text.float_labels_text:
+            self.__list.append(tk.Label(window,
+                                        text=name + ":",
+                                        font=("Arial", 12),
+                                        anchor=tk.W))
+
+    def draw(self):
+        for i in range(len(self.__list)):
+            self.__list[i].grid(row=i + 1, column=0, sticky=tk.W, padx=20, pady=10)
+
+    def hide(self):
+        for item in self.__list:
+            item.grid_remove()

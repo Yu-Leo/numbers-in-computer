@@ -33,13 +33,13 @@ class Widgets:
     def draw(self):
         self._num_type_menu.draw()
         self._entries_names.draw()
-        #self._entries.draw()
-        #self._buttons.draw()
+        self._entries.draw()
+        # self._buttons.draw()
 
     def hide(self):
         self._entries_names.hide()
-        #self._entries.hide()
-        #self._buttons.hide()
+        self._entries.hide()
+        # self._buttons.hide()
 
 
 class IntWidgets(Widgets):
@@ -48,9 +48,9 @@ class IntWidgets(Widgets):
         self._entries_names = IntLabels(window)
         self._entries = IntEntries(window, calculate_func, copy_func)
         self._buttons = IntButtons(window,
-                                    del_func=lambda i: self._entries.clear_all_except(c.Int.BIN_SIZE_INDEX),
-                                    copy_func=copy_func,
-                                    calc_func=lambda i: self._entries.call_calc(i, calculate_func))
+                                   del_func=lambda i: self._entries.clear_all_except(c.Int.BIN_SIZE_INDEX),
+                                   copy_func=copy_func,
+                                   calc_func=lambda i: self._entries.call_calc(i, calculate_func))
 
 
 class FloatWidgets(Widgets):
@@ -111,25 +111,41 @@ class NumTypeMenu:
             print("Выбран тип float")
 
 
-class IntLabels:
+class Lables:
+    def __init__(self, window, names):
+        self._list = []  # Список лэйблов
+        for name in names:
+            self._list.append(tk.Label(window,
+                                       text=name + ":",
+                                       font=("Arial", 12),
+                                       anchor=tk.W))
+
+    def draw(self, row=1, column=0):
+        for i in range(len(self._list)):
+            self._list[i].grid(row=i + row, column=column, sticky=tk.W, padx=20, pady=10)
+
+    def hide(self):
+        for item in self._list:
+            item.grid_remove()
+
+
+class IntLabels(Lables):
     """Список лэйблов при целочисленном режиме"""
 
     def __init__(self, window):
-        self.__list = []  # Список лэйблов
-        for name in text.int_labels_text:
-            self.__list.append(tk.Label(window,
-                                        text=name + ":",
-                                        font=("Arial", 12),
-                                        anchor=tk.W))
+        super().__init__(window, text.int_labels_text)
 
-    def draw(self):
-        self.__list[0].grid(row=1, column=0, sticky=tk.W, padx=20, pady=(10, 20))
+    def draw(self, *kwargs):
+        self._list[0].grid(row=1, column=0, sticky=tk.W, padx=20, pady=(10, 20))
         for i in range(1, 6):
-            self.__list[i].grid(row=i + 1, column=0, sticky=tk.W, padx=20, pady=10)
+            self._list[i].grid(row=i + 1, column=0, sticky=tk.W, padx=20, pady=10)
 
-    def hide(self):
-        for item in self.__list:
-            item.grid_remove()
+
+class FloatLabels(Lables):
+    """Список лэйблов при режиме вещественных чисел"""
+
+    def __init__(self, window):
+        super().__init__(window, text.float_labels_text)
 
 
 class IntEntries:
@@ -320,27 +336,6 @@ class IntButtons:
     def hide(self):
         for item in self.__list:
             item.hide()
-
-
-class FloatLabels:
-    """Список лэйблов при режиме вещественных чисел"""
-
-    def __init__(self, window):
-        self.__list = []  # Список лэйблов
-        for name in text.float_labels_text:
-            self.__list.append(tk.Label(window,
-                                        text=name + ":",
-                                        font=("Arial", 12),
-                                        anchor=tk.W,
-                                        justify=tk.LEFT))
-
-    def draw(self):
-        for i in range(len(self.__list)):
-            self.__list[i].grid(row=i + 1, column=0, sticky=tk.W, padx=20, pady=10)
-
-    def hide(self):
-        for item in self.__list:
-            item.grid_remove()
 
 
 class FloatEntries:

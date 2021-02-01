@@ -5,7 +5,7 @@ import tkinter as tk
 import calculate
 import config
 import constants as c
-from widgets import IntWidgets
+from widgets import IntWidgets, FloatWidgets
 from windowParameters import WindowParameters
 
 
@@ -26,6 +26,9 @@ class Window:
         self.int_widgets = IntWidgets(self.__root,
                                       lambda: calculate.int_calculate(self.int_widgets.entries),
                                       self.copy_to_buffer)
+        self.float_widgets = FloatWidgets(self.__root)
+        self.int_widgets.set_drawing_funcs(self.float_widgets.draw, self.float_widgets.hide)
+        self.float_widgets.set_drawing_funcs(self.int_widgets.draw, self.int_widgets.hide)
 
     def copy_to_buffer(self, index):
         calculate.copy_val_to_buffer(self.int_widgets.entries, index)

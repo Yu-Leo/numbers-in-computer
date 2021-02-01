@@ -25,14 +25,12 @@ class Widgets:
     def draw(self):
         self._entries_names.draw()
         self._entries.draw()
-        if isinstance(self, IntWidgets):
-            self._buttons.draw()
+        self._buttons.draw()
 
     def hide(self):
         self._entries_names.hide()
         self._entries.hide()
-        if isinstance(self, IntWidgets):
-            self._buttons.hide()
+        self._buttons.hide()
 
 
 class IntWidgets(Widgets):
@@ -51,6 +49,7 @@ class FloatWidgets(Widgets):
         super().__init__()
         self._entries_names = FloatLabels(window)
         self._entries = FloatEntries(window)
+        self._buttons = FloatButtons(window)
 
 
 class NumTypeMenu:
@@ -101,26 +100,27 @@ class NumTypeMenu:
             self.__funcs["draw_float"]()
 
 
-class Lables:
+class Labels:
     def __init__(self, window, names):
         self._list = []  # Список лэйблов
         for name in names:
             self._list.append(tk.Label(window,
                                        text=name + ":",
                                        font=("Arial", 12),
+                                       width=25,
                                        anchor=tk.W,
                                        justify=tk.LEFT))
 
     def draw(self, row=1, column=0):
         for i in range(len(self._list)):
-            self._list[i].grid(row=i + row, column=column, sticky=tk.W, padx=20, pady=10)
+            self._list[i].grid(row=i + row, column=column, sticky=tk.W, padx=20, pady=5)
 
     def hide(self):
         for item in self._list:
             item.grid_remove()
 
 
-class IntLabels(Lables):
+class IntLabels(Labels):
     """Список лэйблов при целочисленном режиме"""
 
     def __init__(self, window):
@@ -132,7 +132,7 @@ class IntLabels(Lables):
             self._list[i].grid(row=i + 1, column=0, sticky=tk.W, padx=20, pady=10)
 
 
-class FloatLabels(Lables):
+class FloatLabels(Labels):
     """Список лэйблов при режиме вещественных чисел"""
 
     def __init__(self, window):
@@ -185,8 +185,8 @@ class IntEntries(Entries):
 
     def __init__(self, window, calculate_func, copy_func):
         super().__init__(window, c.Int.NUMBER_OF_PARAMS)
-        self._list[0]["width"] = 5
-        self._list[0].insert(0, "8")  # Число двоичных разрядов по умолчанию
+        self._list[c.Int.BIN_SIZE_INDEX]["width"] = 5
+        self.__set_bin_size(c.Int.DEFAULT_BIN_SIZE)
 
         self.__bind_buttons(calculate_func, copy_func)
 
@@ -229,6 +229,9 @@ class IntEntries(Entries):
         self._list[c.Int.ADD_CODE_INDEX].bind("<Control-c>",
                                               lambda x: copy_func(c.Int.ADD_CODE_INDEX))
 
+    def __set_bin_size(self, bin_size):
+        self._list[c.Int.BIN_SIZE_INDEX].insert(0, str(bin_size))
+
     def get_bin_size(self):
         return self._get(c.Int.BIN_SIZE_INDEX)
 
@@ -266,7 +269,19 @@ class FloatEntries(Entries):
 
     def __init__(self, window):
         super().__init__(window, c.Float.NUMBER_OF_PARAMS)
+        self._list[c.Float.MANTISSA_BIN_SIZE_INDEX]["width"] = 5
+        self.__set_mantissa_bin_size(c.Float.DEFAULT_MANTISSA_BIN_SIZE)
+
+        self._list[c.Float.ORDER_BIN_SIZE_INDEX]["width"] = 5
+        self.__set_order_bin_size(c.Float.DEFAULT_ORDER_BIN_SIZE)
+
         self._list[c.Float.SAVE_FIRST_DIGIT_INDEX] = tk.Checkbutton(window)
+
+    def __set_mantissa_bin_size(self, mantissa_bin_size):
+        self._list[c.Float.MANTISSA_BIN_SIZE_INDEX].insert(0, str(mantissa_bin_size))
+
+    def __set_order_bin_size(self, order_bin_size):
+        self._list[c.Float.ORDER_BIN_SIZE_INDEX].insert(0, str(order_bin_size))
 
 
 class ButtonsRow:
@@ -315,7 +330,7 @@ class ButtonsRow:
     def draw(self, row_num, start_column_num):
         self.__calc_button.grid(row=row_num, column=start_column_num, padx=5)
         self.__copy_button.grid(row=row_num, column=start_column_num + 1, padx=5)
-        self.__del_button.grid(row=row_num, column=start_column_num + 2, padx=5)
+        self.__del_button.grid(row=row_num, column=start_column_num + 2, padx=(5, 30))
 
     def hide(self):
         self.__calc_button.grid_remove()
@@ -352,3 +367,17 @@ class IntButtons(Buttons):
         self.append(c.Int.STR_CODE_INDEX)
         self.append(c.Int.REV_CODE_INDEX)
         self.append(c.Int.ADD_CODE_INDEX)
+
+
+class FloatButtons(Buttons):
+    def __init__(self, window):
+        del_func = copy_func = calc_func = None
+        super().__init__(window, del_func, copy_func, calc_func)
+        self.append(c.Float.DEC_NUM_INDEX)
+        self.append(c.Float.BIN_NUM_INDEX)
+        self.append(c.Float.FLOAT_FORMAT_INDEX)
+
+    def draw(self, **kwargs):
+        self._list[0].draw(row_num=4, start_column_num=2)
+        self._list[1].draw(row_num=5, start_column_num=2)
+        self._list[2].draw(row_num=10, start_column_num=2)

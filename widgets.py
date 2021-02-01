@@ -96,11 +96,9 @@ class NumTypeMenu:
         if type == c.Type.INT:
             self.__funcs["hide_float"]()
             self.__funcs["draw_int"]()
-            print("Выбран тип int")
         elif type == c.Type.FLOAT:
             self.__funcs["hide_int"]()
             self.__funcs["draw_float"]()
-            print("Выбран тип float")
 
 
 class Lables:
@@ -110,7 +108,8 @@ class Lables:
             self._list.append(tk.Label(window,
                                        text=name + ":",
                                        font=("Arial", 12),
-                                       anchor=tk.W))
+                                       anchor=tk.W,
+                                       justify=tk.LEFT))
 
     def draw(self, row=1, column=0):
         for i in range(len(self._list)):
@@ -148,7 +147,7 @@ class Entries:
 
     def draw(self, row=1, column=1):
         for i in range(len(self._list)):
-            self._list[i].grid(row=(1 + i), column=1)
+            self._list[i].grid(row=(1 + i), column=1, sticky=tk.W)
 
     def hide(self):
         for item in self._list:
@@ -267,6 +266,7 @@ class FloatEntries(Entries):
 
     def __init__(self, window):
         super().__init__(window, c.Float.NUMBER_OF_PARAMS)
+        self._list[c.Float.SAVE_FIRST_DIGIT_INDEX] = tk.Checkbutton(window)
 
 
 class ButtonsRow:

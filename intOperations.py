@@ -1,4 +1,4 @@
-# Файл с функциями переводом (+ ф-ция копирования в буфер)
+# Файл с функциями операций в режиме int
 
 import pyperclip  # Модуль для работы с буфером
 
@@ -7,11 +7,10 @@ import constants as c
 import exceptions as e
 from messageboxes import Messageboxes as Mb
 from numbersKits import IntKit
-from widgets import IntEntries, FloatEntries
 
 
-def int_calculate(entries):
-    """Расчёт в целочисленном режиме"""
+def calculate(entries):
+    """Расчёт в режиме int"""
     try:
         int_calc(entries)
     except e.BinSizeTypeError:
@@ -56,10 +55,6 @@ def int_calculate(entries):
     except e.AddCodeValueError:
         Mb.AddCodeValueError.show()
         entries.clear_all_except(c.Int.BIN_SIZE_INDEX)
-
-
-def float_calculate(entries):
-    pass
 
 
 def int_calc(entries):
@@ -157,24 +152,15 @@ def get_add_code(entries, bin_size):
     return add_code
 
 
-def copy_val_to_buffer(entries, index):
+def copy_to_buffer(entries, index):
     """Скопировать значение из поля по его индексу"""
-    if isinstance(entries, IntEntries):  # Если переданные поля - для типа int
-        if index == c.Int.DEC_NUM_INDEX:
-            pyperclip.copy(entries.get_dec_num())
-        elif index == c.Int.BIN_NUM_INDEX:
-            pyperclip.copy(entries.get_bin_num())
-        elif index == c.Int.STR_CODE_INDEX:
-            pyperclip.copy(entries.get_str_code())
-        elif index == c.Int.REV_CODE_INDEX:
-            pyperclip.copy(entries.get_rev_code())
-        elif index == c.Int.ADD_CODE_INDEX:
-            pyperclip.copy(entries.get_add_code())
-
-    elif isinstance(entries, FloatEntries):  # Если переданные поля - для типа float
-        if index == c.Float.DEC_NUM_INDEX:
-            pyperclip.copy(entries.get_dec_num())
-        elif index == c.Float.BIN_NUM_INDEX:
-            pyperclip.copy(entries.get_bin_num())
-        elif index == c.Float.FLOAT_FORMAT_INDEX:
-            pyperclip.copy(entries.get_float_format())
+    if index == c.Int.DEC_NUM_INDEX:
+        pyperclip.copy(entries.get_dec_num())
+    elif index == c.Int.BIN_NUM_INDEX:
+        pyperclip.copy(entries.get_bin_num())
+    elif index == c.Int.STR_CODE_INDEX:
+        pyperclip.copy(entries.get_str_code())
+    elif index == c.Int.REV_CODE_INDEX:
+        pyperclip.copy(entries.get_rev_code())
+    elif index == c.Int.ADD_CODE_INDEX:
+        pyperclip.copy(entries.get_add_code())

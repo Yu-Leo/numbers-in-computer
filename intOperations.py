@@ -18,11 +18,11 @@ def calculate(entries):
         entries.clear_all_except()
     except e.BinSizeValueError:
         Mb.BinSizeValueError.show()
-        entries.clear_all_except(c.Int.BIN_SIZE_INDEX)
+        entries.clear_except_settings()
 
     except e.DecNumTypeError:
         Mb.DecNumTypeError.show()
-        entries.clear_all_except(c.Int.BIN_SIZE_INDEX)
+        entries.clear_except_settings()
     except e.DecNumValueCodesWarning:
         Mb.DecNumValueCodesWarning.show()
         entries.clear_all_except(c.Int.BIN_SIZE_INDEX, c.Int.DEC_NUM_INDEX,
@@ -30,7 +30,7 @@ def calculate(entries):
 
     except e.BinNumTypeError:
         Mb.BinNumTypeError.show()
-        entries.clear_all_except(c.Int.BIN_SIZE_INDEX)
+        entries.clear_except_settings()
     except e.BinNumValueCodesWarning:
         Mb.BinNumValueCodesWarning.show()
         entries.clear_all_except(c.Int.BIN_SIZE_INDEX, c.Int.DEC_NUM_INDEX,
@@ -38,23 +38,23 @@ def calculate(entries):
 
     except e.StrCodeTypeError:
         Mb.StrCodeTypeError.show()
-        entries.clear_all_except(c.Int.BIN_SIZE_INDEX)
+        entries.clear_except_settings()
     except e.StrCodeValueError:
         Mb.StrCodeValueError.show()
-        entries.clear_all_except(c.Int.BIN_SIZE_INDEX)
+        entries.clear_except_settings()
 
     except e.RevCodeTypeError:
         Mb.RevCodeTypeError.show()
-        entries.clear_all_except(c.Int.BIN_SIZE_INDEX)
+        entries.clear_except_settings()
     except e.RevCodeValueError:
         Mb.RevCodeValueError.show()
-        entries.clear_all_except(c.Int.BIN_SIZE_INDEX)
+        entries.clear_except_settings()
     except e.AddCodeTypeError:
         Mb.AddCodeTypeError.show()
-        entries.clear_all_except(c.Int.BIN_SIZE_INDEX)
+        entries.clear_except_settings()
     except e.AddCodeValueError:
         Mb.AddCodeValueError.show()
-        entries.clear_all_except(c.Int.BIN_SIZE_INDEX)
+        entries.clear_except_settings()
 
 
 def int_calc(entries):

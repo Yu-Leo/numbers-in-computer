@@ -17,11 +17,6 @@ class Widgets:
         self._entries_names = None
         self._entries = None
         self._buttons = None
-        self._settings_entries = set()
-
-    def _set_settings_entries(self, *args):
-        """Установить номера полей, которые являются полями настроек"""
-        self._settings_entries = set(args)
 
     @property
     def entries(self):
@@ -37,19 +32,14 @@ class Widgets:
         self._entries.hide()
         self._buttons.hide()
 
-    def clear_except_settings(self):
-        """Очистить все поля ввода-вывода кроме настроек"""
-        self._entries.clear_all_except(*self._settings_entries)
-
 
 class IntWidgets(Widgets):
     def __init__(self, window, calculate_func, copy_func):
         super().__init__()
-        self._set_settings_entries(c.Int.BIN_SIZE_INDEX)
         self._entries_names = IntLabels(window)
         self._entries = IntEntries(window, calculate_func, copy_func)
         self._buttons = IntButtons(window,
-                                   del_func=self.clear_except_settings,
+                                   del_func=self._entries.clear_except_settings,
                                    copy_func=copy_func,
                                    calc_func=lambda i: self._entries.call_calc(i, calculate_func))
 
@@ -57,12 +47,11 @@ class IntWidgets(Widgets):
 class FloatWidgets(Widgets):
     def __init__(self, window, calculate_func, copy_func):
         super().__init__()
-        self._set_settings_entries(c.Float.MANTISSA_BIN_SIZE_INDEX, c.Float.ORDER_BIN_SIZE_INDEX,
-                                   c.Float.SAVE_FIRST_DIGIT_INDEX)
         self._entries_names = FloatLabels(window)
         self._entries = FloatEntries(window)
+
         self._buttons = FloatButtons(window,
-                                     del_func=self.clear_except_settings,
+                                     del_func=self._entries.clear_except_settings,
                                      copy_func=copy_func,
                                      calc_func=lambda i: self._entries.call_calc(i, calculate_func))
 
@@ -156,6 +145,7 @@ class FloatLabels(Labels):
 
 
 class Entries:
+
     @staticmethod
     def call_calc(i, calculate_func):
         """Изменяем режим перевода на тот, в котором нажали Enter, и переводим"""
@@ -166,6 +156,11 @@ class Entries:
         self._list = []  # Список полей для ввода
         for i in range(1, number_of_params + 1):
             self._list.append(tk.Entry(window, font=("Arial", 12), width=18))
+        self._settings_list = set()
+
+    def _set_settings_entries(self, *args):
+        """Установить номера полей, которые являются полями настроек"""
+        self._settings_list = set(args)
 
     def draw(self, row=1, column=1):
         for i in range(len(self._list)):
@@ -174,6 +169,10 @@ class Entries:
     def hide(self):
         for item in self._list:
             item.grid_remove()
+
+    def clear_except_settings(self):
+        """Очистить все поля кроме настроек"""
+        self.clear_all_except(*self._settings_list)
 
     def clear_all_except(self, *args):
         """Очищает все поля кроме тех, которые указаны в аргументах"""
@@ -201,6 +200,7 @@ class IntEntries(Entries):
 
     def __init__(self, window, calculate_func, copy_func):
         super().__init__(window, c.Int.NUMBER_OF_PARAMS)
+        self._set_settings_entries(c.Int.BIN_SIZE_INDEX)
         self._list[c.Int.BIN_SIZE_INDEX]["width"] = 5
         self.__set_bin_size(c.Int.DEFAULT_BIN_SIZE)
         self.__bind_buttons(calculate_func, copy_func)
@@ -284,6 +284,8 @@ class FloatEntries(Entries):
 
     def __init__(self, window):
         super().__init__(window, c.Float.NUMBER_OF_PARAMS)
+        self._set_settings_entries(c.Float.MANTISSA_BIN_SIZE_INDEX, c.Float.ORDER_BIN_SIZE_INDEX,
+                                   c.Float.SAVE_FIRST_DIGIT_INDEX)
         self._list[c.Float.MANTISSA_BIN_SIZE_INDEX]["width"] = 5
         self.__set_mantissa_bin_size(c.Float.DEFAULT_MANTISSA_BIN_SIZE)
 

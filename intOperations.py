@@ -68,7 +68,6 @@ def int_calc(entries):
         kit = IntKit(dec_num=dec_num)
         kit.by_dec_num(bin_size)
         entries.print(kit)
-        # Если невозможно рассчитать представления при данном числе двоичных разрядов
 
     elif config.translate_type == c.Int.BIN_NUM_INDEX:  # Исходное значение - число в двоичной сс
         bin_num = get_bin_num(entries)
@@ -96,6 +95,9 @@ def int_calc(entries):
         kit = IntKit(add_code=add_code)
         kit.by_add_code(bin_size)
         entries.print(kit)
+
+    else:
+        raise Warning("Invalid translate_type")
 
 
 def get_bin_size(entries):

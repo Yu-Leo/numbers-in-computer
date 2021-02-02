@@ -57,6 +57,10 @@ def int_calculate(entries):
         entries.clear_all_except(c.Int.BIN_SIZE_INDEX)
 
 
+def float_calculate(entries):
+    pass
+
+
 def int_calc(entries):
     """Перевод целых чисел"""
     bin_size = get_bin_size(entries)  # Числе двоичных разрядов

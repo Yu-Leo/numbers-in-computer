@@ -321,6 +321,16 @@ class FloatEntries(Entries):
     def get_float_format(self):
         return self._get(c.Float.FLOAT_FORMAT_INDEX)
 
+    def print(self, kit):
+        """Вывод всего комплекта чисел в поля ввода-вывода"""
+        self._write(c.Float.DEC_NUM_INDEX, kit["dec_num"])
+        self._write(c.Float.BIN_NUM_INDEX, kit["bin_num"])
+        self._write(c.Float.BIN_MANTISSA_INDEX, kit["bin_mantissa"])
+        self._write(c.Float.DEC_ORDER_INDEX, kit["dec_order"])
+        self._write(c.Float.DEC_CHARACTERISTIC_INDEX, kit["dec_characteristic"])
+        self._write(c.Float.BIN_CHARACTERISTIC_INDEX, kit["bin_characteristic"])
+        self._write(c.Float.FLOAT_FORMAT_INDEX, kit["float_format"])
+
 
 class ButtonsRow:
     """Ряд кнопок 'очистить', 'рассчитать', 'скопировать'."""

@@ -23,10 +23,11 @@ class Window:
         except tk.TclError:  # Ошибка отображения иконки (её отсутствие)
             pass  # Иконка по умолчанию
         self.num_type_menu = NumTypeMenu(self.__root)
-        # Виджеты целочисленного режима
+        # Виджеты режима int
         self.int_widgets = IntWidgets(self.__root,
                                       lambda: calculate.int_calculate(self.int_widgets.entries),
                                       self.int_copy)
+        # Виджеты режима float
         self.float_widgets = FloatWidgets(self.__root,
                                           lambda: calculate.float_calculate(self.float_widgets.entries),
                                           self.float_copy)
@@ -43,10 +44,10 @@ class Window:
     def run(self):
         """Запуск приложения"""
         self.num_type_menu.draw()
-        if config.numbers_type == c.Type.INT:  # Если по умолчанию выбран тип int
+        if config.numbers_type == c.Int.TYPE_NUM:  # Если по умолчанию выбран тип int
             self.int_widgets.draw()
-        elif config.numbers_type == c.Type.FLOAT:  # Если по умолчанию выбран тип float
-            pass
+        elif config.numbers_type == c.Float.TYPE_NUM:  # Если по умолчанию выбран тип float
+            self.float_widgets.draw()
         self.__root.mainloop()
 
 

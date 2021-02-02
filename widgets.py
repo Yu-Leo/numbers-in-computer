@@ -20,7 +20,7 @@ class Widgets:
         self._settings_entries = set()
 
     def _set_settings_entries(self, *args):
-        """Установить номера полей, которые являются полями настройек"""
+        """Установить номера полей, которые являются полями настроек"""
         self._settings_entries = set(args)
 
     @property
@@ -77,7 +77,8 @@ class NumTypeMenu:
                         "hide_int": lambda: None,
                         "draw_float": lambda: None,
                         "hide_float": lambda: None}
-        self.__numbers_type = tk.IntVar(value=0)  # Контроллер значений радио-кнопок
+        def_val = (c.Int.TYPE_NUM if config.numbers_type == c.Int.TYPE_NUM else c.Float.TYPE_NUM)
+        self.__numbers_type = tk.IntVar(value=def_val)  # Контроллер значений радио-кнопок
         self.__int_type_button = tk.Radiobutton(window,
                                                 text=text.int_nums_text,
                                                 variable=self.__numbers_type,
@@ -107,10 +108,10 @@ class NumTypeMenu:
         """Смена типа чисел"""
         type = self.__numbers_type.get()
         config.numbers_type = type  # Устанавливаем тип чисел в конфигурационном файле
-        if type == c.Type.INT:
+        if type == c.Int.TYPE_NUM:
             self.__funcs["hide_float"]()
             self.__funcs["draw_int"]()
-        elif type == c.Type.FLOAT:
+        elif type == c.Float.TYPE_NUM:
             self.__funcs["hide_int"]()
             self.__funcs["draw_float"]()
 
@@ -296,6 +297,15 @@ class FloatEntries(Entries):
 
     def __set_order_bin_size(self, order_bin_size):
         self._list[c.Float.ORDER_BIN_SIZE_INDEX].insert(0, str(order_bin_size))
+
+    def get_dec_num(self):
+        return self._get(c.Float.DEC_NUM_INDEX)
+
+    def get_bin_num(self):
+        return self._get(c.Float.BIN_NUM_INDEX)
+
+    def get_float_format(self):
+        return self._get(c.Float.FLOAT_FORMAT_INDEX)
 
 
 class ButtonsRow:

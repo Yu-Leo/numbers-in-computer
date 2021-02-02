@@ -297,22 +297,28 @@ class ButtonsRow:
             return None
 
     def __init__(self, window, del_func, copy_func, calc_func, row_ind):
+        self.__frame = tk.Frame(window)  # Фрейм для всех 3х кнопок
+
         self.calc_image = ButtonsRow.__get_image("calc_icon32")
 
         self.del_image = ButtonsRow.__get_image("del_icon32")
 
         self.copy_image = ButtonsRow.__get_image("copy_icon32")
 
-        self.__calc_button = tk.Button(window,
+        self.__calc_button = tk.Button(self.__frame,
                                        image=self.calc_image,
                                        command=lambda: calc_func(row_ind))
-        self.__copy_button = tk.Button(window,
+        self.__copy_button = tk.Button(self.__frame,
                                        image=self.copy_image,
                                        command=lambda: copy_func(row_ind))
 
-        self.__del_button = tk.Button(window,
+        self.__del_button = tk.Button(self.__frame,
                                       image=self.del_image,
                                       command=lambda: del_func(row_ind))
+
+        self.__calc_button.grid(row=0, column=0, padx=5)
+        self.__copy_button.grid(row=0, column=1, padx=5)
+        self.__del_button.grid(row=0, column=2, padx=5)
 
         # Если файлы с иконками кнопок не найдены
         if self.calc_image is None:
@@ -327,15 +333,11 @@ class ButtonsRow:
             self.__copy_button["width"] = 3
             self.__copy_button["text"] = "copy"
 
-    def draw(self, row_num, start_column_num):
-        self.__calc_button.grid(row=row_num, column=start_column_num, padx=5)
-        self.__copy_button.grid(row=row_num, column=start_column_num + 1, padx=5)
-        self.__del_button.grid(row=row_num, column=start_column_num + 2, padx=(5, 30))
+    def draw(self, row_num, column_num):
+        self.__frame.grid(row=row_num, column=column_num, padx=(0, 25))
 
     def hide(self):
-        self.__calc_button.grid_remove()
-        self.__copy_button.grid_remove()
-        self.__del_button.grid_remove()
+        self.__frame.grid_remove()
 
 
 class Buttons:
@@ -352,7 +354,7 @@ class Buttons:
 
     def draw(self, row=2, column=2):
         for i in range(len(self._list)):
-            self._list[i].draw(row_num=(row + i), start_column_num=column)
+            self._list[i].draw(row_num=(row + i), column_num=column)
 
     def hide(self):
         for item in self._list:
@@ -378,6 +380,6 @@ class FloatButtons(Buttons):
         self.append(c.Float.FLOAT_FORMAT_INDEX)
 
     def draw(self, **kwargs):
-        self._list[0].draw(row_num=4, start_column_num=2)
-        self._list[1].draw(row_num=5, start_column_num=2)
-        self._list[2].draw(row_num=10, start_column_num=2)
+        self._list[0].draw(row_num=4, column_num=2)
+        self._list[1].draw(row_num=5, column_num=2)
+        self._list[2].draw(row_num=10, column_num=2)

@@ -292,13 +292,25 @@ class FloatEntries(Entries):
         self._list[c.Float.ORDER_BIN_SIZE_INDEX]["width"] = 5
         self.__set_order_bin_size(c.Float.DEFAULT_ORDER_BIN_SIZE)
 
-        self._list[c.Float.SAVE_FIRST_DIGIT_INDEX] = tk.Checkbutton(window)
+        self.__save = tk.IntVar(value=0)  # Контроллер значения check-box
+
+        self._list[c.Float.SAVE_FIRST_DIGIT_INDEX] = tk.Checkbutton(window,
+                                                                    variable=self.__save)
 
     def __set_mantissa_bin_size(self, mantissa_bin_size):
         self._list[c.Float.MANTISSA_BIN_SIZE_INDEX].insert(0, str(mantissa_bin_size))
 
     def __set_order_bin_size(self, order_bin_size):
         self._list[c.Float.ORDER_BIN_SIZE_INDEX].insert(0, str(order_bin_size))
+
+    def get_mantissa_bin_size(self):
+        return self._get(c.Float.MANTISSA_BIN_SIZE_INDEX)
+
+    def get_order_bin_size(self):
+        return self._get(c.Float.ORDER_BIN_SIZE_INDEX)
+
+    def get_save_first_digit(self):
+        return bool(self.__save.get())
 
     def get_dec_num(self):
         return self._get(c.Float.DEC_NUM_INDEX)

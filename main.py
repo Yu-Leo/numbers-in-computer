@@ -26,14 +26,19 @@ class Window:
         # Виджеты целочисленного режима
         self.int_widgets = IntWidgets(self.__root,
                                       lambda: calculate.int_calculate(self.int_widgets.entries),
-                                      self.copy_to_buffer)
-        self.float_widgets = FloatWidgets(self.__root)
+                                      self.int_copy)
+        self.float_widgets = FloatWidgets(self.__root,
+                                          lambda: calculate.float_calculate(self.float_widgets.entries),
+                                          self.float_copy)
 
         self.num_type_menu.set_funcs(self.int_widgets.draw, self.int_widgets.hide,
                                      self.float_widgets.draw, self.float_widgets.hide)
 
-    def copy_to_buffer(self, index):
+    def int_copy(self, index):
         calculate.copy_val_to_buffer(self.int_widgets.entries, index)
+
+    def float_copy(self, index):
+        calculate.copy_val_to_buffer(self.float_widgets.entries, index)
 
     def run(self):
         """Запуск приложения"""

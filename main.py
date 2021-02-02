@@ -2,9 +2,12 @@
 
 import tkinter as tk
 
-import calculate
 import config
 import constants as c
+from floatOperations import calculate as float_calc
+from floatOperations import copy_to_buffer as float_copy
+from intOperations import calculate as int_calc
+from intOperations import copy_to_buffer as int_copy
 from widgets import NumTypeMenu, IntWidgets, FloatWidgets
 from windowParameters import WindowParameters
 
@@ -25,21 +28,21 @@ class Window:
         self.num_type_menu = NumTypeMenu(self.__root)
         # Виджеты режима int
         self.int_widgets = IntWidgets(self.__root,
-                                      lambda: calculate.int_calculate(self.int_widgets.entries),
+                                      lambda: int_calc(self.int_widgets.entries),
                                       self.int_copy)
         # Виджеты режима float
         self.float_widgets = FloatWidgets(self.__root,
-                                          lambda: calculate.float_calculate(self.float_widgets.entries),
+                                          lambda: float_calc(self.float_widgets.entries),
                                           self.float_copy)
 
         self.num_type_menu.set_funcs(self.int_widgets.draw, self.int_widgets.hide,
                                      self.float_widgets.draw, self.float_widgets.hide)
 
     def int_copy(self, index):
-        calculate.copy_val_to_buffer(self.int_widgets.entries, index)
+        int_copy(self.int_widgets.entries, index)
 
     def float_copy(self, index):
-        calculate.copy_val_to_buffer(self.float_widgets.entries, index)
+        float_copy(self.float_widgets.entries, index)
 
     def run(self):
         """Запуск приложения"""

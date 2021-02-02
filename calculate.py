@@ -7,6 +7,7 @@ import constants as c
 import exceptions as e
 from messageboxes import Messageboxes as Mb
 from numbersKits import IntKit
+from widgets import IntEntries, FloatEntries
 
 
 def int_calculate(entries):
@@ -158,13 +159,22 @@ def get_add_code(entries, bin_size):
 
 def copy_val_to_buffer(entries, index):
     """Скопировать значение из поля по его индексу"""
-    if index == c.Int.DEC_NUM_INDEX:
-        pyperclip.copy(entries.get_dec_num())
-    elif index == c.Int.BIN_NUM_INDEX:
-        pyperclip.copy(entries.get_bin_num())
-    elif index == c.Int.STR_CODE_INDEX:
-        pyperclip.copy(entries.get_str_code())
-    elif index == c.Int.REV_CODE_INDEX:
-        pyperclip.copy(entries.get_rev_code())
-    elif index == c.Int.ADD_CODE_INDEX:
-        pyperclip.copy(entries.get_add_code())
+    if isinstance(entries, IntEntries):  # Если переданные поля - для типа int
+        if index == c.Int.DEC_NUM_INDEX:
+            pyperclip.copy(entries.get_dec_num())
+        elif index == c.Int.BIN_NUM_INDEX:
+            pyperclip.copy(entries.get_bin_num())
+        elif index == c.Int.STR_CODE_INDEX:
+            pyperclip.copy(entries.get_str_code())
+        elif index == c.Int.REV_CODE_INDEX:
+            pyperclip.copy(entries.get_rev_code())
+        elif index == c.Int.ADD_CODE_INDEX:
+            pyperclip.copy(entries.get_add_code())
+
+    elif isinstance(entries, FloatEntries):  # Если переданные поля - для типа float
+        if index == c.Float.DEC_NUM_INDEX:
+            pyperclip.copy(entries.get_dec_num())
+        elif index == c.Float.BIN_NUM_INDEX:
+            pyperclip.copy(entries.get_bin_num())
+        elif index == c.Float.FLOAT_FORMAT_INDEX:
+            pyperclip.copy(entries.get_float_format())

@@ -1,11 +1,8 @@
 # Файл с константами для приложения
 
-class Type:
-    INT = 0
-    FLOAT = 1
-
-
 class Int:
+    TYPE_NUM = 0
+
     MAX_BIN_SIZE = 100  # Максимальное число двоичных разрядов
     DEFAULT_BIN_SIZE = 8  # Число двоичных разрядов по умолчанию
 
@@ -36,6 +33,8 @@ class Int:
 
 
 class Float:
+    TYPE_NUM = 1
+
     DEFAULT_MANTISSA_BIN_SIZE = 10  # Число двоичных разрядов для мантиссы по умолчанию
     DEFAULT_ORDER_BIN_SIZE = 5  # Число двоичных разрядов для порядка по умолчанию
 

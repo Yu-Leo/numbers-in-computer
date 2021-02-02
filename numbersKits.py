@@ -131,6 +131,36 @@ class IntKit:
         return one_less_by_abs.__rev_code
 
 
+class FloatKit:
+    def __init__(self, dec_num=0.0, bin_num="0", float_format="0"):
+        self.__dec_num = dec_num  # Число в 10й сс
+        self.__bin_num = bin_num  # Число в 2й сс
+        self.__bin_mantissa = 0
+        self.__dec_order = 0
+        self.__dec_characteristic = 0
+        self.__bin_characteristic = 0
+        self.__float_format = float_format
+
+    def __getitem__(self, key):
+        kit_dict = {"dec_num": self.__dec_num,
+                    "bin_num": self.__bin_num,
+                    "bin_mantissa": self.__bin_mantissa,
+                    "dec_order": self.__dec_order,
+                    "dec_characteristic": self.__dec_characteristic,
+                    "bin_characteristic": self.__bin_characteristic,
+                    "float_format": self.__float_format}
+        return kit_dict.get(key, "ERROR")
+
+    def by_dec_num(self, mantissa_bin_size, order_bin_size, save_first_digit):
+        pass
+
+    def by_bin_num(self, mantissa_bin_size, order_bin_size, save_first_digit):
+        pass
+
+    def by_float_format(self, mantissa_bin_size, order_bin_size, save_first_digit):
+        pass
+
+
 def bin_sum(a, b):
     """Сложение двух чисел в двоичной системе"""
     add_digit = False

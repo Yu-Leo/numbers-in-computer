@@ -158,10 +158,10 @@ class FloatKit:
     def __init__(self, dec_num=0.0, bin_num="0", float_format="0"):
         self.__dec_num = dec_num  # Число в 10й сс
         self.__bin_num = bin_num  # Число в 2й сс
-        self.__bin_mantissa = 0
-        self.__dec_order = 0
-        self.__dec_characteristic = 0
-        self.__bin_characteristic = 0
+        self.__bin_mantissa = "0"
+        self.__dec_order = "0"
+        self.__dec_characteristic = "0"
+        self.__bin_characteristic = "0"
         self.__float_format = float_format
 
     def __getitem__(self, key):
@@ -175,16 +175,38 @@ class FloatKit:
         return kit_dict.get(key, "ERROR")
 
     def by_dec_num(self, mantissa_bin_size, order_bin_size, save_first_digit):
-        dec_int_part, dec_float_part = FloatKit.get_dec_parts(abs(self.__dec_num))
+        self.__dec_num = abs(self.__dec_num)
+        dec_int_part, dec_float_part = FloatKit.get_dec_parts(self.__dec_num)
         bin_int_part = bin(dec_int_part)[2:]
         bin_float_part = FloatKit.get_bin_float_part(dec_float_part)
         self.__bin_num = bin_int_part + "." + bin_float_part
+        self.__bin_mantissa = self.__get_mantissa_by_bin()
+        self.__dec_order = self.__bin_num.find(".") - 1
+        self.__dec_characteristic = self.__dec_order + mantissa_bin_size + order_bin_size
+        self.__bin_characteristic = str(bin(self.__dec_characteristic)[2:])
+
+        self.__float_format = self.__get_float_format(mantissa_bin_size + order_bin_size, save_first_digit)
 
     def by_bin_num(self, mantissa_bin_size, order_bin_size, save_first_digit):
         pass
 
     def by_float_format(self, mantissa_bin_size, order_bin_size, save_first_digit):
         pass
+
+    def __get_mantissa_by_bin(self):
+        bin_num = self.__bin_num
+        dot_pos = bin_num.find(".")
+        res = bin_num[0] + "." + bin_num[1:dot_pos] + bin_num[dot_pos + 1:]
+        return res.rstrip("0")
+
+    def __get_float_format(self, sum_size, save):
+        """Возвращает вобранное число в формате с плавающей точкой"""
+        sign = "0" if self.__dec_num >= 0 else "1"
+        order = self.__bin_characteristic
+        first_digit = "1" if save else ""
+        mantissa = self.__bin_mantissa[2:]
+        res = sign + order + first_digit + mantissa
+        return res.ljust(sum_size + 1, "0")
 
 
 def bin_sum(a, b):

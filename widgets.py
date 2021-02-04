@@ -41,7 +41,7 @@ class IntWidgets(Widgets):
         self._buttons = IntButtons(window,
                                    del_func=self._entries.clear_except_settings,
                                    copy_func=copy_func,
-                                   calc_func=lambda i: self._entries.call_calc(i, calculate_func))
+                                   calc_func=lambda i: Entries.call_calc(i, calculate_func))
 
 
 class FloatWidgets(Widgets):
@@ -53,7 +53,7 @@ class FloatWidgets(Widgets):
         self._buttons = FloatButtons(window,
                                      del_func=self._entries.clear_except_settings,
                                      copy_func=copy_func,
-                                     calc_func=lambda i: self._entries.call_calc(i, calculate_func))
+                                     calc_func=lambda i: Entries.call_calc(i, calculate_func))
 
 
 class NumTypeMenu:
@@ -95,12 +95,12 @@ class NumTypeMenu:
 
     def __change_type(self):
         """Смена типа чисел"""
-        type = self.__numbers_type.get()
-        config.numbers_type = type  # Устанавливаем тип чисел в конфигурационном файле
-        if type == c.Int.TYPE_NUM:
+        num_type = self.__numbers_type.get()
+        config.numbers_type = num_type  # Устанавливаем тип чисел в конфигурационном файле
+        if num_type == c.Int.TYPE_NUM:
             self.__funcs["hide_float"]()
             self.__funcs["draw_int"]()
-        elif type == c.Float.TYPE_NUM:
+        elif num_type == c.Float.TYPE_NUM:
             self.__funcs["hide_int"]()
             self.__funcs["draw_float"]()
 

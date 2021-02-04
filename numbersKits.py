@@ -190,8 +190,8 @@ class FloatKit:
         self.__bin_mantissa = self.__get_mantissa_by_bin()
         self.__dec_order = self.__bin_num.find(".") - 1
         self.__dec_characteristic = self.__dec_order + mantissa_bin_size + order_bin_size
-        self.__bin_characteristic = str(bin(self.__dec_characteristic)[2:])
-        self.__float_format = self.__get_float_format(mantissa_bin_size + order_bin_size, save_first_digit)
+        self.__bin_characteristic = str(bin(self.__dec_characteristic)[2:].rjust(order_bin_size, "0"))
+        self.__float_format = self.__get_float_format(mantissa_bin_size, order_bin_size, save_first_digit)
 
     def by_float_format(self, mantissa_bin_size, order_bin_size, save_first_digit):
         self.__sign = self.__float_format[0]
@@ -208,14 +208,15 @@ class FloatKit:
         res = bin_num[0] + "." + bin_num[1:dot_pos] + bin_num[dot_pos + 1:]
         return res.rstrip("0")
 
-    def __get_float_format(self, sum_size, save):
+    def __get_float_format(self, mant_size, order_size, save):
         """Возвращает вобранное число в формате с плавающей точкой"""
         sign = "0" if self.__dec_num >= 0 else "1"
         order = self.__bin_characteristic
         first_digit = "1" if save else ""
         mantissa = self.__bin_mantissa[2:]
         res = sign + order + first_digit + mantissa
-        return res.ljust(sum_size + 1, "0")
+        sum_size = 1 + mant_size + (1 if save else 0) + order_size
+        return res.ljust(sum_size, "0")[:sum_size]
 
     def __get_mantissa_by_float(self, order_bin_size, save_first_digit):
         """Мантисса по вещ. представлению"""
@@ -249,7 +250,6 @@ class FloatKit:
         bin_float_part = bin_num[dot_pos + 1:]
         dec_int_past = float(int(bin_int_part, base=2))
         dec_float_part = FloatKit.get_dec_float_part(bin_float_part)
-        print(bin_int_part, bin_float_part)
         return sign * (dec_int_past + dec_float_part)
 
 

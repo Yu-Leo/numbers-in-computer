@@ -27,12 +27,6 @@ def float_calc(entries):
         kit.by_dec_num(mantissa_bin_size, order_bin_size, save_first_digit)
         entries.print(kit)
 
-    elif config.translate_type == c.Float.BIN_NUM_INDEX:  # Исходное значение - число в двоичной с. с.
-        bin_num = get_bin_num(entries)
-        kit = FloatKit(bin_num=bin_num)
-        kit.by_bin_num(mantissa_bin_size, order_bin_size, save_first_digit)
-        entries.print(kit)
-
     elif config.translate_type == c.Float.FLOAT_FORMAT_INDEX:  # Исходное значение - число в вещ. представлении
         float_format = get_float_format(entries, mantissa_bin_size, order_bin_size, save_first_digit)
         kit = FloatKit(float_format=float_format)

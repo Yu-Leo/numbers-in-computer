@@ -175,8 +175,7 @@ class FloatKit:
         return kit_dict.get(key, "ERROR")
 
     def by_dec_num(self, mantissa_bin_size, order_bin_size, save_first_digit):
-        self.__dec_num = abs(self.__dec_num)
-        dec_int_part, dec_float_part = FloatKit.get_dec_parts(self.__dec_num)
+        dec_int_part, dec_float_part = FloatKit.get_dec_parts(abs(self.__dec_num))
         bin_int_part = bin(dec_int_part)[2:]
         bin_float_part = FloatKit.get_bin_float_part(dec_float_part)
         self.__bin_num = bin_int_part + "." + bin_float_part
@@ -184,11 +183,7 @@ class FloatKit:
         self.__dec_order = self.__bin_num.find(".") - 1
         self.__dec_characteristic = self.__dec_order + mantissa_bin_size + order_bin_size
         self.__bin_characteristic = str(bin(self.__dec_characteristic)[2:])
-
         self.__float_format = self.__get_float_format(mantissa_bin_size + order_bin_size, save_first_digit)
-
-    def by_bin_num(self, mantissa_bin_size, order_bin_size, save_first_digit):
-        pass
 
     def by_float_format(self, mantissa_bin_size, order_bin_size, save_first_digit):
         pass

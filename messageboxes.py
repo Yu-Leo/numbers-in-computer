@@ -1,10 +1,12 @@
 # Файл с классами messagebox-ов
 
 import tkinter.messagebox as mb
-from text import Exceptions
+
+from constants import Exceptions as ConstEx
+from text import int_exceptions as intEx
 
 
-class Warning:
+class WarningMb:
     """Messagebox типа Warning"""
 
     def __init__(self, title, message):
@@ -15,7 +17,7 @@ class Warning:
         mb.showwarning(self.title, self.message)
 
 
-class Error:
+class ErrorMb:
     """Messagebox типа Error"""
 
     def __init__(self, title, message):
@@ -26,8 +28,22 @@ class Error:
         mb.showerror(self.title, self.message)
 
 
-class Messageboxes:
+class ExceptionMb(ErrorMb, WarningMb):
     """Messagebox-ы самописных ошибок"""
+
+    def __init__(self, exception):
+        if exception.type == ConstEx.TYPE_ERROR:
+            ErrorMb.__init__(self, title=intEx[exception.field].title,
+                             message=intEx[exception.field].type_error)
+        elif exception.type == ConstEx.RANGE_ERROR:
+            ErrorMb.__init__(self, title=intEx[exception.field].title,
+                             message=intEx[exception.field].range_error)
+        elif exception.type == ConstEx.WARNING:
+            WarningMb.__init__(self, title="", message="")
+        else:
+            raise Warning("Exception type error")
+
+    """
     BinSizeTypeError = Error(title=Exceptions.bin_size.title,
                              message=Exceptions.bin_size.type_error)
 
@@ -63,3 +79,4 @@ class Messageboxes:
 
     AddCodeValueError = Error(title=Exceptions.add_code.title,
                               message=Exceptions.add_code.value_error)
+                              """

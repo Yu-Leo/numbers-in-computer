@@ -452,10 +452,8 @@ class FloatButtons(Buttons):
     def __init__(self, window, del_func, copy_func, calc_func):
         super().__init__(window, del_func, copy_func, calc_func)
         self.append(c.Float.DEC_NUM_INDEX)
-        self.append(c.Float.BIN_NUM_INDEX)
         self.append(c.Float.FLOAT_FORMAT_INDEX)
 
     def draw(self, **kwargs):
         self._list[0].draw(row_num=4, column_num=2)
-        self._list[1].draw(row_num=5, column_num=2)
-        self._list[2].draw(row_num=10, column_num=2)
+        self._list[1].draw(row_num=10, column_num=2)

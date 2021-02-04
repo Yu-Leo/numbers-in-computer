@@ -9,10 +9,7 @@ from numbersKits import FloatKit
 
 def calculate(entries):
     """Расчёт в режиме float"""
-    try:
-        float_calc(entries)
-    except Exception:
-        pass
+    float_calc(entries)
 
 
 def float_calc(entries):
@@ -21,18 +18,13 @@ def float_calc(entries):
     save_first_digit = get_save_first_digit(entries)
     # Очистка от старых значений
     entries.clear_all_except(c.Float.MANTISSA_BIN_SIZE_INDEX,
-                             c.Float.ORDER_BIN_SIZE_INDEX, config.translate_type)
-
+                             c.Float.ORDER_BIN_SIZE_INDEX,
+                             c.Float.SAVE_FIRST_DIGIT_INDEX,
+                             config.translate_type)
     if config.translate_type == c.Float.DEC_NUM_INDEX:  # Исходное значение - число в десятичной с. с.
         dec_num = get_dec_num(entries)
         kit = FloatKit(dec_num=dec_num)
         kit.by_dec_num(mantissa_bin_size, order_bin_size, save_first_digit)
-        entries.print(kit)
-
-    elif config.translate_type == c.Float.BIN_NUM_INDEX:  # Исходное значение - число в двоичной с. с.
-        bin_num = get_bin_num(entries)
-        kit = FloatKit(bin_num=bin_num)
-        kit.by_bin_num(mantissa_bin_size, order_bin_size, save_first_digit)
         entries.print(kit)
 
     elif config.translate_type == c.Float.FLOAT_FORMAT_INDEX:  # Исходное значение - число в вещ. представлении

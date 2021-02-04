@@ -28,21 +28,15 @@ class Window:
         self.num_type_menu = NumTypeMenu(self.__root)
         # Виджеты режима int
         self.int_widgets = IntWidgets(self.__root,
-                                      lambda: int_calc(self.int_widgets.entries),
-                                      self.int_copy)
+                                      calculate_func=lambda: int_calc(self.int_widgets.entries),
+                                      copy_func=lambda index: int_copy(self.int_widgets.entries, index))
         # Виджеты режима float
         self.float_widgets = FloatWidgets(self.__root,
-                                          lambda: float_calc(self.float_widgets.entries),
-                                          self.float_copy)
+                                          calculate_func=lambda: float_calc(self.float_widgets.entries),
+                                          copy_func=lambda index: float_copy(self.float_widgets.entries, index))
 
         self.num_type_menu.set_funcs(self.int_widgets.draw, self.int_widgets.hide,
                                      self.float_widgets.draw, self.float_widgets.hide)
-
-    def int_copy(self, index):
-        int_copy(self.int_widgets.entries, index)
-
-    def float_copy(self, index):
-        float_copy(self.float_widgets.entries, index)
 
     def run(self):
         """Запуск приложения"""

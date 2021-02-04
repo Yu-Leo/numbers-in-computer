@@ -41,7 +41,7 @@ class IntWidgets(Widgets):
         self._buttons = IntButtons(window,
                                    del_func=self._entries.clear_except_settings,
                                    copy_func=copy_func,
-                                   calc_func=lambda i: self._entries.call_calc(i, calculate_func))
+                                   calc_func=lambda i: Entries.call_calc(i, calculate_func))
 
 
 class FloatWidgets(Widgets):
@@ -53,7 +53,7 @@ class FloatWidgets(Widgets):
         self._buttons = FloatButtons(window,
                                      del_func=self._entries.clear_except_settings,
                                      copy_func=copy_func,
-                                     calc_func=lambda i: self._entries.call_calc(i, calculate_func))
+                                     calc_func=lambda i: Entries.call_calc(i, calculate_func))
 
 
 class NumTypeMenu:
@@ -95,12 +95,12 @@ class NumTypeMenu:
 
     def __change_type(self):
         """Смена типа чисел"""
-        type = self.__numbers_type.get()
-        config.numbers_type = type  # Устанавливаем тип чисел в конфигурационном файле
-        if type == c.Int.TYPE_NUM:
+        num_type = self.__numbers_type.get()
+        config.numbers_type = num_type  # Устанавливаем тип чисел в конфигурационном файле
+        if num_type == c.Int.TYPE_NUM:
             self.__funcs["hide_float"]()
             self.__funcs["draw_int"]()
-        elif type == c.Float.TYPE_NUM:
+        elif num_type == c.Float.TYPE_NUM:
             self.__funcs["hide_int"]()
             self.__funcs["draw_float"]()
 
@@ -452,10 +452,8 @@ class FloatButtons(Buttons):
     def __init__(self, window, del_func, copy_func, calc_func):
         super().__init__(window, del_func, copy_func, calc_func)
         self.append(c.Float.DEC_NUM_INDEX)
-        self.append(c.Float.BIN_NUM_INDEX)
         self.append(c.Float.FLOAT_FORMAT_INDEX)
 
     def draw(self, **kwargs):
         self._list[0].draw(row_num=4, column_num=2)
-        self._list[1].draw(row_num=5, column_num=2)
-        self._list[2].draw(row_num=10, column_num=2)
+        self._list[1].draw(row_num=10, column_num=2)

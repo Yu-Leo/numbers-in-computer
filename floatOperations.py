@@ -4,6 +4,7 @@ import pyperclip  # Модуль для работы с буфером
 
 import config
 import constants as c
+import exceptions as e
 from numbersKits import FloatKit
 
 
@@ -41,7 +42,13 @@ def get_mantissa_bin_size(entries):
     try:
         int_mantissa_bin_size = int(str_mantissa_bin_size)
     except ValueError:
-        raise ValueError
+        raise e.EntryContentError(field=c.Float.MANTISSA_BIN_SIZE_INDEX,
+                                  ex_type=c.Exceptions.TYPE_ERROR)
+
+    if not (c.Float.MIN_MANT_BIN_SIZE <= int_mantissa_bin_size <= c.Float.MAX_MANT_BIN_SIZE):
+        raise e.EntryContentError(field=c.Float.MANTISSA_BIN_SIZE_INDEX,
+                                  ex_type=c.Exceptions.RANGE_ERROR)
+
     return int_mantissa_bin_size
 
 
@@ -50,7 +57,12 @@ def get_order_bin_size(entries):
     try:
         int_order_bin_size = int(str_order_bin_size)
     except ValueError:
-        raise ValueError
+        raise e.EntryContentError(field=c.Float.MANTISSA_BIN_SIZE_INDEX,
+                                  ex_type=c.Exceptions.TYPE_ERROR)
+
+    if not (c.Float.MIN_ORD_BIN_SIZE <= int_order_bin_size <= c.Float.MAX_ORD_BIN_SIZE):
+        raise e.EntryContentError(field=c.Float.ORDER_BIN_SIZE_INDEX,
+                                  ex_type=c.Exceptions.RANGE_ERROR)
     return int_order_bin_size
 
 
@@ -63,24 +75,20 @@ def get_dec_num(entries):
     try:
         dec_num = float(input_data)
     except ValueError:
-        raise ValueError
+        raise e.EntryContentError(field=c.Float.DEC_NUM_INDEX,
+                                  ex_type=c.Exceptions.TYPE_ERROR)
     return dec_num
-
-
-def get_bin_num(entries):
-    bin_num = entries.get_bin_num()
-    if set(bin_num) != {"0", "1", "."}:  # Если строка не состоит только из 0 и 1
-        raise TypeError
-    return bin_num
 
 
 def get_float_format(entries, mantissa, order, save):
     float_format = entries.get_float_format()
     if set(float_format) != {"0", "1"}:  # Если строка не состоит только из 0 и 1
-        raise TypeError
+        raise e.EntryContentError(field=c.Float.FLOAT_FORMAT_INDEX,
+                                  ex_type=c.Exceptions.TYPE_ERROR)
     sum_len = 1 + order + (1 if save else 0) + mantissa  # Длина вещ. представления
     if len(float_format) != sum_len:
-        raise ValueError
+        raise e.EntryContentError(field=c.Float.FLOAT_FORMAT_INDEX,
+                                  ex_type=c.Exceptions.RANGE_ERROR)
     return float_format
 
 

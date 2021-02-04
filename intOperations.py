@@ -63,7 +63,7 @@ def int_calc(entries):
         # Если невозможно рассчитать представления при данном числе двоичных разрядов
         if kit.codes_error():
             raise e.EntryContentError(field=c.Int.BIN_NUM_INDEX,
-                                      category=c.Exceptions.WARNING)
+                                      ex_type=c.Exceptions.WARNING)
 
     elif config.translate_type == c.Int.STR_CODE_INDEX:  # Исходное значение - прямой код числа
         str_code = get_str_code(entries, bin_size)
@@ -90,12 +90,11 @@ def get_bin_size(entries):
         int_bin_size = int(str_bin_size)
     except ValueError:
         raise e.EntryContentError(field=c.Int.BIN_SIZE_INDEX,
-                                  category=c.Exceptions.TYPE_ERROR)
+                                  ex_type=c.Exceptions.TYPE_ERROR)
 
-    if not (1 <= int_bin_size <= c.Int.MAX_BIN_SIZE):
+    if not (c.Int.MIN_BIN_SIZE <= int_bin_size <= c.Int.MAX_BIN_SIZE):
         raise e.EntryContentError(field=c.Int.BIN_SIZE_INDEX,
-                                  category=c.Exceptions.RANGE_ERROR)
-
+                                  ex_type=c.Exceptions.RANGE_ERROR)
     return int_bin_size
 
 
@@ -105,8 +104,7 @@ def get_dec_num(entries):
         dec_num = int(input_data)
     except ValueError:
         raise e.EntryContentError(field=c.Int.DEC_NUM_INDEX,
-                                  category=c.Exceptions.TYPE_ERROR)
-        # raise e.DecNumTypeError
+                                  ex_type=c.Exceptions.TYPE_ERROR)
     return dec_num
 
 
@@ -114,8 +112,7 @@ def get_bin_num(entries):
     bin_num = entries.get_bin_num()
     if set(bin_num) != {"0", "1"}:  # Если строка не состоит только из 0 и 1
         raise e.EntryContentError(field=c.Int.BIN_NUM_INDEX,
-                                  category=c.Exceptions.TYPE_ERROR)
-
+                                  ex_type=c.Exceptions.TYPE_ERROR)
     return bin_num
 
 
@@ -123,12 +120,11 @@ def get_str_code(entries, bin_size):
     str_code = entries.get_str_code()
     if set(str_code) != {"0", "1"}:  # Если строка не состоит только из 0 и 1
         raise e.EntryContentError(field=c.Int.STR_CODE_INDEX,
-                                  category=c.Exceptions.TYPE_ERROR)
+                                  ex_type=c.Exceptions.TYPE_ERROR)
         # raise e.StrCodeTypeError
     if len(str_code) != bin_size or bin_size < 2:
         raise e.EntryContentError(field=c.Int.STR_CODE_INDEX,
-                                  category=c.Exceptions.RANGE_ERROR)
-
+                                  ex_type=c.Exceptions.RANGE_ERROR)
     return str_code
 
 
@@ -136,12 +132,11 @@ def get_rev_code(entries, bin_size):
     rev_code = entries.get_rev_code()
     if set(rev_code) != {"0", "1"}:  # Если строка не состоит только из 0 и 1
         raise e.EntryContentError(field=c.Int.REV_CODE_INDEX,
-                                  category=c.Exceptions.TYPE_ERROR)
+                                  ex_type=c.Exceptions.TYPE_ERROR)
         # raise e.RevCodeTypeError
     if len(rev_code) != bin_size or bin_size < 2:
         raise e.EntryContentError(field=c.Int.REV_CODE_INDEX,
-                                  category=c.Exceptions.RANGE_ERROR)
-
+                                  ex_type=c.Exceptions.RANGE_ERROR)
     return rev_code
 
 
@@ -149,12 +144,11 @@ def get_add_code(entries, bin_size):
     add_code = entries.get_add_code()
     if set(add_code) != {"0", "1"}:  # Если строка не состоит только из 0 и 1
         raise e.EntryContentError(field=c.Int.ADD_CODE_INDEX,
-                                  category=c.Exceptions.TYPE_ERROR)
+                                  ex_type=c.Exceptions.TYPE_ERROR)
 
     if len(add_code) != bin_size or bin_size < 2:
         raise e.EntryContentError(field=c.Int.ADD_CODE_INDEX,
-                                  category=c.Exceptions.RANGE_ERROR)
-
+                                  ex_type=c.Exceptions.RANGE_ERROR)
     return add_code
 
 

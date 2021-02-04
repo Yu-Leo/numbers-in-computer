@@ -52,3 +52,9 @@ class Float:
     FLOAT_FORMAT_INDEX = 9
 
     NUMBER_OF_PARAMS = 10
+
+
+class Exceptions:
+    TYPE_ERROR = 0
+    RANGE_ERROR = 1
+    WARNING = 2

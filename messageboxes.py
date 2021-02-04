@@ -3,6 +3,7 @@
 import tkinter.messagebox as mb
 
 from constants import Exceptions as ConstEx
+from text import int_exceptions as intEx
 
 
 class WarningMb:
@@ -32,9 +33,11 @@ class ExceptionMb(ErrorMb, WarningMb):
 
     def __init__(self, exception):
         if exception.type == ConstEx.TYPE_ERROR:
-            ErrorMb.__init__(self, title="", message="")
+            ErrorMb.__init__(self, title=intEx[exception.field].title,
+                             message=intEx[exception.field].type_error)
         elif exception.type == ConstEx.RANGE_ERROR:
-            ErrorMb.__init__(self, title="", message="")
+            ErrorMb.__init__(self, title=intEx[exception.field].title,
+                             message=intEx[exception.field].range_error)
         elif exception.type == ConstEx.WARNING:
             WarningMb.__init__(self, title="", message="")
         else:

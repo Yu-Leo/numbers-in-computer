@@ -132,6 +132,29 @@ class IntKit:
 
 
 class FloatKit:
+
+    @staticmethod
+    def get_dec_parts(a: float):
+        """Возвращает целую в вещ. части числа в десятичной с. с."""
+        int_part = int(a)
+        float_part = a - int_part
+        return int_part, float_part
+
+    @staticmethod
+    def get_bin_float_part(dec_float_part):
+        """Перевод вещественной части числа в двоичную с.с."""
+        if abs(dec_float_part - 0) <= 0.001:  # Дробная часть == 0
+            return "0"
+        res = ""
+        while abs(dec_float_part - int(dec_float_part)) >= 0.001:
+            dec_float_part *= 2
+            res += str(int(dec_float_part))
+            dec_float_part = dec_float_part - int(dec_float_part)
+
+            if len(res) > c.Float.MAX_FLOAT_SIZE:
+                break  # Если кол-во знаков после запятой больше, чем max
+        return res
+
     def __init__(self, dec_num=0.0, bin_num="0", float_format="0"):
         self.__dec_num = dec_num  # Число в 10й сс
         self.__bin_num = bin_num  # Число в 2й сс
@@ -152,7 +175,10 @@ class FloatKit:
         return kit_dict.get(key, "ERROR")
 
     def by_dec_num(self, mantissa_bin_size, order_bin_size, save_first_digit):
-        pass
+        dec_int_part, dec_float_part = FloatKit.get_dec_parts(abs(self.__dec_num))
+        bin_int_part = bin(dec_int_part)[2:]
+        bin_float_part = FloatKit.get_bin_float_part(dec_float_part)
+        self.__bin_num = bin_int_part + "." + bin_float_part
 
     def by_bin_num(self, mantissa_bin_size, order_bin_size, save_first_digit):
         pass

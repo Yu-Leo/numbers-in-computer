@@ -313,6 +313,9 @@ class FloatEntries(Entries):
     def __set_order_bin_size(self, order_bin_size):
         self._list[c.Float.ORDER_BIN_SIZE_INDEX].insert(0, str(order_bin_size))
 
+    def clear_all_except(self, *args):
+        super().clear_all_except(c.Float.SAVE_FIRST_DIGIT_INDEX, *args)
+
     def _bind_enter(self, calculate_func):
         """Биндим на нажатие Enter в соотв. поле"""
         self._bind_enter_button(c.Float.DEC_NUM_INDEX, calculate_func)

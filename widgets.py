@@ -48,7 +48,7 @@ class FloatWidgets(Widgets):
     def __init__(self, window, calculate_func, copy_func):
         super().__init__()
         self._entries_names = FloatLabels(window)
-        self._entries = FloatEntries(window)
+        self._entries = FloatEntries(window, calculate_func, copy_func)
 
         self._buttons = FloatButtons(window,
                                      del_func=self._entries.clear_except_settings,
@@ -194,6 +194,30 @@ class Entries:
         self._list[index].delete(0, tk.END)
         self._list[index].insert(0, value)
 
+    def _bind_buttons(self, calculate_func, copy_func):
+        self._bind_enter(calculate_func)
+        self._bind_delete()
+        self._bind_ctrlc(copy_func)
+
+    def _bind_enter(self, calculate_func):
+        pass
+
+    def _bind_delete(self):
+        pass
+
+    def _bind_ctrlc(self, copy_func):
+        pass
+
+    def _bind_enter_button(self, index, func):
+        self._list[index].bind("<Return>",
+                               lambda x: Entries.call_calc(index, func))
+
+    def _bind_delete_button(self, index):
+        self._list[index].bind("<Delete>", lambda x: self.clear_except_settings())
+
+    def _bind_ctrlc_button(self, index, func):
+        self._list[index].bind("<Control-c>", lambda x: func(index))
+
 
 class IntEntries(Entries):
     """Список полей ввода-вывода при целочисленном режиме"""
@@ -203,46 +227,31 @@ class IntEntries(Entries):
         self._set_settings_entries(c.Int.BIN_SIZE_INDEX)
         self._list[c.Int.BIN_SIZE_INDEX]["width"] = 5
         self.__set_bin_size(c.Int.DEFAULT_BIN_SIZE)
-        self.__bind_buttons(calculate_func, copy_func)
+        super()._bind_buttons(calculate_func, copy_func)
 
-    def __bind_buttons(self, calculate_func, copy_func):
-        self.__bind_enter(calculate_func)
-        self.__bind_delete()
-        self.__bind_ctrlc(copy_func)
-
-    def __bind_enter(self, calculate_func):
+    def _bind_enter(self, calculate_func):
         """Биндим на нажатие Enter в соотв. поле"""
-        self._list[c.Int.DEC_NUM_INDEX].bind("<Return>",
-                                             lambda x: IntEntries.call_calc(c.Int.DEC_NUM_INDEX, calculate_func))
-        self._list[c.Int.BIN_NUM_INDEX].bind("<Return>",
-                                             lambda x: IntEntries.call_calc(c.Int.BIN_NUM_INDEX, calculate_func))
-        self._list[c.Int.STR_CODE_INDEX].bind("<Return>",
-                                              lambda x: IntEntries.call_calc(c.Int.STR_CODE_INDEX, calculate_func))
-        self._list[c.Int.REV_CODE_INDEX].bind("<Return>",
-                                              lambda x: IntEntries.call_calc(c.Int.REV_CODE_INDEX, calculate_func))
-        self._list[c.Int.ADD_CODE_INDEX].bind("<Return>",
-                                              lambda x: IntEntries.call_calc(c.Int.ADD_CODE_INDEX, calculate_func))
+        self._bind_enter_button(c.Int.DEC_NUM_INDEX, calculate_func)
+        self._bind_enter_button(c.Int.BIN_NUM_INDEX, calculate_func)
+        self._bind_enter_button(c.Int.STR_CODE_INDEX, calculate_func)
+        self._bind_enter_button(c.Int.REV_CODE_INDEX, calculate_func)
+        self._bind_enter_button(c.Int.ADD_CODE_INDEX, calculate_func)
 
-    def __bind_delete(self):
+    def _bind_delete(self):
         """Биндим на нажатие Delete"""
         indexes = [c.Int.DEC_NUM_INDEX, c.Int.BIN_NUM_INDEX,
                    c.Int.STR_CODE_INDEX, c.Int.REV_CODE_INDEX,
                    c.Int.ADD_CODE_INDEX]
         for index in indexes:
-            self._list[index].bind("<Delete>", lambda x: self.clear_all_except(c.Int.BIN_SIZE_INDEX))
+            self._bind_delete_button(index)
 
-    def __bind_ctrlc(self, copy_func):
+    def _bind_ctrlc(self, copy_func):
         """Биндим на нажатие Ctrl+C в соотв. поле"""
-        self._list[c.Int.DEC_NUM_INDEX].bind("<Control-c>",
-                                             lambda x: copy_func(c.Int.DEC_NUM_INDEX))
-        self._list[c.Int.BIN_NUM_INDEX].bind("<Control-c>",
-                                             lambda x: copy_func(c.Int.BIN_NUM_INDEX))
-        self._list[c.Int.STR_CODE_INDEX].bind("<Control-c>",
-                                              lambda x: copy_func(c.Int.STR_CODE_INDEX))
-        self._list[c.Int.REV_CODE_INDEX].bind("<Control-c>",
-                                              lambda x: copy_func(c.Int.REV_CODE_INDEX))
-        self._list[c.Int.ADD_CODE_INDEX].bind("<Control-c>",
-                                              lambda x: copy_func(c.Int.ADD_CODE_INDEX))
+        self._bind_ctrlc_button(c.Int.DEC_NUM_INDEX, copy_func)
+        self._bind_ctrlc_button(c.Int.BIN_NUM_INDEX, copy_func)
+        self._bind_ctrlc_button(c.Int.STR_CODE_INDEX, copy_func)
+        self._bind_ctrlc_button(c.Int.REV_CODE_INDEX, copy_func)
+        self._bind_ctrlc_button(c.Int.ADD_CODE_INDEX, copy_func)
 
     def __set_bin_size(self, bin_size):
         self._list[c.Int.BIN_SIZE_INDEX].insert(0, str(bin_size))
@@ -282,7 +291,7 @@ class IntEntries(Entries):
 class FloatEntries(Entries):
     """Список полей ввода-вывода при режиме вещ. чисел"""
 
-    def __init__(self, window):
+    def __init__(self, window, calculate_func, copy_func):
         super().__init__(window, c.Float.NUMBER_OF_PARAMS)
         self._set_settings_entries(c.Float.MANTISSA_BIN_SIZE_INDEX, c.Float.ORDER_BIN_SIZE_INDEX,
                                    c.Float.SAVE_FIRST_DIGIT_INDEX)
@@ -296,12 +305,32 @@ class FloatEntries(Entries):
 
         self._list[c.Float.SAVE_FIRST_DIGIT_INDEX] = tk.Checkbutton(window,
                                                                     variable=self.__save)
+        super()._bind_buttons(calculate_func, copy_func)
 
     def __set_mantissa_bin_size(self, mantissa_bin_size):
         self._list[c.Float.MANTISSA_BIN_SIZE_INDEX].insert(0, str(mantissa_bin_size))
 
     def __set_order_bin_size(self, order_bin_size):
         self._list[c.Float.ORDER_BIN_SIZE_INDEX].insert(0, str(order_bin_size))
+
+    def _bind_enter(self, calculate_func):
+        """Биндим на нажатие Enter в соотв. поле"""
+        self._bind_enter_button(c.Float.DEC_NUM_INDEX, calculate_func)
+        self._bind_enter_button(c.Float.BIN_NUM_INDEX, calculate_func)
+        self._bind_enter_button(c.Float.FLOAT_FORMAT_INDEX, calculate_func)
+
+    def _bind_delete(self):
+        """Биндим на нажатие Delete"""
+        indexes = [c.Float.DEC_NUM_INDEX, c.Float.BIN_NUM_INDEX,
+                   c.Float.FLOAT_FORMAT_INDEX]
+        for index in indexes:
+            self._bind_delete_button(index)
+
+    def _bind_ctrlc(self, copy_func):
+        """Биндим на нажатие Ctrl+C в соотв. поле"""
+        self._bind_ctrlc_button(c.Float.DEC_NUM_INDEX, copy_func)
+        self._bind_ctrlc_button(c.Float.BIN_NUM_INDEX, copy_func)
+        self._bind_ctrlc_button(c.Float.FLOAT_FORMAT_INDEX, copy_func)
 
     def get_mantissa_bin_size(self):
         return self._get(c.Float.MANTISSA_BIN_SIZE_INDEX)

@@ -35,6 +35,8 @@ class Int:
 class Float:
     TYPE_NUM = 1
 
+    MAX_FLOAT_SIZE = 10  # Максимальное кол-во знаков после запятой
+
     DEFAULT_MANTISSA_BIN_SIZE = 10  # Число двоичных разрядов для мантиссы по умолчанию
     DEFAULT_ORDER_BIN_SIZE = 5  # Число двоичных разрядов для порядка по умолчанию
 

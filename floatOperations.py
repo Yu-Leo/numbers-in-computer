@@ -5,12 +5,30 @@ import pyperclip  # Модуль для работы с буфером
 import config
 import constants as c
 import exceptions as e
+import messageboxes as mb
 from numbersKits import FloatKit
 
 
 def calculate(entries):
     """Расчёт в режиме float"""
-    float_calc(entries)
+    try:
+        float_calc(entries)
+    except e.FloatEntryContentError as exception:
+        if exception.field == c.Float.MANTISSA_BIN_SIZE_INDEX:
+            mb.ExceptionMb(exception).show()
+            entries.clear_all_except(c.Float.ORDER_BIN_SIZE_INDEX)
+
+        elif exception.field == c.Float.ORDER_BIN_SIZE_INDEX:
+            mb.ExceptionMb(exception).show()
+            entries.clear_all_except(c.Float.MANTISSA_BIN_SIZE_INDEX)
+
+        elif exception.field == c.Float.DEC_NUM_INDEX:
+            mb.ExceptionMb(exception).show()
+            entries.clear_except_settings()
+
+        elif exception.field == c.Float.FLOAT_FORMAT_INDEX:
+            mb.ExceptionMb(exception).show()
+            entries.clear_except_settings()
 
 
 def float_calc(entries):
@@ -42,12 +60,12 @@ def get_mantissa_bin_size(entries):
     try:
         int_mantissa_bin_size = int(str_mantissa_bin_size)
     except ValueError:
-        raise e.EntryContentError(field=c.Float.MANTISSA_BIN_SIZE_INDEX,
-                                  ex_type=c.Exceptions.TYPE_ERROR)
+        raise e.FloatEntryContentError(field=c.Float.MANTISSA_BIN_SIZE_INDEX,
+                                       exception_type=c.Exceptions.TYPE_ERROR)
 
     if not (c.Float.MIN_MANT_BIN_SIZE <= int_mantissa_bin_size <= c.Float.MAX_MANT_BIN_SIZE):
-        raise e.EntryContentError(field=c.Float.MANTISSA_BIN_SIZE_INDEX,
-                                  ex_type=c.Exceptions.RANGE_ERROR)
+        raise e.FloatEntryContentError(field=c.Float.MANTISSA_BIN_SIZE_INDEX,
+                                       exception_type=c.Exceptions.RANGE_ERROR)
 
     return int_mantissa_bin_size
 
@@ -57,12 +75,12 @@ def get_order_bin_size(entries):
     try:
         int_order_bin_size = int(str_order_bin_size)
     except ValueError:
-        raise e.EntryContentError(field=c.Float.MANTISSA_BIN_SIZE_INDEX,
-                                  ex_type=c.Exceptions.TYPE_ERROR)
+        raise e.FloatEntryContentError(field=c.Float.MANTISSA_BIN_SIZE_INDEX,
+                                       exception_type=c.Exceptions.TYPE_ERROR)
 
     if not (c.Float.MIN_ORD_BIN_SIZE <= int_order_bin_size <= c.Float.MAX_ORD_BIN_SIZE):
-        raise e.EntryContentError(field=c.Float.ORDER_BIN_SIZE_INDEX,
-                                  ex_type=c.Exceptions.RANGE_ERROR)
+        raise e.FloatEntryContentError(field=c.Float.ORDER_BIN_SIZE_INDEX,
+                                       exception_type=c.Exceptions.RANGE_ERROR)
     return int_order_bin_size
 
 
@@ -75,20 +93,20 @@ def get_dec_num(entries):
     try:
         dec_num = float(input_data)
     except ValueError:
-        raise e.EntryContentError(field=c.Float.DEC_NUM_INDEX,
-                                  ex_type=c.Exceptions.TYPE_ERROR)
+        raise e.FloatEntryContentError(field=c.Float.DEC_NUM_INDEX,
+                                       exception_type=c.Exceptions.TYPE_ERROR)
     return dec_num
 
 
 def get_float_format(entries, mantissa, order, save):
     float_format = entries.get_float_format()
     if set(float_format) != {"0", "1"}:  # Если строка не состоит только из 0 и 1
-        raise e.EntryContentError(field=c.Float.FLOAT_FORMAT_INDEX,
-                                  ex_type=c.Exceptions.TYPE_ERROR)
+        raise e.FloatEntryContentError(field=c.Float.FLOAT_FORMAT_INDEX,
+                                       exception_type=c.Exceptions.TYPE_ERROR)
     sum_len = 1 + order + (1 if save else 0) + mantissa  # Длина вещ. представления
     if len(float_format) != sum_len:
-        raise e.EntryContentError(field=c.Float.FLOAT_FORMAT_INDEX,
-                                  ex_type=c.Exceptions.RANGE_ERROR)
+        raise e.FloatEntryContentError(field=c.Float.FLOAT_FORMAT_INDEX,
+                                       exception_type=c.Exceptions.RANGE_ERROR)
     return float_format
 
 

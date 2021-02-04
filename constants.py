@@ -31,3 +31,9 @@ class Int:
         данным числом двоичных разрядов.
         """
         return -1 * (2 ** (bin_size - 1))
+
+
+class Exceptions:
+    TYPE_ERROR = 0
+    RANGE_ERROR = 1
+    WARNING = 2

@@ -3,7 +3,9 @@
 import tkinter.messagebox as mb
 
 from constants import Exceptions as ConstEx
-from text import int_exceptions as intEx
+from exceptions import FloatEntryContentError as FloatError
+from exceptions import IntEntryContentError as IntError
+from text import int_exceptions, float_exceptions
 
 
 class WarningMb:
@@ -31,52 +33,25 @@ class ErrorMb:
 class ExceptionMb(ErrorMb, WarningMb):
     """Messagebox-ы самописных ошибок"""
 
+    def __get_text_list(self, exception):
+        """Возвращает нужный список фраз в зависимости от типа исключения"""
+        if isinstance(exception, IntError):
+            return int_exceptions
+        elif isinstance(exception, FloatError):
+            return float_exceptions
+        else:
+            raise Warning("Exception.exception_type error")
+
     def __init__(self, exception):
-        if exception.type == ConstEx.TYPE_ERROR:
-            ErrorMb.__init__(self, title=intEx[exception.field].title,
-                             message=intEx[exception.field].type_error)
-        elif exception.type == ConstEx.RANGE_ERROR:
-            ErrorMb.__init__(self, title=intEx[exception.field].title,
-                             message=intEx[exception.field].range_error)
-        elif exception.type == ConstEx.WARNING:
+        text_list = self.__get_text_list(exception)
+
+        if exception.exception_type == ConstEx.TYPE_ERROR:
+            ErrorMb.__init__(self, title=text_list[exception.field].title,
+                             message=text_list[exception.field].type_error)
+        elif exception.exception_type == ConstEx.RANGE_ERROR:
+            ErrorMb.__init__(self, title=text_list[exception.field].title,
+                             message=text_list[exception.field].range_error)
+        elif exception.exception_type == ConstEx.WARNING:
             WarningMb.__init__(self, title="", message="")
         else:
             raise Warning("Exception type error")
-
-    """
-    BinSizeTypeError = Error(title=Exceptions.bin_size.title,
-                             message=Exceptions.bin_size.type_error)
-
-    BinSizeValueError = Error(title=Exceptions.bin_size.title,
-                              message=Exceptions.bin_size.value_error)
-
-    DecNumTypeError = Error(title=Exceptions.dec_num.title,
-                            message=Exceptions.dec_num.type_error)
-
-    DecNumValueCodesWarning = Warning(title=Exceptions.dec_num.title,
-                                      message=Exceptions.dec_num.value_error)
-
-    BinNumTypeError = Error(title=Exceptions.bin_num.title,
-                            message=Exceptions.bin_num.type_error)
-
-    BinNumValueCodesWarning = Warning(title=Exceptions.bin_num.title,
-                                      message=Exceptions.bin_num.value_error)
-
-    StrCodeTypeError = Error(title=Exceptions.str_code.title,
-                             message=Exceptions.str_code.type_error)
-
-    StrCodeValueError = Error(title=Exceptions.str_code.title,
-                              message=Exceptions.str_code.value_error)
-
-    RevCodeTypeError = Error(title=Exceptions.rev_code.title,
-                             message=Exceptions.rev_code.type_error)
-
-    RevCodeValueError = Error(title=Exceptions.rev_code.title,
-                              message=Exceptions.rev_code.value_error)
-
-    AddCodeTypeError = Error(title=Exceptions.add_code.title,
-                             message=Exceptions.add_code.type_error)
-
-    AddCodeValueError = Error(title=Exceptions.add_code.title,
-                              message=Exceptions.add_code.value_error)
-                              """

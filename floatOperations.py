@@ -90,7 +90,7 @@ def get_save_first_digit(entries):
 
 def is_dec_num_correct(input_data):
     """Проверка на то, является ли строка корректным вещ. числом"""
-    correct_symbols = {"1", "2", "3", "4", "5", "6", "7", "8", "9", "0", ".", ","}
+    correct_symbols = {"-", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", ".", ","}
     digits_and_punct_only = set(input_data).issubset(correct_symbols)
     one_punct = input_data.count(".") + input_data.count(",") <= 1
     return digits_and_punct_only and one_punct

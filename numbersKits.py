@@ -171,6 +171,7 @@ class FloatKit:
         self.__dec_characteristic = "0"
         self.__bin_characteristic = "0"
         self.__float_format = float_format
+        self.__sign = "0"
 
     def __getitem__(self, key):
         kit_dict = {"dec_num": self.__dec_num,
@@ -183,17 +184,18 @@ class FloatKit:
         return kit_dict.get(key, "ERROR")
 
     def by_dec_num(self, mantissa_bin_size, order_bin_size, save_first_digit):
+        """Расчёт по числу в десятичной с. с."""
         dec_int_part, dec_float_part = FloatKit.get_dec_parts(abs(self.__dec_num))
         bin_int_part = bin(dec_int_part)[2:]
         bin_float_part = FloatKit.get_bin_float_part(dec_float_part)
         self.__bin_num = bin_int_part + "." + bin_float_part
-        self.__bin_mantissa = self.__get_mantissa_by_bin()
-        self.__dec_order = self.__bin_num.find(".") - 1
+        self.__bin_mantissa, self.__dec_order = self.__get_mantissa_and_order_by_bin()
         self.__dec_characteristic = self.__dec_order + mantissa_bin_size + order_bin_size
         self.__bin_characteristic = str(bin(self.__dec_characteristic)[2:].rjust(order_bin_size, "0"))
-        self.__float_format = self.__get_float_format(mantissa_bin_size, order_bin_size, save_first_digit)
+        self.__float_format = self.__get_float_format_by_all(mantissa_bin_size, order_bin_size, save_first_digit)
 
     def by_float_format(self, mantissa_bin_size, order_bin_size, save_first_digit):
+        """Расчёт по числу в Формате с плавающей запятой"""
         self.__sign = self.__float_format[0]
         self.__bin_characteristic = self.__float_format[1:order_bin_size + 1]
         self.__dec_characteristic = int(self.__bin_characteristic, base=2)
@@ -202,14 +204,23 @@ class FloatKit:
         self.__bin_num = self.__get_bin_by_mantissa()
         self.__dec_num = self.__get_dec_by_bin()
 
-    def __get_mantissa_by_bin(self):
+    def __get_mantissa_and_order_by_bin(self):
+        """Возвращает мантиссу и порядок числа по его дв. представлению"""
         bin_num = self.__bin_num
         dot_pos = bin_num.find(".")
-        res = bin_num[0] + "." + bin_num[1:dot_pos] + bin_num[dot_pos + 1:]
-        return res.rstrip("0")
+        bin_num = bin_num[:dot_pos] + bin_num[dot_pos + 1:]
 
-    def __get_float_format(self, mant_size, order_size, save):
-        """Возвращает вобранное число в формате с плавающей точкой"""
+        if bin_num[0] == "1":
+            return ("1." + bin_num[1:]).rstrip("0"), dot_pos - 1
+        elif bin_num[0] == "0":
+            one_pos = bin_num.find("1")
+            mant = bin_num[:one_pos + 1] + "." + bin_num[one_pos + 1:]
+            mant = mant.lstrip("0")
+            mant = mant.ljust(4, "0")
+            return mant, -one_pos
+
+    def __get_float_format_by_all(self, mant_size, order_size, save):
+        """Возвращает число в формате с плавающей точкой"""
         sign = "0" if self.__dec_num >= 0 else "1"
         order = self.__bin_characteristic
         first_digit = "1" if save else ""
@@ -226,6 +237,7 @@ class FloatKit:
         return "1." + float_mantissa
 
     def __get_bin_by_mantissa(self):
+        """Число в двоичной с.с. по мантиссе"""
         order = int(self.__dec_order)
         dot_pos = 2
         if order >= 0:
@@ -238,6 +250,7 @@ class FloatKit:
         return sign + left_part + "." + right_part
 
     def __get_dec_by_bin(self):
+        """Число в десятичной с. с. по двоичному представлению"""
         if self.__bin_num[0] == "-":
             sign = -1
             bin_num = self.__bin_num[1:]

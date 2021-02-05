@@ -93,7 +93,7 @@ def is_dec_num_correct(input_data):
     correct_symbols = {"-", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", ".", ","}
     digits_and_punct_only = set(input_data).issubset(correct_symbols)
     one_punct = input_data.count(".") + input_data.count(",") <= 1
-    return digits_and_punct_only and one_punct
+    return input_data != "" and digits_and_punct_only and one_punct
 
 
 def replace_comma(input_data):
@@ -117,7 +117,7 @@ def get_dec_num(entries):
 
 def get_float_format(entries, mantissa, order, save):
     float_format = entries.get_float_format()
-    if not set(float_format).issubset({"0", "1"}):  # Если строка не состоит только из 0 и 1
+    if not set(float_format).issubset({"0", "1"}) or float_format == "":  # Если строка не состоит только из 0 и 1
         raise e.FloatEntryContentError(field=c.Float.FLOAT_FORMAT_INDEX,
                                        exception_type=c.Exceptions.TYPE_ERROR)
     sum_len = 1 + order + (1 if save else 0) + mantissa  # Длина вещ. представления

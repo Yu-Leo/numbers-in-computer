@@ -167,7 +167,7 @@ class FloatKit:
         self.__dec_num = dec_num  # Число в 10й сс
         self.__bin_num = bin_num  # Число в 2й сс
         self.__bin_mantissa = "0"
-        self.__dec_order = "0"
+        self.__dec_order = 0
         self.__dec_characteristic = "0"
         self.__bin_characteristic = "0"
         self.__float_format = float_format
@@ -185,8 +185,9 @@ class FloatKit:
 
     def by_dec_num(self, mantissa_bin_size, order_bin_size, save_first_digit):
         """Расчёт по числу в десятичной с. с."""
+        self.__sign = ("1" if self.__dec_num < 0 else "0")
         dec_int_part, dec_float_part = FloatKit.get_dec_parts(abs(self.__dec_num))
-        bin_int_part = bin(dec_int_part)[2:]
+        bin_int_part = ("-" if self.__sign == "1" else "") + bin(dec_int_part)[2:]
         bin_float_part = FloatKit.get_bin_float_part(dec_float_part)
         self.__bin_num = bin_int_part + "." + bin_float_part
         self.__bin_mantissa, self.__dec_order = self.__get_mantissa_and_order_by_bin()
@@ -207,24 +208,29 @@ class FloatKit:
     def __get_mantissa_and_order_by_bin(self):
         """Возвращает мантиссу и порядок числа по его дв. представлению"""
         bin_num = self.__bin_num
+        sign = "-" if self.__sign == "1" else ""
+        if self.__sign == "1":
+            bin_num = bin_num[1:]
         dot_pos = bin_num.find(".")
         bin_num = bin_num[:dot_pos] + bin_num[dot_pos + 1:]
-
         if bin_num[0] == "1":
-            return ("1." + bin_num[1:]).rstrip("0"), dot_pos - 1
+            return (sign + "1." + bin_num[1:]).rstrip("0"), dot_pos - 1
         elif bin_num[0] == "0":
             one_pos = bin_num.find("1")
             mant = bin_num[:one_pos + 1] + "." + bin_num[one_pos + 1:]
             mant = mant.lstrip("0")
             mant = mant.ljust(4, "0")
-            return mant, -one_pos
+            return sign + mant, -one_pos
 
     def __get_float_format_by_all(self, mant_size, order_size, save):
         """Возвращает число в формате с плавающей точкой"""
-        sign = "0" if self.__dec_num >= 0 else "1"
+        sign = self.__sign
         order = self.__bin_characteristic
         first_digit = "1" if save else ""
-        mantissa = self.__bin_mantissa[2:]
+        if sign == "1":
+            mantissa = self.__bin_mantissa[3:]
+        else:
+            mantissa = self.__bin_mantissa[2:]
         res = sign + order + first_digit + mantissa
         sum_size = 1 + mant_size + (1 if save else 0) + order_size
         return res.ljust(sum_size, "0")[:sum_size]
@@ -233,21 +239,31 @@ class FloatKit:
         """Мантисса по вещ. представлению"""
         float_mantissa = self.__float_format[order_bin_size + 1:].rstrip("0")
         if save_first_digit:
-            return "1." + float_mantissa[1:]
-        return "1." + float_mantissa
+            mant = ("1." + float_mantissa[1:]).ljust(4, "0")
+        else:
+            mant = ("1." + float_mantissa).ljust(4, "0")
+        if self.__sign == "1":
+            return "-" + mant
+        else:
+            return mant
 
     def __get_bin_by_mantissa(self):
         """Число в двоичной с.с. по мантиссе"""
-        order = int(self.__dec_order)
-        dot_pos = 2
+        order = self.__dec_order
+        sign = "-" if self.__sign == "1" else ""
+        dot_pos = self.__bin_mantissa.find(".")
+        full_mantissa = self.__bin_mantissa[:dot_pos] + self.__bin_mantissa[dot_pos + 1:]
+        if self.__sign == "1":
+            full_mantissa = full_mantissa[1:]
         if order >= 0:
             dot_pos = 1 + order
-        full_mantissa = self.__bin_mantissa[:1] + self.__bin_mantissa[2:]
-        full_mantissa = full_mantissa.ljust(dot_pos + 1, "0")
-        sign = "-" if self.__sign == "1" else ""
-        left_part = full_mantissa[:dot_pos]
-        right_part = full_mantissa[dot_pos:]
-        return sign + left_part + "." + right_part
+            full_mantissa = full_mantissa.ljust(dot_pos + 1, "0")
+            left_part = full_mantissa[:dot_pos]
+            right_part = full_mantissa[dot_pos:]
+            return sign + left_part + "." + right_part
+        else:
+            full_mantissa = ("0" * abs(order)) + full_mantissa
+            return sign + full_mantissa[0] + "." + full_mantissa[1:]
 
     def __get_dec_by_bin(self):
         """Число в десятичной с. с. по двоичному представлению"""
@@ -261,7 +277,7 @@ class FloatKit:
 
         bin_int_part = bin_num[:dot_pos]
         bin_float_part = bin_num[dot_pos + 1:]
-        dec_int_past = float(int(bin_int_part, base=2))
+        dec_int_past = int(bin_int_part, base=2)
         dec_float_part = FloatKit.get_dec_float_part(bin_float_part)
         return sign * (dec_int_past + dec_float_part)
 

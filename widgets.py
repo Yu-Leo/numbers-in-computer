@@ -319,20 +319,17 @@ class FloatEntries(Entries):
     def _bind_enter(self, calculate_func):
         """Биндим на нажатие Enter в соотв. поле"""
         self._bind_enter_button(c.Float.DEC_NUM_INDEX, calculate_func)
-        self._bind_enter_button(c.Float.BIN_NUM_INDEX, calculate_func)
         self._bind_enter_button(c.Float.FLOAT_FORMAT_INDEX, calculate_func)
 
     def _bind_delete(self):
         """Биндим на нажатие Delete"""
-        indexes = [c.Float.DEC_NUM_INDEX, c.Float.BIN_NUM_INDEX,
-                   c.Float.FLOAT_FORMAT_INDEX]
+        indexes = [c.Float.DEC_NUM_INDEX, c.Float.FLOAT_FORMAT_INDEX]
         for index in indexes:
             self._bind_delete_button(index)
 
     def _bind_ctrlc(self, copy_func):
         """Биндим на нажатие Ctrl+C в соотв. поле"""
         self._bind_ctrlc_button(c.Float.DEC_NUM_INDEX, copy_func)
-        self._bind_ctrlc_button(c.Float.BIN_NUM_INDEX, copy_func)
         self._bind_ctrlc_button(c.Float.FLOAT_FORMAT_INDEX, copy_func)
 
     def get_mantissa_bin_size(self):

@@ -9,28 +9,28 @@ import messageboxes as mb
 from numbersKits import IntKit
 
 
-def int_calculate(entries):
-    """Расчёт в целочисленном режиме"""
+def calculate(entries):
+    """Расчёт в режиме int"""
     try:
         int_calc(entries)
-    except e.EntryContentError as exception:
+    except e.IntEntryContentError as exception:
         if exception.field == c.Int.BIN_SIZE_INDEX:
             mb.ExceptionMb(exception).show()
             entries.clear_all_except()
 
         elif exception.field == c.Int.DEC_NUM_INDEX:
             mb.ExceptionMb(exception).show()
-            if exception.type == c.Exceptions.TYPE_ERROR:
+            if exception.exception_type == c.Exceptions.TYPE_ERROR:
                 entries.clear_all_except(c.Int.BIN_SIZE_INDEX)
-            elif exception.type == c.Exceptions.WARNING:
+            elif exception.exception_type == c.Exceptions.WARNING:
                 entries.clear_all_except(c.Int.BIN_SIZE_INDEX, c.Int.DEC_NUM_INDEX,
                                          c.Int.BIN_NUM_INDEX)
 
         elif exception.field == c.Int.BIN_NUM_INDEX:
             mb.ExceptionMb(exception).show()
-            if exception.type == c.Exceptions.TYPE_ERROR:
+            if exception.exception_type == c.Exceptions.TYPE_ERROR:
                 entries.clear_all_except(c.Int.BIN_SIZE_INDEX)
-            elif exception.type == c.Exceptions.WARNING:
+            elif exception.exception_type == c.Exceptions.WARNING:
                 entries.clear_all_except(c.Int.BIN_SIZE_INDEX, c.Int.DEC_NUM_INDEX,
                                          c.Int.BIN_NUM_INDEX)
 
@@ -62,8 +62,7 @@ def int_calc(entries):
         entries.print(kit)
         # Если невозможно рассчитать представления при данном числе двоичных разрядов
         if kit.codes_error():
-            raise e.EntryContentError(field=c.Int.BIN_NUM_INDEX,
-                                      category=c.Exceptions.WARNING)
+            raise e.BinNumValueCodesWarning
 
     elif config.translate_type == c.Int.STR_CODE_INDEX:  # Исходное значение - прямой код числа
         str_code = get_str_code(entries, bin_size)
@@ -89,13 +88,12 @@ def get_bin_size(entries):
     try:
         int_bin_size = int(str_bin_size)
     except ValueError:
-        raise e.EntryContentError(field=c.Int.BIN_SIZE_INDEX,
-                                  category=c.Exceptions.TYPE_ERROR)
+        raise e.IntEntryContentError(field=c.Int.BIN_SIZE_INDEX,
+                                     exception_type=c.Exceptions.TYPE_ERROR)
 
-    if not (1 <= int_bin_size <= c.Int.MAX_BIN_SIZE):
-        raise e.EntryContentError(field=c.Int.BIN_SIZE_INDEX,
-                                  category=c.Exceptions.RANGE_ERROR)
-
+    if not (c.Int.MIN_BIN_SIZE <= int_bin_size <= c.Int.MAX_BIN_SIZE):
+        raise e.IntEntryContentError(field=c.Int.BIN_SIZE_INDEX,
+                                     exception_type=c.Exceptions.RANGE_ERROR)
     return int_bin_size
 
 
@@ -104,61 +102,56 @@ def get_dec_num(entries):
     try:
         dec_num = int(input_data)
     except ValueError:
-        raise e.EntryContentError(field=c.Int.DEC_NUM_INDEX,
-                                  category=c.Exceptions.TYPE_ERROR)
-        # raise e.DecNumTypeError
+        raise e.IntEntryContentError(field=c.Int.DEC_NUM_INDEX,
+                                     exception_type=c.Exceptions.TYPE_ERROR)
     return dec_num
 
 
 def get_bin_num(entries):
     bin_num = entries.get_bin_num()
     if set(bin_num) != {"0", "1"}:  # Если строка не состоит только из 0 и 1
-        raise e.EntryContentError(field=c.Int.BIN_NUM_INDEX,
-                                  category=c.Exceptions.TYPE_ERROR)
-
+        raise e.IntEntryContentError(field=c.Int.BIN_NUM_INDEX,
+                                     exception_type=c.Exceptions.TYPE_ERROR)
     return bin_num
 
 
 def get_str_code(entries, bin_size):
     str_code = entries.get_str_code()
     if set(str_code) != {"0", "1"}:  # Если строка не состоит только из 0 и 1
-        raise e.EntryContentError(field=c.Int.STR_CODE_INDEX,
-                                  category=c.Exceptions.TYPE_ERROR)
+        raise e.IntEntryContentError(field=c.Int.STR_CODE_INDEX,
+                                     exception_type=c.Exceptions.TYPE_ERROR)
         # raise e.StrCodeTypeError
     if len(str_code) != bin_size or bin_size < 2:
-        raise e.EntryContentError(field=c.Int.STR_CODE_INDEX,
-                                  category=c.Exceptions.RANGE_ERROR)
-
+        raise e.IntEntryContentError(field=c.Int.STR_CODE_INDEX,
+                                     exception_type=c.Exceptions.RANGE_ERROR)
     return str_code
 
 
 def get_rev_code(entries, bin_size):
     rev_code = entries.get_rev_code()
     if set(rev_code) != {"0", "1"}:  # Если строка не состоит только из 0 и 1
-        raise e.EntryContentError(field=c.Int.REV_CODE_INDEX,
-                                  category=c.Exceptions.TYPE_ERROR)
+        raise e.IntEntryContentError(field=c.Int.REV_CODE_INDEX,
+                                     exception_type=c.Exceptions.TYPE_ERROR)
         # raise e.RevCodeTypeError
     if len(rev_code) != bin_size or bin_size < 2:
-        raise e.EntryContentError(field=c.Int.REV_CODE_INDEX,
-                                  category=c.Exceptions.RANGE_ERROR)
-
+        raise e.IntEntryContentError(field=c.Int.REV_CODE_INDEX,
+                                     exception_type=c.Exceptions.RANGE_ERROR)
     return rev_code
 
 
 def get_add_code(entries, bin_size):
     add_code = entries.get_add_code()
     if set(add_code) != {"0", "1"}:  # Если строка не состоит только из 0 и 1
-        raise e.EntryContentError(field=c.Int.ADD_CODE_INDEX,
-                                  category=c.Exceptions.TYPE_ERROR)
+        raise e.IntEntryContentError(field=c.Int.ADD_CODE_INDEX,
+                                     exception_type=c.Exceptions.TYPE_ERROR)
 
     if len(add_code) != bin_size or bin_size < 2:
-        raise e.EntryContentError(field=c.Int.ADD_CODE_INDEX,
-                                  category=c.Exceptions.RANGE_ERROR)
-
+        raise e.IntEntryContentError(field=c.Int.ADD_CODE_INDEX,
+                                     exception_type=c.Exceptions.RANGE_ERROR)
     return add_code
 
 
-def copy_val_to_buffer(entries, index):
+def copy_to_buffer(entries, index):
     """Скопировать значение из поля по его индексу"""
     if index == c.Int.DEC_NUM_INDEX:
         pyperclip.copy(entries.get_dec_num())

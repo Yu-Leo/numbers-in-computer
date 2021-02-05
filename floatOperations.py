@@ -88,19 +88,36 @@ def get_save_first_digit(entries):
     return entries.get_save_first_digit()
 
 
+def is_dec_num_correct(input_data):
+    """Проверка на то, является ли строка корректным вещ. числом"""
+    correct_symbols = {"1", "2", "3", "4", "5", "6", "7", "8", "9", "0", ".", ","}
+    digits_and_punct_only = set(input_data).issubset(correct_symbols)
+    one_punct = input_data.count(".") + input_data.count(",") <= 1
+    return digits_and_punct_only and one_punct
+
+
+def replace_comma(input_data):
+    """Возвращает строку с заменённой на точку запятой, если она там была"""
+    comma_pos = input_data.find(",")
+    if comma_pos != -1:
+        input_data = input_data[:comma_pos] + "." + input_data[comma_pos + 1:]
+    return input_data
+
+
 def get_dec_num(entries):
     input_data = entries.get_dec_num()
-    try:
-        dec_num = float(input_data)
-    except ValueError:
+
+    if not is_dec_num_correct(input_data):
         raise e.FloatEntryContentError(field=c.Float.DEC_NUM_INDEX,
                                        exception_type=c.Exceptions.TYPE_ERROR)
+    input_data = replace_comma(input_data)
+    dec_num = float(input_data)
     return dec_num
 
 
 def get_float_format(entries, mantissa, order, save):
     float_format = entries.get_float_format()
-    if set(float_format) != {"0", "1"}:  # Если строка не состоит только из 0 и 1
+    if not set(float_format).issubset({"0", "1"}):  # Если строка не состоит только из 0 и 1
         raise e.FloatEntryContentError(field=c.Float.FLOAT_FORMAT_INDEX,
                                        exception_type=c.Exceptions.TYPE_ERROR)
     sum_len = 1 + order + (1 if save else 0) + mantissa  # Длина вещ. представления

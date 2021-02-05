@@ -164,11 +164,14 @@ class Entries:
 
     def draw(self, row=1, column=1):
         for i in range(len(self._list)):
+            self._list[i]["state"] = tk.NORMAL
             self._list[i].grid(row=(1 + i), column=1, sticky=tk.W)
 
     def hide(self):
         for item in self._list:
+            item["state"] = tk.DISABLED
             item.grid_remove()
+
 
     def clear_except_settings(self):
         """Очистить все поля кроме настроек"""
@@ -284,7 +287,9 @@ class IntEntries(Entries):
 
     def draw(self, **kwargs):
         self._list[0].grid(row=1, column=1, sticky=tk.W, padx=10, pady=(0, 10))
+        self._list[0]["state"] = tk.NORMAL
         for i in range(1, c.Int.NUMBER_OF_PARAMS):
+            self._list[i]["state"] = tk.NORMAL
             self._list[i].grid(row=(1 + i), column=1)
 
 

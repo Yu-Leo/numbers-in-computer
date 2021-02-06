@@ -1,5 +1,14 @@
 # Numbers in computer
 
+![GitHub](https://img.shields.io/github/license/Yu-Leo/numbers-in-computer)
+![GitHub issues](https://img.shields.io/github/issues-raw/Yu-Leo/numbers-in-computer)
+![GitHub pull requests](https://img.shields.io/github/issues-pr-raw/Yu-Leo/numbers-in-computer)
+![GitHub release (latest by date)](https://img.shields.io/github/v/release/Yu-Leo/numbers-in-computer)
+
+![GitHub commit activity](https://img.shields.io/github/commit-activity/m/Yu-Leo/numbers-in-computer)
+![GitHub last commit](https://img.shields.io/github/last-commit/Yu-Leo/numbers-in-computer)
+![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/Yu-Leo/numbers-in-computer)
+
 ## Описание
 
 Приложение для получения компьютерного представления чисел.
@@ -8,7 +17,7 @@
 
 ### Функциональность:
 
-1. Перевод числа из 10й системы счисления 2ю, прямой, обратный и дополнительный коды
+1. Перевод числа из 10й системы счисления 2-ю, прямой, обратный и дополнительный коды
 2. Перевод числа из 2й системы счисления 10ю, прямой, обратный и дополнительный коды
 3. Перевод числа из прямого кода в 10ю и 2ю системы счисления, обратный и дополнительный коды
 4. Перевод числа из обратного кода в 10ю и 2ю системы счисления, прямой и дополнительный коды
@@ -23,6 +32,11 @@
 3. Кнопки, копирующие значение из соответствующего поля в буфер обмена (*аналогично*: нажатие **[Ctrl]** + **[C]** в
    поле).
 4. Кнопки, очищающие все поля, кроме числа двоичных разрядов (*аналогично*: нажатие **[Delete]** в любом поле).
+
+
+### Демонстрация 
+
+![int_demo](https://github.com/Yu-Leo/numbers-in-computer/blob/main/docs/int_demo.gif)
 
 ## Перевод вещественных чисел
 
@@ -40,6 +54,10 @@
 3. Кнопки, копирующие значение из соответствующего поля в буфер обмена (*аналогично*: нажатие **[Ctrl]** + **[C]** в
    поле).
 4. Кнопки, очищающие все поля, кроме числа двоичных разрядов (*аналогично*: нажатие **[Delete]** в любом поле).
+
+### Демонстрация 
+
+![float_demo](https://github.com/Yu-Leo/numbers-in-computer/blob/main/docs/float_demo.gif)
 
 ## Код
 

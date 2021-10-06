@@ -88,3 +88,13 @@
 
 * [Теория](https://docs.google.com/presentation/d/1WugONp8HIJIyVRwtoeOGCsO63haGS3GbfWQums9-0lA/edit#slide=id.p)
 * [Практика](http://mathel.ru/real/?m=10&p=5&sr=s_1)
+
+## :open_hands: Лицензия
+
+Используете мой код - ставьте звёздочку ⭐️ на репозиторий
+
+Автор: [Yu-Leo](https://github.com/Yu-Leo)
+
+GNU General Public License v3.0
+
+Полный текст в [LICENSE](LICENSE)

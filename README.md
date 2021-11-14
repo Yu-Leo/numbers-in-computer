@@ -84,7 +84,7 @@
 * [Теория](https://docs.google.com/presentation/d/1YPI_snJPLiwrhdFxSkXxy7WKKs6D0mhg_8s38qkEKaw/edit#slide=id.p)
 * [Практика](http://mathel.ru/int/?n=8)
 
-### Перевод целых чисел
+### Перевод вещественных чисел
 
 * [Теория](https://docs.google.com/presentation/d/1WugONp8HIJIyVRwtoeOGCsO63haGS3GbfWQums9-0lA/edit#slide=id.p)
 * [Практика](http://mathel.ru/real/?m=10&p=5&sr=s_1)

@@ -2,14 +2,15 @@ import unittest
 
 from numbersKits import IntKit, FloatKit
 
+
 class TestIntKit(unittest.TestCase):
-    """Тестируем работу с целыми числами"""
+    """Test int mode"""
 
     def setUp(self):
         self.kit = None
 
     def test_from_dec_1(self):
-        """Тестируем перевод из 10й с. с. в остальные"""
+        """Test conversion from decimal system to the rest"""
         self.kit = IntKit(5)
         self.kit.by_dec_num(4)
         self.assertEqual(self.kit["dec_num"], 5)
@@ -19,7 +20,7 @@ class TestIntKit(unittest.TestCase):
         self.assertEqual(self.kit["add_code"], "0101")
 
     def test_from_dec_2(self):
-        """Тестируем перевод из 10й с. с. в остальные"""
+        """Test conversion from decimal system to the rest"""
         self.kit = IntKit(0)
         self.kit.by_dec_num(8)
         self.assertEqual(self.kit["dec_num"], 0)
@@ -29,7 +30,7 @@ class TestIntKit(unittest.TestCase):
         self.assertEqual(self.kit["add_code"], "00000000")
 
     def test_from_dec_3(self):
-        """Тестируем перевод из 10й с. с. в остальные"""
+        """Test conversion from decimal system to the rest"""
         self.kit = IntKit(-5)
         self.kit.by_dec_num(8)
         self.assertEqual(self.kit["dec_num"], -5)

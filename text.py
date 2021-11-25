@@ -1,4 +1,4 @@
-# Файл с фразами, которые задействованы в интерфейсе, на русском языке
+# File with phrases that are used in the application interface in Russian language
 
 import constants as c
 
@@ -39,7 +39,7 @@ class ExceptionTexts:
 
 
 class Exceptions:
-    """Фразы для messagebox-ов при вызове соответствующих исключений"""
+    """Phrases for messageboxes"""
 
     def __init__(self, dictionary):
         self.dictionary = dictionary

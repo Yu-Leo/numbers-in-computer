@@ -1,4 +1,4 @@
-# Файл с классами messagebox-ов
+# File with classes of messageboxes
 
 import tkinter.messagebox as mb
 
@@ -9,7 +9,7 @@ from text import int_exceptions, float_exceptions
 
 
 class WarningMb:
-    """Messagebox типа Warning"""
+    """Messagebox with type 'warning'"""
 
     def __init__(self, title, message):
         self.title = title
@@ -20,7 +20,7 @@ class WarningMb:
 
 
 class ErrorMb:
-    """Messagebox типа Error"""
+    """Messagebox with type 'error'"""
 
     def __init__(self, title, message):
         self.title = title
@@ -31,10 +31,10 @@ class ErrorMb:
 
 
 class ExceptionMb(ErrorMb, WarningMb):
-    """Messagebox-ы самописных ошибок"""
+    """Messagebox for custom exceptions"""
 
     def __get_text_list(self, exception):
-        """Возвращает нужный список фраз в зависимости от типа исключения"""
+        """Returns the desired list of phrases depending on the type of exception"""
         if isinstance(exception, IntError):
             return int_exceptions
         elif isinstance(exception, FloatError):

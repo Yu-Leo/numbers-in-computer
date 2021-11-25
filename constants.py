@@ -1,10 +1,10 @@
-# Файл с константами для приложения
+# File with application constant
 
 class Int:
     TYPE_NUM = 0
-    MIN_BIN_SIZE = 1  # Минимальное число двоичных разрядов
-    MAX_BIN_SIZE = 100  # Максимальное число двоичных разрядов
-    DEFAULT_BIN_SIZE = 8  # Число двоичных разрядов по умолчанию
+    MIN_BIN_SIZE = 1  # Minimum number of binary digits
+    MAX_BIN_SIZE = 100  # Maximum number of binary digits
+    DEFAULT_BIN_SIZE = 8  # Default binary digits number
 
     BIN_SIZE_INDEX = 0
     DEC_NUM_INDEX = 1
@@ -18,16 +18,16 @@ class Int:
     @staticmethod
     def max_positive(bin_size):
         """
-        Максимальное положительное целое число, которое можно представить
-        данным числом двоичных разрядов.
+        The maximum positive integer that can be represented
+        the given number of binary digits.
         """
         return 2 ** (bin_size - 1) - 1
 
     @staticmethod
     def max_negative(bin_size):
         """
-        Максимальное отрицательное целое число, которое можно представить
-        данным числом двоичных разрядов.
+        The maximum negative integer that can be represented
+        the given number of binary digits.
         """
         return -1 * (2 ** (bin_size - 1))
 
@@ -35,16 +35,16 @@ class Int:
 class Float:
     TYPE_NUM = 1
 
-    MIN_MANT_BIN_SIZE = 1  # Минимальное число двоичных разрядов для мантиссы
-    MAX_MANT_BIN_SIZE = 100  # Максимальное число двоичных разрядов для мантиссы
+    MIN_MANT_BIN_SIZE = 1  # Minimum number of binary digits for mantissa
+    MAX_MANT_BIN_SIZE = 100  # Maximum number of binary digits for mantissa
 
-    MIN_ORD_BIN_SIZE = 1  # Минимальное число двоичных разрядов для порядка
-    MAX_ORD_BIN_SIZE = 100  # Максимальное число двоичных разрядов для порядка
+    MIN_ORD_BIN_SIZE = 1  # Minimum number of binary digits for exponent
+    MAX_ORD_BIN_SIZE = 100  # Maximum number of binary digits for exponent
 
-    MAX_FLOAT_SIZE = 10  # Максимальное кол-во знаков после запятой
+    MAX_FLOAT_SIZE = 10  # Maximum number of decimal places
 
-    DEFAULT_MANTISSA_BIN_SIZE = 10  # Число двоичных разрядов для мантиссы по умолчанию
-    DEFAULT_ORDER_BIN_SIZE = 5  # Число двоичных разрядов для порядка по умолчанию
+    DEFAULT_MANTISSA_BIN_SIZE = 10  # Default number of binary digits for mantissa
+    DEFAULT_ORDER_BIN_SIZE = 5  # Default number of binary digits for exponent
 
     MANTISSA_BIN_SIZE_INDEX = 0
     ORDER_BIN_SIZE_INDEX = 1

@@ -1,5 +1,3 @@
-# Главный код приложения
-
 import tkinter as tk
 
 import config
@@ -13,7 +11,7 @@ from windowParameters import WindowParameters
 
 
 class Window:
-    """Окно приложения"""
+    """Main application window"""
 
     def __init__(self):
         self.__root = tk.Tk()
@@ -23,14 +21,14 @@ class Window:
         self.__root.resizable(*self.__parameters.resizable)
         try:
             self.__root.iconbitmap(self.__parameters.ico_path)
-        except tk.TclError:  # Ошибка отображения иконки (её отсутствие)
-            pass  # Иконка по умолчанию
+        except tk.TclError:  # Error with icon display (icon file not found)
+            pass  # Using default icons
         self.num_type_menu = NumTypeMenu(self.__root)
-        # Виджеты режима int
+        # Widgets for working with integer type (int mode)
         self.int_widgets = IntWidgets(self.__root,
                                       calculate_func=lambda: int_calc(self.int_widgets.entries),
                                       copy_func=lambda index: int_copy(self.int_widgets.entries, index))
-        # Виджеты режима float
+        # Widgets for working with float type (float mode)
         self.float_widgets = FloatWidgets(self.__root,
                                           calculate_func=lambda: float_calc(self.float_widgets.entries),
                                           copy_func=lambda index: float_copy(self.float_widgets.entries, index))
@@ -39,11 +37,11 @@ class Window:
                                      self.float_widgets.draw, self.float_widgets.hide)
 
     def run(self):
-        """Запуск приложения"""
+        """Run application"""
         self.num_type_menu.draw()
-        if config.numbers_type == c.Int.TYPE_NUM:  # Если по умолчанию выбран тип int
+        if config.numbers_type == c.Int.TYPE_NUM:
             self.int_widgets.draw()
-        elif config.numbers_type == c.Float.TYPE_NUM:  # Если по умолчанию выбран тип float
+        elif config.numbers_type == c.Float.TYPE_NUM:
             self.float_widgets.draw()
         self.__root.mainloop()
 

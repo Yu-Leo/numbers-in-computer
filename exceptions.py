@@ -1,13 +1,12 @@
-# Файл с исключениями
-
+# File with application exceptions
 
 class EntryContentError(ValueError):
-    """Недопустимые значения в полях ввода"""
+    """Invalid values in entry fields"""
 
     def __init__(self, field, exception_type, message=""):
-        self.field = field  # Индекс поля
-        self.exception_type = exception_type  # Тип "некорректности"
-        self.text = message  # Доп. сообщение
+        self.field = field  # Field index
+        self.exception_type = exception_type
+        self.text = message  # Some comments
 
 
 class IntEntryContentError(EntryContentError):

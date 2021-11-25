@@ -1,6 +1,6 @@
-# Файл с функциями операций в режиме float
+# File with operation's functions for float mode (and function for copy values to clipboard)
 
-import pyperclip  # Модуль для работы с буфером
+import pyperclip  # Module for working with clipboard
 
 import config
 import constants as c
@@ -10,7 +10,7 @@ from numbersKits import FloatKit
 
 
 def calculate(entries):
-    """Расчёт в режиме float"""
+    """Calculation in float mode"""
     try:
         float_calc(entries)
     except e.FloatEntryContentError as exception:
@@ -35,18 +35,19 @@ def float_calc(entries):
     mantissa_bin_size = get_mantissa_bin_size(entries)
     order_bin_size = get_order_bin_size(entries)
     save_first_digit = get_save_first_digit(entries)
-    # Очистка от старых значений
+
+    # Delete old values
     entries.clear_all_except(c.Float.MANTISSA_BIN_SIZE_INDEX,
                              c.Float.ORDER_BIN_SIZE_INDEX,
                              c.Float.SAVE_FIRST_DIGIT_INDEX,
                              config.translate_type)
-    if config.translate_type == c.Float.DEC_NUM_INDEX:  # Исходное значение - число в десятичной с. с.
+    if config.translate_type == c.Float.DEC_NUM_INDEX:  # Source value - number in decimal notation
         dec_num = get_dec_num(entries)
         kit = FloatKit(dec_num=dec_num)
         kit.by_dec_num(mantissa_bin_size, order_bin_size, save_first_digit)
         entries.print(kit)
 
-    elif config.translate_type == c.Float.FLOAT_FORMAT_INDEX:  # Исходное значение - число в вещ. представлении
+    elif config.translate_type == c.Float.FLOAT_FORMAT_INDEX:  # Source value - number in float representation
         float_format = get_float_format(entries, mantissa_bin_size, order_bin_size, save_first_digit)
         kit = FloatKit(float_format=float_format)
         kit.by_float_format(mantissa_bin_size, order_bin_size, save_first_digit)
@@ -89,7 +90,7 @@ def get_save_first_digit(entries):
 
 
 def is_dec_num_correct(input_data):
-    """Проверка на то, является ли строка корректным вещ. числом"""
+    """Is number is correct real number"""
     correct_symbols = {"-", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", ".", ","}
     digits_and_punct_only = set(input_data).issubset(correct_symbols)
     one_punct = input_data.count(".") + input_data.count(",") <= 1
@@ -97,7 +98,7 @@ def is_dec_num_correct(input_data):
 
 
 def replace_comma(input_data):
-    """Возвращает строку с заменённой на точку запятой, если она там была"""
+    """Replace comma to dot"""
     comma_pos = input_data.find(",")
     if comma_pos != -1:
         input_data = input_data[:comma_pos] + "." + input_data[comma_pos + 1:]
@@ -117,10 +118,10 @@ def get_dec_num(entries):
 
 def get_float_format(entries, mantissa, order, save):
     float_format = entries.get_float_format()
-    if not set(float_format).issubset({"0", "1"}) or float_format == "":  # Если строка не состоит только из 0 и 1
+    if not set(float_format).issubset({"0", "1"}) or float_format == "":  # If string include not only '0' and '1'
         raise e.FloatEntryContentError(field=c.Float.FLOAT_FORMAT_INDEX,
                                        exception_type=c.Exceptions.TYPE_ERROR)
-    sum_len = 1 + order + (1 if save else 0) + mantissa  # Длина вещ. представления
+    sum_len = 1 + order + (1 if save else 0) + mantissa  # Length of float representation
     if len(float_format) != sum_len:
         raise e.FloatEntryContentError(field=c.Float.FLOAT_FORMAT_INDEX,
                                        exception_type=c.Exceptions.RANGE_ERROR)
@@ -128,7 +129,7 @@ def get_float_format(entries, mantissa, order, save):
 
 
 def copy_to_buffer(entries, index):
-    """Скопировать значение из поля по его индексу"""
+    """Copy value to clipboard by its index"""
     if index == c.Float.DEC_NUM_INDEX:
         pyperclip.copy(entries.get_dec_num())
     elif index == c.Float.BIN_NUM_INDEX:

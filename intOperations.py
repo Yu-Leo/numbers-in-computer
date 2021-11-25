@@ -1,6 +1,6 @@
-# Файл с функциями переводом (+ ф-ция копирования в буфер)
+# File with operation's functions for int mode (and function for copy values to clipboard)
 
-import pyperclip  # Модуль для работы с буфером
+import pyperclip  # Module for working with clipboard
 
 import config
 import constants as c
@@ -10,7 +10,7 @@ from numbersKits import IntKit
 
 
 def calculate(entries):
-    """Расчёт в режиме int"""
+    """Calculation in int mode"""
     try:
         int_calc(entries)
     except e.IntEntryContentError as exception:
@@ -43,40 +43,38 @@ def calculate(entries):
 
 
 def int_calc(entries):
-    """Перевод целых чисел"""
-    bin_size = get_bin_size(entries)  # Числе двоичных разрядов
-    # Очистка от старых значений
+    bin_size = get_bin_size(entries)  # Number of binary digits
+    # Delete old values
     entries.clear_all_except(c.Int.BIN_SIZE_INDEX, config.translate_type)
 
-    if config.translate_type == c.Int.DEC_NUM_INDEX:  # Исходное значение - число в десятичной сс
+    if config.translate_type == c.Int.DEC_NUM_INDEX:  # Source value - number in decimal notation
         dec_num = get_dec_num(entries)
         kit = IntKit(dec_num=dec_num)
         kit.by_dec_num(bin_size)
         entries.print(kit)
-        # Если невозможно рассчитать представления при данном числе двоичных разрядов
 
-    elif config.translate_type == c.Int.BIN_NUM_INDEX:  # Исходное значение - число в двоичной сс
+    elif config.translate_type == c.Int.BIN_NUM_INDEX:  # Source value - number in binary notation
         bin_num = get_bin_num(entries)
         kit = IntKit(bin_num=bin_num)
         kit.by_bin_num(bin_size)
         entries.print(kit)
-        # Если невозможно рассчитать представления при данном числе двоичных разрядов
+        # If it's impossible to calculate representations for a given number of binary digits
         if kit.codes_error():
             raise e.BinNumValueCodesWarning
 
-    elif config.translate_type == c.Int.STR_CODE_INDEX:  # Исходное значение - прямой код числа
+    elif config.translate_type == c.Int.STR_CODE_INDEX:  # Source value - straight code of number
         str_code = get_str_code(entries, bin_size)
         kit = IntKit(str_code=str_code)
         kit.by_str_code(bin_size)
         entries.print(kit)
 
-    elif config.translate_type == c.Int.REV_CODE_INDEX:  # Исходное значение - обратный код числа
+    elif config.translate_type == c.Int.REV_CODE_INDEX:  # Source value - reverse code of number
         rev_code = get_rev_code(entries, bin_size)
         kit = IntKit(rev_code=rev_code)
         kit.by_rev_code(bin_size)
         entries.print(kit)
 
-    elif config.translate_type == c.Int.ADD_CODE_INDEX:  # Исходное значение - дополнительный код числа
+    elif config.translate_type == c.Int.ADD_CODE_INDEX:  # Source value - additional code of number
         add_code = get_add_code(entries, bin_size)
         kit = IntKit(add_code=add_code)
         kit.by_add_code(bin_size)
@@ -109,7 +107,7 @@ def get_dec_num(entries):
 
 def get_bin_num(entries):
     bin_num = entries.get_bin_num()
-    if set(bin_num) != {"0", "1"}:  # Если строка не состоит только из 0 и 1
+    if set(bin_num) != {"0", "1"}:  # If string include not only '0' and '1'
         raise e.IntEntryContentError(field=c.Int.BIN_NUM_INDEX,
                                      exception_type=c.Exceptions.TYPE_ERROR)
     return bin_num
@@ -117,10 +115,9 @@ def get_bin_num(entries):
 
 def get_str_code(entries, bin_size):
     str_code = entries.get_str_code()
-    if set(str_code) != {"0", "1"}:  # Если строка не состоит только из 0 и 1
+    if set(str_code) != {"0", "1"}:  # If string include not only '0' and '1'
         raise e.IntEntryContentError(field=c.Int.STR_CODE_INDEX,
                                      exception_type=c.Exceptions.TYPE_ERROR)
-        # raise e.StrCodeTypeError
     if len(str_code) != bin_size or bin_size < 2:
         raise e.IntEntryContentError(field=c.Int.STR_CODE_INDEX,
                                      exception_type=c.Exceptions.RANGE_ERROR)
@@ -129,10 +126,9 @@ def get_str_code(entries, bin_size):
 
 def get_rev_code(entries, bin_size):
     rev_code = entries.get_rev_code()
-    if set(rev_code) != {"0", "1"}:  # Если строка не состоит только из 0 и 1
+    if set(rev_code) != {"0", "1"}:  # If string include not only '0' and '1'
         raise e.IntEntryContentError(field=c.Int.REV_CODE_INDEX,
                                      exception_type=c.Exceptions.TYPE_ERROR)
-        # raise e.RevCodeTypeError
     if len(rev_code) != bin_size or bin_size < 2:
         raise e.IntEntryContentError(field=c.Int.REV_CODE_INDEX,
                                      exception_type=c.Exceptions.RANGE_ERROR)
@@ -141,10 +137,9 @@ def get_rev_code(entries, bin_size):
 
 def get_add_code(entries, bin_size):
     add_code = entries.get_add_code()
-    if set(add_code) != {"0", "1"}:  # Если строка не состоит только из 0 и 1
+    if set(add_code) != {"0", "1"}:  # If string include not only '0' and '1'
         raise e.IntEntryContentError(field=c.Int.ADD_CODE_INDEX,
                                      exception_type=c.Exceptions.TYPE_ERROR)
-
     if len(add_code) != bin_size or bin_size < 2:
         raise e.IntEntryContentError(field=c.Int.ADD_CODE_INDEX,
                                      exception_type=c.Exceptions.RANGE_ERROR)
@@ -152,7 +147,7 @@ def get_add_code(entries, bin_size):
 
 
 def copy_to_buffer(entries, index):
-    """Скопировать значение из поля по его индексу"""
+    """Copy value to clipboard by its index"""
     if index == c.Int.DEC_NUM_INDEX:
         pyperclip.copy(entries.get_dec_num())
     elif index == c.Int.BIN_NUM_INDEX:

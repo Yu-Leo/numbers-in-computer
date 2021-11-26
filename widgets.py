@@ -1,4 +1,4 @@
-# Файл с классами списков виджетов
+# File with widget list classes
 
 import tkinter as tk
 
@@ -11,7 +11,7 @@ import text
 
 
 class Widgets:
-    """Базовый класс для набора виджетов"""
+    """Base class for a set of widgets"""
 
     def __init__(self):
         self._entries_names = None
@@ -57,17 +57,17 @@ class FloatWidgets(Widgets):
 
 
 class NumTypeMenu:
-    """Меню целые / вещественные числа"""
+    """Menu for selecting the type of numbers"""
 
     def __init__(self, window):
         self.window = window
-        # Список ф-ций для управления отрисовкой виджетов
+        # List of functions for managing widget rendering
         self.__funcs = {"draw_int": lambda: None,
                         "hide_int": lambda: None,
                         "draw_float": lambda: None,
                         "hide_float": lambda: None}
         def_val = (c.Int.TYPE_NUM if config.numbers_type == c.Int.TYPE_NUM else c.Float.TYPE_NUM)
-        self.__numbers_type = tk.IntVar(value=def_val)  # Контроллер значений радио-кнопок
+        self.__numbers_type = tk.IntVar(value=def_val)  # Controller of radio-button values
         self.__int_type_button = tk.Radiobutton(window,
                                                 text=text.int_nums_text,
                                                 variable=self.__numbers_type,
@@ -83,7 +83,7 @@ class NumTypeMenu:
                                                   command=self.__change_type)
 
     def set_funcs(self, draw_int, hide_int, draw_float, hide_float):
-        """Инициализируем список ф-ций для управления отрисовкой виджетов"""
+        """Initialize the list of functions to control the rendering of widgets"""
         self.__funcs["draw_int"] = draw_int
         self.__funcs["hide_int"] = hide_int
         self.__funcs["draw_float"] = draw_float
@@ -94,9 +94,8 @@ class NumTypeMenu:
         self.__float_type_button.grid(row=0, column=1)
 
     def __change_type(self):
-        """Смена типа чисел"""
         num_type = self.__numbers_type.get()
-        config.numbers_type = num_type  # Устанавливаем тип чисел в конфигурационном файле
+        config.numbers_type = num_type  # Set type of number in config file
         if num_type == c.Int.TYPE_NUM:
             self.__funcs["hide_float"]()
             self.__funcs["draw_int"]()
@@ -107,7 +106,7 @@ class NumTypeMenu:
 
 class Labels:
     def __init__(self, window, names):
-        self._list = []  # Список лэйблов
+        self._list = []  # Labels list
         for name in names:
             self._list.append(tk.Label(window,
                                        text=name + ":",
@@ -126,7 +125,7 @@ class Labels:
 
 
 class IntLabels(Labels):
-    """Список лэйблов при целочисленном режиме"""
+    """List of labels for int mode"""
 
     def __init__(self, window):
         super().__init__(window, text.int_labels_text)
@@ -138,7 +137,7 @@ class IntLabels(Labels):
 
 
 class FloatLabels(Labels):
-    """Список лэйблов при режиме вещественных чисел"""
+    """List of labels for float mode"""
 
     def __init__(self, window):
         super().__init__(window, text.float_labels_text)
@@ -148,18 +147,17 @@ class Entries:
 
     @staticmethod
     def call_calc(i, calculate_func):
-        """Изменяем режим перевода на тот, в котором нажали Enter, и переводим"""
+        """Change the translation mode to the one in which Enter was pressed, and translate"""
         config.translate_type = i
         calculate_func()
 
     def __init__(self, window, number_of_params):
-        self._list = []  # Список полей для ввода
+        self._list = []  # List of entry fields
         for i in range(1, number_of_params + 1):
             self._list.append(tk.Entry(window, font=("Arial", 12), width=18))
         self._settings_list = set()
 
     def _set_settings_entries(self, *args):
-        """Установить номера полей, которые являются полями настроек"""
         self._settings_list = set(args)
 
     def draw(self, row=1, column=1):
@@ -172,28 +170,27 @@ class Entries:
             item["state"] = tk.DISABLED
             item.grid_remove()
 
-
     def clear_except_settings(self):
-        """Очистить все поля кроме настроек"""
+        """Clear all field except settings fields"""
         self.clear_all_except(*self._settings_list)
 
     def clear_all_except(self, *args):
-        """Очищает все поля кроме тех, которые указаны в аргументах"""
+        """Clears all fields except those specified in the arguments"""
         for i in range(len(self._list)):
             if i not in args:
                 self._list[i].delete(0, tk.END)
 
     def clear(self, *args):
-        """Очищает поля, которые указаны в аргументах"""
+        """Clears the fields that are specified in the arguments"""
         for i in args:
             self._list[i].delete(0, tk.END)
 
     def _get(self, index):
-        """Получение значения из поля по его индексу"""
+        """Get value from the field by its index"""
         return str(self._list[index].get())
 
     def _write(self, index, value):
-        """Запись значения в поля по его индексу"""
+        """Write value to the field by its index"""
         self._list[index].delete(0, tk.END)
         self._list[index].insert(0, value)
 
@@ -223,7 +220,7 @@ class Entries:
 
 
 class IntEntries(Entries):
-    """Список полей ввода-вывода при целочисленном режиме"""
+    """List of entries fields in int mode"""
 
     def __init__(self, window, calculate_func, copy_func):
         super().__init__(window, c.Int.NUMBER_OF_PARAMS)
@@ -233,7 +230,7 @@ class IntEntries(Entries):
         super()._bind_buttons(calculate_func, copy_func)
 
     def _bind_enter(self, calculate_func):
-        """Биндим на нажатие Enter в соотв. поле"""
+        """Bind 'Enter' button"""
         self._bind_enter_button(c.Int.DEC_NUM_INDEX, calculate_func)
         self._bind_enter_button(c.Int.BIN_NUM_INDEX, calculate_func)
         self._bind_enter_button(c.Int.STR_CODE_INDEX, calculate_func)
@@ -241,7 +238,7 @@ class IntEntries(Entries):
         self._bind_enter_button(c.Int.ADD_CODE_INDEX, calculate_func)
 
     def _bind_delete(self):
-        """Биндим на нажатие Delete"""
+        """Bind 'Delete' button"""
         indexes = [c.Int.DEC_NUM_INDEX, c.Int.BIN_NUM_INDEX,
                    c.Int.STR_CODE_INDEX, c.Int.REV_CODE_INDEX,
                    c.Int.ADD_CODE_INDEX]
@@ -249,7 +246,7 @@ class IntEntries(Entries):
             self._bind_delete_button(index)
 
     def _bind_ctrlc(self, copy_func):
-        """Биндим на нажатие Ctrl+C в соотв. поле"""
+        """Bind 'Ctrl'+'C'"""
         self._bind_ctrlc_button(c.Int.DEC_NUM_INDEX, copy_func)
         self._bind_ctrlc_button(c.Int.BIN_NUM_INDEX, copy_func)
         self._bind_ctrlc_button(c.Int.STR_CODE_INDEX, copy_func)
@@ -278,7 +275,7 @@ class IntEntries(Entries):
         return self._get(c.Int.ADD_CODE_INDEX)
 
     def print(self, kit):
-        """Вывод всего комплекта чисел в поля ввода-вывода"""
+        """Print all number kit to the entries fields"""
         self._write(c.Int.DEC_NUM_INDEX, kit["dec_num"])
         self._write(c.Int.BIN_NUM_INDEX, kit["bin_num"])
         self._write(c.Int.STR_CODE_INDEX, kit["str_code"])
@@ -294,7 +291,7 @@ class IntEntries(Entries):
 
 
 class FloatEntries(Entries):
-    """Список полей ввода-вывода при режиме вещ. чисел"""
+    """List of entries fields in float mode"""
 
     def __init__(self, window, calculate_func, copy_func):
         super().__init__(window, c.Float.NUMBER_OF_PARAMS)
@@ -306,7 +303,7 @@ class FloatEntries(Entries):
         self._list[c.Float.ORDER_BIN_SIZE_INDEX]["width"] = 5
         self.__set_order_bin_size(c.Float.DEFAULT_ORDER_BIN_SIZE)
 
-        self.__save = tk.IntVar(value=0)  # Контроллер значения check-box
+        self.__save = tk.IntVar(value=0)  # Controller of check-box value
 
         self._list[c.Float.SAVE_FIRST_DIGIT_INDEX] = tk.Checkbutton(window,
                                                                     variable=self.__save)
@@ -322,18 +319,18 @@ class FloatEntries(Entries):
         super().clear_all_except(c.Float.SAVE_FIRST_DIGIT_INDEX, *args)
 
     def _bind_enter(self, calculate_func):
-        """Биндим на нажатие Enter в соотв. поле"""
+        """Bind 'Enter' button"""
         self._bind_enter_button(c.Float.DEC_NUM_INDEX, calculate_func)
         self._bind_enter_button(c.Float.FLOAT_FORMAT_INDEX, calculate_func)
 
     def _bind_delete(self):
-        """Биндим на нажатие Delete"""
+        """Bind 'Delete' button"""
         indexes = [c.Float.DEC_NUM_INDEX, c.Float.FLOAT_FORMAT_INDEX]
         for index in indexes:
             self._bind_delete_button(index)
 
     def _bind_ctrlc(self, copy_func):
-        """Биндим на нажатие Ctrl+C в соотв. поле"""
+        """Bind 'Ctrl'+'C'"""
         self._bind_ctrlc_button(c.Float.DEC_NUM_INDEX, copy_func)
         self._bind_ctrlc_button(c.Float.FLOAT_FORMAT_INDEX, copy_func)
 
@@ -356,7 +353,7 @@ class FloatEntries(Entries):
         return self._get(c.Float.FLOAT_FORMAT_INDEX)
 
     def print(self, kit):
-        """Вывод всего комплекта чисел в поля ввода-вывода"""
+        """Print all number kit to the entries fields"""
         self._write(c.Float.DEC_NUM_INDEX, kit["dec_num"])
         self._write(c.Float.BIN_NUM_INDEX, kit["bin_num"])
         self._write(c.Float.BIN_MANTISSA_INDEX, kit["bin_mantissa"])
@@ -367,7 +364,7 @@ class FloatEntries(Entries):
 
 
 class ButtonsRow:
-    """Ряд кнопок 'очистить', 'рассчитать', 'скопировать'."""
+    """Row with buttons 'clear', 'calculate' and 'copy'"""
 
     @staticmethod
     def __get_image(name):
@@ -379,7 +376,7 @@ class ButtonsRow:
             return None
 
     def __init__(self, window, del_func, copy_func, calc_func, row_ind):
-        self.__frame = tk.Frame(window)  # Фрейм для всех 3х кнопок
+        self.__frame = tk.Frame(window)  # Frame for all three buttons
 
         self.calc_image = ButtonsRow.__get_image("calc_icon32")
 
@@ -402,7 +399,7 @@ class ButtonsRow:
         self.__copy_button.grid(row=0, column=1, padx=5)
         self.__del_button.grid(row=0, column=2, padx=5)
 
-        # Если файлы с иконками кнопок не найдены
+        # If files with button icons are not found
         if self.calc_image is None:
             self.__calc_button["width"] = 2
             self.__calc_button["text"] = "calc"

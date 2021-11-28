@@ -20,9 +20,9 @@ def calculate(entries):
     except e.FloatEntryContentError as exception:
         if exception.field == c.Float.MANTISSA_BIN_SIZE_INDEX:
             mb.ExceptionMb(exception).show()
-            entries.clear_all_except(c.Float.ORDER_BIN_SIZE_INDEX)
+            entries.clear_all_except(c.Float.EXPONENT_BIN_SIZE_INDEX)
 
-        elif exception.field == c.Float.ORDER_BIN_SIZE_INDEX:
+        elif exception.field == c.Float.EXPONENT_BIN_SIZE_INDEX:
             mb.ExceptionMb(exception).show()
             entries.clear_all_except(c.Float.MANTISSA_BIN_SIZE_INDEX)
 
@@ -42,24 +42,24 @@ def float_calc(entries):
     :param entries: list of tkinter's entries objects
     """
     mantissa_bin_size = get_mantissa_bin_size(entries)
-    order_bin_size = get_order_bin_size(entries)
+    exponent_bin_size = get_exponent_bin_size(entries)
     save_first_digit = get_save_first_digit(entries)
 
     # Delete old values
     entries.clear_all_except(c.Float.MANTISSA_BIN_SIZE_INDEX,
-                             c.Float.ORDER_BIN_SIZE_INDEX,
+                             c.Float.EXPONENT_BIN_SIZE_INDEX,
                              c.Float.SAVE_FIRST_DIGIT_INDEX,
                              config.translate_type)
     if config.translate_type == c.Float.DEC_NUM_INDEX:  # Source value - number in decimal notation
         dec_num = get_dec_num(entries)
         kit = FloatKit(dec_num=dec_num)
-        kit.by_dec_num(mantissa_bin_size, order_bin_size, save_first_digit)
+        kit.by_dec_num(mantissa_bin_size, exponent_bin_size, save_first_digit)
         entries.print(kit)
 
     elif config.translate_type == c.Float.FLOAT_FORMAT_INDEX:  # Source value - number in float representation
-        float_format = get_float_format(entries, mantissa_bin_size, order_bin_size, save_first_digit)
+        float_format = get_float_format(entries, mantissa_bin_size, exponent_bin_size, save_first_digit)
         kit = FloatKit(float_format=float_format)
-        kit.by_float_format(mantissa_bin_size, order_bin_size, save_first_digit)
+        kit.by_float_format(mantissa_bin_size, exponent_bin_size, save_first_digit)
         entries.print(kit)
     else:
         raise Warning("Invalid translate_type")
@@ -84,22 +84,22 @@ def get_mantissa_bin_size(entries):
     return int_mantissa_bin_size
 
 
-def get_order_bin_size(entries):
+def get_exponent_bin_size(entries):
     """
     :param entries: list of tkinter's entries objects
     :returns number of binary digits of the exponent in integer type
     """
-    str_order_bin_size = entries.get_order_bin_size()
+    str_exponent_bin_size = entries.get_exponent_bin_size()
     try:
-        int_order_bin_size = int(str_order_bin_size)
+        int_exponent_bin_size = int(str_exponent_bin_size)
     except ValueError:
         raise e.FloatEntryContentError(field=c.Float.MANTISSA_BIN_SIZE_INDEX,
                                        exception_type=c.Exceptions.TYPE_ERROR)
 
-    if not (c.Float.MIN_ORD_BIN_SIZE <= int_order_bin_size <= c.Float.MAX_ORD_BIN_SIZE):
-        raise e.FloatEntryContentError(field=c.Float.ORDER_BIN_SIZE_INDEX,
+    if not (c.Float.MIN_ORD_BIN_SIZE <= int_exponent_bin_size <= c.Float.MAX_ORD_BIN_SIZE):
+        raise e.FloatEntryContentError(field=c.Float.EXPONENT_BIN_SIZE_INDEX,
                                        exception_type=c.Exceptions.RANGE_ERROR)
-    return int_order_bin_size
+    return int_exponent_bin_size
 
 
 def get_save_first_digit(entries):
@@ -147,11 +147,11 @@ def get_dec_num(entries):
     return dec_num
 
 
-def get_float_format(entries, mantissa, order, save):
+def get_float_format(entries, mantissa, exponent, save):
     """
     :param entries: list of tkinter's entries objects
     :param mantissa: number of binary digits of the mantissa in integer type
-    :param order: number of binary digits of the exponent in integer type
+    :param exponent: number of binary digits of the exponent in integer type
     :param save: is the first digit of the mantissa stored
     :return: number in float representation
     """
@@ -160,7 +160,7 @@ def get_float_format(entries, mantissa, order, save):
     if not set(float_format).issubset({"0", "1"}) or float_format == "":  # If string include not only '0' and '1'
         raise e.FloatEntryContentError(field=c.Float.FLOAT_FORMAT_INDEX,
                                        exception_type=c.Exceptions.TYPE_ERROR)
-    sum_len = 1 + order + (1 if save else 0) + mantissa  # Length of float representation
+    sum_len = 1 + exponent + (1 if save else 0) + mantissa  # Length of float representation
     if len(float_format) != sum_len:
         raise e.FloatEntryContentError(field=c.Float.FLOAT_FORMAT_INDEX,
                                        exception_type=c.Exceptions.RANGE_ERROR)

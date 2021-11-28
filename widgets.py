@@ -336,13 +336,13 @@ class FloatEntries(Entries):
 
     def __init__(self, window, calculate_func, copy_func):
         super().__init__(window, c.Float.NUMBER_OF_PARAMS)
-        self._set_settings_entries(c.Float.MANTISSA_BIN_SIZE_INDEX, c.Float.ORDER_BIN_SIZE_INDEX,
+        self._set_settings_entries(c.Float.MANTISSA_BIN_SIZE_INDEX, c.Float.EXPONENT_BIN_SIZE_INDEX,
                                    c.Float.SAVE_FIRST_DIGIT_INDEX)
         self._list[c.Float.MANTISSA_BIN_SIZE_INDEX]["width"] = 5
         self.__set_mantissa_bin_size(c.Float.DEFAULT_MANTISSA_BIN_SIZE)
 
-        self._list[c.Float.ORDER_BIN_SIZE_INDEX]["width"] = 5
-        self.__set_order_bin_size(c.Float.DEFAULT_ORDER_BIN_SIZE)
+        self._list[c.Float.EXPONENT_BIN_SIZE_INDEX]["width"] = 5
+        self.__set_exponent_bin_size(c.Float.DEFAULT_EXPONENT_BIN_SIZE)
 
         self.__save = tk.IntVar(value=0)  # Controller of check-box value
 
@@ -353,8 +353,8 @@ class FloatEntries(Entries):
     def __set_mantissa_bin_size(self, mantissa_bin_size):
         self._list[c.Float.MANTISSA_BIN_SIZE_INDEX].insert(0, str(mantissa_bin_size))
 
-    def __set_order_bin_size(self, order_bin_size):
-        self._list[c.Float.ORDER_BIN_SIZE_INDEX].insert(0, str(order_bin_size))
+    def __set_exponent_bin_size(self, exponent_bin_size):
+        self._list[c.Float.EXPONENT_BIN_SIZE_INDEX].insert(0, str(exponent_bin_size))
 
     def clear_all_except(self, *args):
         super().clear_all_except(c.Float.SAVE_FIRST_DIGIT_INDEX, *args)
@@ -384,8 +384,8 @@ class FloatEntries(Entries):
     def get_mantissa_bin_size(self):
         return self._get(c.Float.MANTISSA_BIN_SIZE_INDEX)
 
-    def get_order_bin_size(self):
-        return self._get(c.Float.ORDER_BIN_SIZE_INDEX)
+    def get_exponent_bin_size(self):
+        return self._get(c.Float.EXPONENT_BIN_SIZE_INDEX)
 
     def get_save_first_digit(self):
         return bool(self.__save.get())
@@ -406,7 +406,7 @@ class FloatEntries(Entries):
         self._write(c.Float.DEC_NUM_INDEX, kit["dec_num"])
         self._write(c.Float.BIN_NUM_INDEX, kit["bin_num"])
         self._write(c.Float.BIN_MANTISSA_INDEX, kit["bin_mantissa"])
-        self._write(c.Float.DEC_ORDER_INDEX, kit["dec_order"])
+        self._write(c.Float.DEC_EXPONENT_INDEX, kit["dec_exponent"])
         self._write(c.Float.DEC_CHARACTERISTIC_INDEX, kit["dec_characteristic"])
         self._write(c.Float.BIN_CHARACTERISTIC_INDEX, kit["bin_characteristic"])
         self._write(c.Float.FLOAT_FORMAT_INDEX, kit["float_format"])

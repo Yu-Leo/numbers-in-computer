@@ -6,7 +6,7 @@ class WindowParameters:
         self.__padx = 100  # Horizontal offset from the upper left corner of the screen
         self.__pady = 100  # Vertical offset from the upper left corner of the screen
         self.resizable = (False, False)
-        self.ico_path = "img/program_icon64.ico"  # Path to application icon
+        self.ico_path = "../img/program_icon64.ico"  # Path to application icon
 
     def geometry(self) -> str:
         """

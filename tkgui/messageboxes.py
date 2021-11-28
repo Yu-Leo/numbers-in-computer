@@ -2,7 +2,7 @@
 
 import tkinter.messagebox as mb
 
-from constants import Exceptions as ConstEx
+from calculations.constants import Exceptions as ConstEx
 from exceptions import FloatEntryContentError as FloatError
 from exceptions import IntEntryContentError as IntError
 from text import int_exceptions, float_exceptions

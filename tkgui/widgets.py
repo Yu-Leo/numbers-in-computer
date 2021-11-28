@@ -5,8 +5,7 @@ import tkinter as tk
 from PIL import Image as PilImage
 from PIL import ImageTk
 
-import config
-import constants as c
+from calculations import config, constants as c
 import text
 
 

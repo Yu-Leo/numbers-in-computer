@@ -1,6 +1,6 @@
 # File with phrases that are used in the application interface in Russian language
 
-import constants as c
+from calculations import constants as c
 
 int_labels_text = ["Число двоичных разрядов",
                    "Число в десятичной с.с.",

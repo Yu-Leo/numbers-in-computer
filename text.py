@@ -62,7 +62,7 @@ int_dict = {c.Int.BIN_SIZE_INDEX: ExceptionTexts(int_labels_text[0]),
                                                  type_error=bin_only)}
 
 float_dict = {c.Float.MANTISSA_BIN_SIZE_INDEX: ExceptionTexts(float_labels_text[0]),
-              c.Float.ORDER_BIN_SIZE_INDEX: ExceptionTexts(float_labels_text[1]),
+              c.Float.EXPONENT_BIN_SIZE_INDEX: ExceptionTexts(float_labels_text[1]),
               c.Float.DEC_NUM_INDEX: ExceptionTexts(float_labels_text[3]),
               c.Float.FLOAT_FORMAT_INDEX: ExceptionTexts(float_labels_text[9],
                                                          type_error=bin_only)}

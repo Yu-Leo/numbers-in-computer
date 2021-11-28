@@ -46,15 +46,15 @@ class Float:
     MAX_FLOAT_SIZE = 10  # Maximum number of decimal places
 
     DEFAULT_MANTISSA_BIN_SIZE = 10  # Default number of binary digits for mantissa
-    DEFAULT_ORDER_BIN_SIZE = 5  # Default number of binary digits for exponent
+    DEFAULT_EXPONENT_BIN_SIZE = 5  # Default number of binary digits for exponent
 
     MANTISSA_BIN_SIZE_INDEX = 0
-    ORDER_BIN_SIZE_INDEX = 1
+    EXPONENT_BIN_SIZE_INDEX = 1
     SAVE_FIRST_DIGIT_INDEX = 2
     DEC_NUM_INDEX = 3
     BIN_NUM_INDEX = 4
     BIN_MANTISSA_INDEX = 5
-    DEC_ORDER_INDEX = 6
+    DEC_EXPONENT_INDEX = 6
     DEC_CHARACTERISTIC_INDEX = 7
     BIN_CHARACTERISTIC_INDEX = 8
     FLOAT_FORMAT_INDEX = 9

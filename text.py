@@ -39,7 +39,9 @@ class ExceptionTexts:
 
 
 class Exceptions:
-    """Phrases for messageboxes"""
+    """
+    Phrases for messageboxes
+    """
 
     def __init__(self, dictionary):
         self.dictionary = dictionary

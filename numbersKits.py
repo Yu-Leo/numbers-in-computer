@@ -20,7 +20,10 @@ class IntKit:
         return kit_dict.get(key, "ERROR")
 
     def by_dec_num(self, bin_size):
-        """Translation into all representations by number in decimal notation"""
+        """
+        :param bin_size: number of binary digits for representations of number
+        Translation into all representations by number in decimal notation
+        """
         if self.__dec_num >= 0:  # Positive number
             self.__bin_num = self.__abs_bin_by_dec()
             if self.__dec_num > c.Int.max_positive(bin_size):  # Out of range
@@ -46,22 +49,34 @@ class IntKit:
                 self.__add_code = self.__additional_by_reversed()
 
     def by_bin_num(self, bin_size):
-        """Translation into all representations by number in binary notation"""
+        """
+        :param bin_size: number of binary digits for representations of number
+        Translation into all representations by number in binary notation
+        """
         self.__dec_num = int(self.__bin_num, base=2)
         self.by_dec_num(bin_size)
 
     def by_str_code(self, bin_size):
-        """Translation into all representations by number's straight code"""
+        """
+        :param bin_size: number of binary digits for representations of number
+        Translation into all representations by number's straight code
+        """
         self.__bin_num = self.__bin_by_straight()
         self.by_bin_num(bin_size)
 
     def by_rev_code(self, bin_size):
-        """Translation into all representations by number's reverse code"""
+        """
+        :param bin_size: number of binary digits for representations of number
+        Translation into all representations by number's reverse code
+        """
         self.__str_code = self.__straight_by_reversed()
         self.by_str_code(bin_size)
 
     def by_add_code(self, bin_size):
-        """Translation into all representations by number's additional code"""
+        """
+        :param bin_size: number of binary digits for representations of number
+        Translation into all representations by number's additional code
+        """
         self.__str_code = self.__straight_by_additional()
         self.by_str_code(bin_size)
 
@@ -77,15 +92,24 @@ class IntKit:
             self.__add_code = "-"
 
     def __abs_bin_by_dec(self):
-        """The modulus of a number in binary notation"""
+        """
+        :returns the modulus of a number in binary notation
+        """
         return bin(abs(self.__dec_num))[2:]
 
     def __straight_by_bin(self, bin_size):
+        """
+        :param bin_size: number of binary digits for representations of number
+        :return: straight code of number by its binary notation
+        """
         if self.__dec_num >= 0:  # Positive number
             return self.__bin_num.rjust(bin_size, "0")
         return "1" + self.__abs_bin_num.rjust(bin_size - 1, "0")
 
     def __reversed_by_straight(self):
+        """
+        :return: reversed code of number by its straight code
+        """
         if self.__str_code[0] == "0":  # Positive number
             return self.__str_code
         rev_code = self.__str_code[0]
@@ -94,15 +118,24 @@ class IntKit:
         return rev_code
 
     def __additional_by_reversed(self):
+        """
+        :return: additional code of number by its reversed code
+        """
         if self.__rev_code[0] == "0":  # Positive number
             return self.__rev_code
         return bin_sum(self.__rev_code, "1")
 
     def __bin_by_straight(self):
+        """
+        :return: binary notation of number by its straight code
+        """
         sign = "-" if self.__str_code[0] == "1" else ""
         return sign + self.__str_code[1:]
 
     def __straight_by_reversed(self):
+        """
+        :return: straight code of number by its reversed code
+        """
         if self.__rev_code[0] == "0":  # Positive number
             return self.__rev_code
         str_code = self.__rev_code[0]
@@ -111,6 +144,9 @@ class IntKit:
         return str_code
 
     def __straight_by_additional(self):
+        """
+        :return: straight code of number by its additional code
+        """
         if self.__add_code[0] == "0":  # Positive number
             return self.__add_code
         str_code = self.__add_code[0]
@@ -120,7 +156,7 @@ class IntKit:
 
     def __get_add_for_lower_bound(self, bin_size):
         """
-        Return additional code on number that is the lower bound acceptable range.
+        :returns additional code of number that is the lower bound acceptable range
         """
         if bin_size == 1 and self.__dec_num == -1:  # A special case
             return "1"
@@ -140,8 +176,11 @@ class FloatKit:
 
     @staticmethod
     def get_bin_float_part(dec_float_part):
-        """Translate float part of number from decimal notation into binary notation"""
-        if abs(dec_float_part - 0) <= 0.001:  # Дробная часть == 0
+        """
+        :param dec_float_part: float part of number in decimal notation
+        Translate float part of number from decimal notation into binary notation
+        """
+        if abs(dec_float_part - 0) <= 0.001:  # float part == 0
             return "0"
         res = ""
         while abs(dec_float_part - int(dec_float_part)) >= 0.001:
@@ -155,7 +194,10 @@ class FloatKit:
 
     @staticmethod
     def get_dec_float_part(bin_float_part):
-        """Translate float part of number from binary notation into decimal notation"""
+        """
+        :param bin_float_part: float part of number in binary notation
+        Translate float part of number from binary notation into decimal notation
+        """
         res = 0
         for i in range(len(bin_float_part)):
             res += int(bin_float_part[i]) * 2 ** (-(i + 1))
@@ -274,7 +316,9 @@ class FloatKit:
 
 
 def bin_sum(a, b):
-    """Addition of two numbers in binary system"""
+    """
+    Addition of two numbers in binary system
+    """
     add_digit = False
     n = max(len(a), len(b))
     a = a.rjust(n, "0")

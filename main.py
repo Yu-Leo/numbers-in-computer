@@ -11,7 +11,9 @@ from windowParameters import WindowParameters
 
 
 class Window:
-    """Main application window"""
+    """
+    Main application window
+    """
 
     def __init__(self):
         self.__root = tk.Tk()
@@ -37,7 +39,9 @@ class Window:
                                      self.float_widgets.draw, self.float_widgets.hide)
 
     def run(self):
-        """Run application"""
+        """
+        Run application
+        """
         self.num_type_menu.draw()
         if config.numbers_type == c.Int.TYPE_NUM:
             self.int_widgets.draw()

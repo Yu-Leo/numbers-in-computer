@@ -10,7 +10,11 @@ from numbersKits import FloatKit
 
 
 def calculate(entries):
-    """Calculation in float mode"""
+    """
+    Calculation in float mode with exceptions tracking
+
+    :param entries: list of tkinter's entries objects
+    """
     try:
         float_calc(entries)
     except e.FloatEntryContentError as exception:
@@ -32,6 +36,11 @@ def calculate(entries):
 
 
 def float_calc(entries):
+    """
+    Calculation in float mode
+
+    :param entries: list of tkinter's entries objects
+    """
     mantissa_bin_size = get_mantissa_bin_size(entries)
     order_bin_size = get_order_bin_size(entries)
     save_first_digit = get_save_first_digit(entries)
@@ -57,6 +66,10 @@ def float_calc(entries):
 
 
 def get_mantissa_bin_size(entries):
+    """
+    :param entries: list of tkinter's entries objects
+    :returns number of binary digits of the mantissa in integer type
+    """
     str_mantissa_bin_size = entries.get_mantissa_bin_size()
     try:
         int_mantissa_bin_size = int(str_mantissa_bin_size)
@@ -72,6 +85,10 @@ def get_mantissa_bin_size(entries):
 
 
 def get_order_bin_size(entries):
+    """
+    :param entries: list of tkinter's entries objects
+    :returns number of binary digits of the exponent in integer type
+    """
     str_order_bin_size = entries.get_order_bin_size()
     try:
         int_order_bin_size = int(str_order_bin_size)
@@ -86,11 +103,19 @@ def get_order_bin_size(entries):
 
 
 def get_save_first_digit(entries):
+    """
+    :param entries: list of tkinter's entries objects
+    :returns value of checkbox 'save first digit'
+    """
     return entries.get_save_first_digit()
 
 
 def is_dec_num_correct(input_data):
-    """Is number is correct real number"""
+    """
+    Check, is number is correct real number
+    :param input_data: verified data
+    :returns is input_data contains correct real number
+    """
     correct_symbols = {"-", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", ".", ","}
     digits_and_punct_only = set(input_data).issubset(correct_symbols)
     one_punct = input_data.count(".") + input_data.count(",") <= 1
@@ -98,7 +123,9 @@ def is_dec_num_correct(input_data):
 
 
 def replace_comma(input_data):
-    """Replace comma to dot"""
+    """
+    :returns input_data where the comma is replaced by a dot
+    """
     comma_pos = input_data.find(",")
     if comma_pos != -1:
         input_data = input_data[:comma_pos] + "." + input_data[comma_pos + 1:]
@@ -106,6 +133,10 @@ def replace_comma(input_data):
 
 
 def get_dec_num(entries):
+    """
+    :param entries: list of tkinter's entries objects
+    :return: number in decimal notation in float type
+    """
     input_data = entries.get_dec_num()
 
     if not is_dec_num_correct(input_data):
@@ -117,6 +148,14 @@ def get_dec_num(entries):
 
 
 def get_float_format(entries, mantissa, order, save):
+    """
+    :param entries: list of tkinter's entries objects
+    :param mantissa: number of binary digits of the mantissa in integer type
+    :param order: number of binary digits of the exponent in integer type
+    :param save: is the first digit of the mantissa stored
+    :return: number in float representation
+    """
+
     float_format = entries.get_float_format()
     if not set(float_format).issubset({"0", "1"}) or float_format == "":  # If string include not only '0' and '1'
         raise e.FloatEntryContentError(field=c.Float.FLOAT_FORMAT_INDEX,
@@ -129,7 +168,11 @@ def get_float_format(entries, mantissa, order, save):
 
 
 def copy_to_buffer(entries, index):
-    """Copy value to clipboard by its index"""
+    """
+    Copy value from entry to clipboard by its index
+    :param entries: list of tkinter's entries objects
+    :param index - index of entry field
+    """
     if index == c.Float.DEC_NUM_INDEX:
         pyperclip.copy(entries.get_dec_num())
     elif index == c.Float.BIN_NUM_INDEX:

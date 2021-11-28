@@ -1,4 +1,4 @@
-# File with phrases that are used in the application interface in Russian language
+# File with phrases that are used in the application interface in Russian
 
 from calculations import constants as c
 

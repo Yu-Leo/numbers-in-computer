@@ -5,7 +5,7 @@ import pyperclip  # Module for working with clipboard
 from calculations import config, constants as c
 import exceptions as e
 import tkgui.messageboxes as mb
-from calculations.numbersKits import IntKit
+from calculations.numbers_kits import IntKit
 
 
 def calculate(entries):

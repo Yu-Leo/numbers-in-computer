@@ -11,7 +11,9 @@ import text
 
 
 class Widgets:
-    """Base class for a set of widgets"""
+    """
+    Base class for a set of widgets
+    """
 
     def __init__(self):
         self._entries_names = None
@@ -57,7 +59,9 @@ class FloatWidgets(Widgets):
 
 
 class NumTypeMenu:
-    """Menu for selecting the type of numbers"""
+    """
+    Menu for selecting the type of numbers
+    """
 
     def __init__(self, window):
         self.window = window
@@ -83,7 +87,14 @@ class NumTypeMenu:
                                                   command=self.__change_type)
 
     def set_funcs(self, draw_int, hide_int, draw_float, hide_float):
-        """Initialize the list of functions to control the rendering of widgets"""
+        """
+        Initialize the list of functions to control the rendering of widgets
+
+        :param draw_int: function for rendering widgets for int mode
+        :param hide_int: function for hide widgets for int mode
+        :param draw_float: function for rendering widgets for float mode
+        :param hide_float: function for hide widgets for float mode
+        """
         self.__funcs["draw_int"] = draw_int
         self.__funcs["hide_int"] = hide_int
         self.__funcs["draw_float"] = draw_float
@@ -125,7 +136,9 @@ class Labels:
 
 
 class IntLabels(Labels):
-    """List of labels for int mode"""
+    """
+    List of labels for int mode
+    """
 
     def __init__(self, window):
         super().__init__(window, text.int_labels_text)
@@ -137,7 +150,9 @@ class IntLabels(Labels):
 
 
 class FloatLabels(Labels):
-    """List of labels for float mode"""
+    """
+    List of labels for float mode
+    """
 
     def __init__(self, window):
         super().__init__(window, text.float_labels_text)
@@ -147,7 +162,11 @@ class Entries:
 
     @staticmethod
     def call_calc(i, calculate_func):
-        """Change the translation mode to the one in which Enter was pressed, and translate"""
+        """
+        :param i: index of the field where enter was pressed
+        :param calculate_func: function of starting calculations
+        Change the translation mode to the one in which Enter was pressed, and translate
+        """
         config.translate_type = i
         calculate_func()
 
@@ -171,26 +190,36 @@ class Entries:
             item.grid_remove()
 
     def clear_except_settings(self):
-        """Clear all field except settings fields"""
+        """
+        Clear all field except settings fields
+        """
         self.clear_all_except(*self._settings_list)
 
     def clear_all_except(self, *args):
-        """Clears all fields except those specified in the arguments"""
+        """
+        Clears all fields except those specified in the arguments
+        """
         for i in range(len(self._list)):
             if i not in args:
                 self._list[i].delete(0, tk.END)
 
     def clear(self, *args):
-        """Clears the fields that are specified in the arguments"""
+        """
+        Clears the fields that are specified in the arguments
+        """
         for i in args:
             self._list[i].delete(0, tk.END)
 
     def _get(self, index):
-        """Get value from the field by its index"""
+        """
+        :returns value from the field by its index
+        """
         return str(self._list[index].get())
 
     def _write(self, index, value):
-        """Write value to the field by its index"""
+        """
+        Write value to the field by its index
+        """
         self._list[index].delete(0, tk.END)
         self._list[index].insert(0, value)
 
@@ -220,7 +249,9 @@ class Entries:
 
 
 class IntEntries(Entries):
-    """List of entries fields in int mode"""
+    """
+    List of entries fields in int mode
+    """
 
     def __init__(self, window, calculate_func, copy_func):
         super().__init__(window, c.Int.NUMBER_OF_PARAMS)
@@ -230,7 +261,9 @@ class IntEntries(Entries):
         super()._bind_buttons(calculate_func, copy_func)
 
     def _bind_enter(self, calculate_func):
-        """Bind 'Enter' button"""
+        """
+        Bind 'Enter' button
+        """
         self._bind_enter_button(c.Int.DEC_NUM_INDEX, calculate_func)
         self._bind_enter_button(c.Int.BIN_NUM_INDEX, calculate_func)
         self._bind_enter_button(c.Int.STR_CODE_INDEX, calculate_func)
@@ -238,7 +271,9 @@ class IntEntries(Entries):
         self._bind_enter_button(c.Int.ADD_CODE_INDEX, calculate_func)
 
     def _bind_delete(self):
-        """Bind 'Delete' button"""
+        """
+        Bind 'Delete' button
+        """
         indexes = [c.Int.DEC_NUM_INDEX, c.Int.BIN_NUM_INDEX,
                    c.Int.STR_CODE_INDEX, c.Int.REV_CODE_INDEX,
                    c.Int.ADD_CODE_INDEX]
@@ -246,7 +281,9 @@ class IntEntries(Entries):
             self._bind_delete_button(index)
 
     def _bind_ctrlc(self, copy_func):
-        """Bind 'Ctrl'+'C'"""
+        """
+        Bind 'Ctrl'+'C'
+        """
         self._bind_ctrlc_button(c.Int.DEC_NUM_INDEX, copy_func)
         self._bind_ctrlc_button(c.Int.BIN_NUM_INDEX, copy_func)
         self._bind_ctrlc_button(c.Int.STR_CODE_INDEX, copy_func)
@@ -275,7 +312,9 @@ class IntEntries(Entries):
         return self._get(c.Int.ADD_CODE_INDEX)
 
     def print(self, kit):
-        """Print all number kit to the entries fields"""
+        """
+        Print all number kit to the entries fields
+        """
         self._write(c.Int.DEC_NUM_INDEX, kit["dec_num"])
         self._write(c.Int.BIN_NUM_INDEX, kit["bin_num"])
         self._write(c.Int.STR_CODE_INDEX, kit["str_code"])
@@ -291,7 +330,9 @@ class IntEntries(Entries):
 
 
 class FloatEntries(Entries):
-    """List of entries fields in float mode"""
+    """
+    List of entries fields in float mode
+    """
 
     def __init__(self, window, calculate_func, copy_func):
         super().__init__(window, c.Float.NUMBER_OF_PARAMS)
@@ -319,18 +360,24 @@ class FloatEntries(Entries):
         super().clear_all_except(c.Float.SAVE_FIRST_DIGIT_INDEX, *args)
 
     def _bind_enter(self, calculate_func):
-        """Bind 'Enter' button"""
+        """
+        Bind 'Enter' button
+        """
         self._bind_enter_button(c.Float.DEC_NUM_INDEX, calculate_func)
         self._bind_enter_button(c.Float.FLOAT_FORMAT_INDEX, calculate_func)
 
     def _bind_delete(self):
-        """Bind 'Delete' button"""
+        """
+        Bind 'Delete' button
+        """
         indexes = [c.Float.DEC_NUM_INDEX, c.Float.FLOAT_FORMAT_INDEX]
         for index in indexes:
             self._bind_delete_button(index)
 
     def _bind_ctrlc(self, copy_func):
-        """Bind 'Ctrl'+'C'"""
+        """
+        Bind 'Ctrl'+'C'
+        """
         self._bind_ctrlc_button(c.Float.DEC_NUM_INDEX, copy_func)
         self._bind_ctrlc_button(c.Float.FLOAT_FORMAT_INDEX, copy_func)
 
@@ -353,7 +400,9 @@ class FloatEntries(Entries):
         return self._get(c.Float.FLOAT_FORMAT_INDEX)
 
     def print(self, kit):
-        """Print all number kit to the entries fields"""
+        """
+        Print all number kit to the entries fields
+        """
         self._write(c.Float.DEC_NUM_INDEX, kit["dec_num"])
         self._write(c.Float.BIN_NUM_INDEX, kit["bin_num"])
         self._write(c.Float.BIN_MANTISSA_INDEX, kit["bin_mantissa"])
@@ -364,7 +413,9 @@ class FloatEntries(Entries):
 
 
 class ButtonsRow:
-    """Row with buttons 'clear', 'calculate' and 'copy'"""
+    """
+    Row with buttons 'clear', 'calculate' and 'copy'
+    """
 
     @staticmethod
     def __get_image(name):

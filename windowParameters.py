@@ -9,5 +9,7 @@ class WindowParameters:
         self.ico_path = "img/program_icon64.ico"  # Path to application icon
 
     def geometry(self):
-        """Window geometry by tkinter's template"""
+        """
+        :returns window's geometry in tkinter's template
+        """
         return f"+{self.__padx}+{self.__pady}"  # The size is determined automatically

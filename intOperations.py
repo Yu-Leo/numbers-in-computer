@@ -10,7 +10,12 @@ from numbersKits import IntKit
 
 
 def calculate(entries):
-    """Calculation in int mode"""
+    """
+    Calculation in int mode with exceptions tracking
+
+    :param entries: list of tkinter's entries objects
+    """
+
     try:
         int_calc(entries)
     except e.IntEntryContentError as exception:
@@ -43,6 +48,12 @@ def calculate(entries):
 
 
 def int_calc(entries):
+    """
+    Calculation in int mode
+
+    :param entries: list of tkinter's entries objects
+    """
+
     bin_size = get_bin_size(entries)  # Number of binary digits
     # Delete old values
     entries.clear_all_except(c.Int.BIN_SIZE_INDEX, config.translate_type)
@@ -82,6 +93,11 @@ def int_calc(entries):
 
 
 def get_bin_size(entries):
+    """
+    :param entries: list of tkinter's entries objects
+    :return: number of binary digits for representations of number in integer type
+    """
+
     str_bin_size = entries.get_bin_size()
     try:
         int_bin_size = int(str_bin_size)
@@ -96,6 +112,11 @@ def get_bin_size(entries):
 
 
 def get_dec_num(entries):
+    """
+    :param entries: list of tkinter's entries objects
+    :return: number in decimal notation in integer type
+    """
+
     input_data = entries.get_dec_num()
     try:
         dec_num = int(input_data)
@@ -106,6 +127,11 @@ def get_dec_num(entries):
 
 
 def get_bin_num(entries):
+    """
+    :param entries: list of tkinter's entries objects
+    :return: number in binary notation
+    """
+
     bin_num = entries.get_bin_num()
     if set(bin_num) != {"0", "1"}:  # If string include not only '0' and '1'
         raise e.IntEntryContentError(field=c.Int.BIN_NUM_INDEX,
@@ -114,6 +140,12 @@ def get_bin_num(entries):
 
 
 def get_str_code(entries, bin_size):
+    """
+    :param entries: list of tkinter's entries objects
+    :param bin_size: number of binary digits for representations of number
+    :return: number in straight code's representation
+    """
+
     str_code = entries.get_str_code()
     if set(str_code) != {"0", "1"}:  # If string include not only '0' and '1'
         raise e.IntEntryContentError(field=c.Int.STR_CODE_INDEX,
@@ -125,6 +157,12 @@ def get_str_code(entries, bin_size):
 
 
 def get_rev_code(entries, bin_size):
+    """
+    :param entries: list of tkinter's entries objects
+    :param bin_size: number of binary digits for representations of number
+    :return: number in reversed code's representation
+    """
+
     rev_code = entries.get_rev_code()
     if set(rev_code) != {"0", "1"}:  # If string include not only '0' and '1'
         raise e.IntEntryContentError(field=c.Int.REV_CODE_INDEX,
@@ -136,6 +174,12 @@ def get_rev_code(entries, bin_size):
 
 
 def get_add_code(entries, bin_size):
+    """
+    :param entries: list of tkinter's entries objects
+    :param bin_size: number of binary digits for representations of number
+    :return: number in additional code's representation
+    """
+
     add_code = entries.get_add_code()
     if set(add_code) != {"0", "1"}:  # If string include not only '0' and '1'
         raise e.IntEntryContentError(field=c.Int.ADD_CODE_INDEX,
@@ -147,7 +191,11 @@ def get_add_code(entries, bin_size):
 
 
 def copy_to_buffer(entries, index):
-    """Copy value to clipboard by its index"""
+    """
+    Copy value from entry to clipboard by its index
+    :param entries: list of tkinter's entries objects
+    :param index - index of entry field
+    """
     if index == c.Int.DEC_NUM_INDEX:
         pyperclip.copy(entries.get_dec_num())
     elif index == c.Int.BIN_NUM_INDEX:

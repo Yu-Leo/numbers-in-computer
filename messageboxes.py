@@ -9,7 +9,9 @@ from text import int_exceptions, float_exceptions
 
 
 class WarningMb:
-    """Messagebox with type 'warning'"""
+    """
+    Messagebox with type 'warning'
+    """
 
     def __init__(self, title, message):
         self.title = title
@@ -20,7 +22,9 @@ class WarningMb:
 
 
 class ErrorMb:
-    """Messagebox with type 'error'"""
+    """
+    Messagebox with type 'error'
+    """
 
     def __init__(self, title, message):
         self.title = title
@@ -31,10 +35,14 @@ class ErrorMb:
 
 
 class ExceptionMb(ErrorMb, WarningMb):
-    """Messagebox for custom exceptions"""
+    """
+    Messagebox for custom exceptions
+    """
 
     def __get_text_list(self, exception):
-        """Returns the desired list of phrases depending on the type of exception"""
+        """
+        :returns the desired list of phrases depending on the type of exception
+        """
         if isinstance(exception, IntError):
             return int_exceptions
         elif isinstance(exception, FloatError):

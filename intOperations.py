@@ -190,7 +190,7 @@ def get_add_code(entries, bin_size):
     return add_code
 
 
-def copy_to_buffer(entries, index):
+def copy_to_clipboard(entries, index):
     """
     Copy value from entry to clipboard by its index
     :param entries: list of tkinter's entries objects

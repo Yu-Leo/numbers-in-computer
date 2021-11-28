@@ -3,9 +3,9 @@ import tkinter as tk
 import config
 import constants as c
 from floatOperations import calculate as float_calc
-from floatOperations import copy_to_buffer as float_copy
+from floatOperations import copy_to_clipboard as float_copy
 from intOperations import calculate as int_calc
-from intOperations import copy_to_buffer as int_copy
+from intOperations import copy_to_clipboard as int_copy
 from widgets import NumTypeMenu, IntWidgets, FloatWidgets
 from windowParameters import WindowParameters
 

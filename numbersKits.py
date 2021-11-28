@@ -11,7 +11,7 @@ class IntKit:
         self.__rev_code = rev_code  # Reverse number's code
         self.__add_code = add_code  # Additional number's code
 
-    def __getitem__(self, key):
+    def __getitem__(self, key: str) -> str:
         kit_dict = {"dec_num": self.__dec_num,
                     "bin_num": self.__bin_num,
                     "str_code": self.__str_code,
@@ -80,7 +80,7 @@ class IntKit:
         self.__str_code = self.__straight_by_additional()
         self.by_str_code(bin_size)
 
-    def codes_error(self):
+    def codes_error(self) -> bool:
         return self.__str_code == "-"
 
     def __fill_codes_errors(self, *args):
@@ -91,13 +91,13 @@ class IntKit:
         if c.Int.ADD_CODE_INDEX in args:
             self.__add_code = "-"
 
-    def __abs_bin_by_dec(self):
+    def __abs_bin_by_dec(self) -> str:
         """
         :returns the modulus of a number in binary notation
         """
         return bin(abs(self.__dec_num))[2:]
 
-    def __straight_by_bin(self, bin_size):
+    def __straight_by_bin(self, bin_size: int) -> str:
         """
         :param bin_size: number of binary digits for representations of number
         :return: straight code of number by its binary notation
@@ -106,7 +106,7 @@ class IntKit:
             return self.__bin_num.rjust(bin_size, "0")
         return "1" + self.__abs_bin_num.rjust(bin_size - 1, "0")
 
-    def __reversed_by_straight(self):
+    def __reversed_by_straight(self) -> str:
         """
         :return: reversed code of number by its straight code
         """
@@ -117,7 +117,7 @@ class IntKit:
             rev_code += ("1" if self.__str_code[i] == "0" else "0")
         return rev_code
 
-    def __additional_by_reversed(self):
+    def __additional_by_reversed(self) -> str:
         """
         :return: additional code of number by its reversed code
         """
@@ -125,14 +125,14 @@ class IntKit:
             return self.__rev_code
         return bin_sum(self.__rev_code, "1")
 
-    def __bin_by_straight(self):
+    def __bin_by_straight(self) -> str:
         """
         :return: binary notation of number by its straight code
         """
         sign = "-" if self.__str_code[0] == "1" else ""
         return sign + self.__str_code[1:]
 
-    def __straight_by_reversed(self):
+    def __straight_by_reversed(self) -> str:
         """
         :return: straight code of number by its reversed code
         """
@@ -143,7 +143,7 @@ class IntKit:
             str_code += ("1" if self.__rev_code[i] == "0" else "0")
         return str_code
 
-    def __straight_by_additional(self):
+    def __straight_by_additional(self) -> str:
         """
         :return: straight code of number by its additional code
         """
@@ -154,7 +154,7 @@ class IntKit:
             str_code += ("1" if self.__add_code[i] == "0" else "0")
         return bin_sum(str_code, "1")
 
-    def __get_add_for_lower_bound(self, bin_size):
+    def __get_add_for_lower_bound(self, bin_size: int) -> str:
         """
         :returns additional code of number that is the lower bound acceptable range
         """
@@ -175,7 +175,7 @@ class FloatKit:
         return int_part, float_part
 
     @staticmethod
-    def get_bin_float_part(dec_float_part):
+    def get_bin_float_part(dec_float_part: float) -> str:
         """
         :param dec_float_part: float part of number in decimal notation
         Translate float part of number from decimal notation into binary notation
@@ -193,7 +193,7 @@ class FloatKit:
         return res
 
     @staticmethod
-    def get_dec_float_part(bin_float_part):
+    def get_dec_float_part(bin_float_part: str) -> int:
         """
         :param bin_float_part: float part of number in binary notation
         Translate float part of number from binary notation into decimal notation
@@ -213,7 +213,7 @@ class FloatKit:
         self.__float_format = float_format
         self.__sign = "0"
 
-    def __getitem__(self, key):
+    def __getitem__(self, key: str) -> str:
         kit_dict = {"dec_num": self.__dec_num,
                     "bin_num": self.__bin_num,
                     "bin_mantissa": self.__bin_mantissa,
@@ -223,7 +223,7 @@ class FloatKit:
                     "float_format": self.__float_format}
         return kit_dict.get(key, "ERROR")
 
-    def by_dec_num(self, mantissa_bin_size, exponent_bin_size, save_first_digit):
+    def by_dec_num(self, mantissa_bin_size: int, exponent_bin_size: int, save_first_digit: bool):
         self.__sign = ("1" if self.__dec_num < 0 else "0")
         dec_int_part, dec_float_part = FloatKit.get_dec_parts(abs(self.__dec_num))
         bin_int_part = ("-" if self.__sign == "1" else "") + bin(dec_int_part)[2:]
@@ -234,7 +234,7 @@ class FloatKit:
         self.__bin_characteristic = str(bin(self.__dec_characteristic)[2:].rjust(exponent_bin_size, "0"))
         self.__float_format = self.__get_float_format_by_all(mantissa_bin_size, exponent_bin_size, save_first_digit)
 
-    def by_float_format(self, mantissa_bin_size, exponent_bin_size, save_first_digit):
+    def by_float_format(self, mantissa_bin_size: int, exponent_bin_size: int, save_first_digit: bool):
         self.__sign = self.__float_format[0]
         self.__bin_characteristic = self.__float_format[1:exponent_bin_size + 1]
         self.__dec_characteristic = int(self.__bin_characteristic, base=2)
@@ -243,7 +243,7 @@ class FloatKit:
         self.__bin_num = self.__get_bin_by_mantissa()
         self.__dec_num = self.__get_dec_by_bin()
 
-    def __get_mantissa_and_exponent_by_bin(self):
+    def __get_mantissa_and_exponent_by_bin(self) -> tuple:
         bin_num = self.__bin_num
         sign = "-" if self.__sign == "1" else ""
         if self.__sign == "1":
@@ -259,7 +259,7 @@ class FloatKit:
             mant = mant.ljust(4, "0")
             return sign + mant, -one_pos
 
-    def __get_float_format_by_all(self, mant_size, exponent_size, save):
+    def __get_float_format_by_all(self, mant_size: int, exponent_size: int, save: bool) -> str:
         sign = self.__sign
         exponent = self.__bin_characteristic
         first_digit = "1" if save else ""
@@ -271,7 +271,7 @@ class FloatKit:
         sum_size = 1 + mant_size + (1 if save else 0) + exponent_size
         return res.ljust(sum_size, "0")[:sum_size]
 
-    def __get_mantissa_by_float(self, exponent_bin_size, save_first_digit):
+    def __get_mantissa_by_float(self, exponent_bin_size: int, save_first_digit: bool) -> str:
         float_mantissa = self.__float_format[exponent_bin_size + 1:].rstrip("0")
         if save_first_digit:
             mant = ("1." + float_mantissa[1:]).ljust(4, "0")
@@ -282,7 +282,7 @@ class FloatKit:
         else:
             return mant
 
-    def __get_bin_by_mantissa(self):
+    def __get_bin_by_mantissa(self) -> str:
         exponent = self.__dec_exponent
         sign = "-" if self.__sign == "1" else ""
         dot_pos = self.__bin_mantissa.find(".")
@@ -299,7 +299,7 @@ class FloatKit:
             full_mantissa = ("0" * abs(exponent)) + full_mantissa
             return sign + full_mantissa[0] + "." + full_mantissa[1:]
 
-    def __get_dec_by_bin(self):
+    def __get_dec_by_bin(self) -> int:
         if self.__bin_num[0] == "-":
             sign = -1
             bin_num = self.__bin_num[1:]
@@ -315,7 +315,7 @@ class FloatKit:
         return sign * (dec_int_past + dec_float_part)
 
 
-def bin_sum(a, b):
+def bin_sum(a: str, b: str) -> str:
     """
     Addition of two numbers in binary system
     """

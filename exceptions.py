@@ -3,7 +3,7 @@
 class EntryContentError(ValueError):
     """Invalid values in entry fields"""
 
-    def __init__(self, field, exception_type, message=""):
+    def __init__(self, field, exception_type, message: str = ""):
         """
         :param field: field index
         :param exception_type:
@@ -15,7 +15,7 @@ class EntryContentError(ValueError):
 
 
 class IntEntryContentError(EntryContentError):
-    def __init__(self, field, exception_type, message=""):
+    def __init__(self, field, exception_type, message: str = ""):
         """
         :param field: field index
         :param exception_type:
@@ -25,7 +25,7 @@ class IntEntryContentError(EntryContentError):
 
 
 class FloatEntryContentError(EntryContentError):
-    def __init__(self, field, exception_type, message=""):
+    def __init__(self, field, exception_type, message: str = ""):
         """
         :param field: field index
         :param exception_type:

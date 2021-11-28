@@ -1,6 +1,6 @@
 # File with classes of sets of numbers in various number systems and representations
 
-import constants as c
+import calculations.constants as c
 
 
 class IntKit:

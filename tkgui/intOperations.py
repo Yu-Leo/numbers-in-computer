@@ -2,11 +2,10 @@
 
 import pyperclip  # Module for working with clipboard
 
-import config
-import constants as c
+from calculations import config, constants as c
 import exceptions as e
-import messageboxes as mb
-from numbersKits import IntKit
+import tkgui.messageboxes as mb
+from calculations.numbersKits import IntKit
 
 
 def calculate(entries):

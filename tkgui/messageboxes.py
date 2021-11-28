@@ -5,7 +5,7 @@ import tkinter.messagebox as mb
 from calculations.constants import Exceptions as ConstEx
 from exceptions import FloatEntryContentError as FloatError
 from exceptions import IntEntryContentError as IntError
-from text import int_exceptions, float_exceptions
+from text_ru import int_exceptions, float_exceptions
 
 
 class WarningMb:

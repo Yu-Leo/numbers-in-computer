@@ -1,12 +1,12 @@
 import tkinter as tk
 
 from calculations import config, constants as c
-from tkgui.floatOperations import calculate as float_calc
-from tkgui.floatOperations import copy_to_clipboard as float_copy
-from tkgui.intOperations import calculate as int_calc
-from tkgui.intOperations import copy_to_clipboard as int_copy
+from tkgui.float_operations import calculate as float_calc
+from tkgui.float_operations import copy_to_clipboard as float_copy
+from tkgui.int_operations import calculate as int_calc
+from tkgui.int_operations import copy_to_clipboard as int_copy
 from tkgui.widgets import NumTypeMenu, IntWidgets, FloatWidgets
-from tkgui.windowParameters import WindowParameters
+from tkgui.window_parameters import WindowParameters
 
 
 class Window:

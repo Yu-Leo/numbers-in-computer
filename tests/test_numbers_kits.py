@@ -1,6 +1,6 @@
 import unittest
 
-from calculations.numbersKits import IntKit
+from calculations.numbers_kits import IntKit
 
 
 class TestIntKit(unittest.TestCase):

@@ -6,7 +6,7 @@ from PIL import Image as PilImage
 from PIL import ImageTk
 
 from calculations import config, constants as c
-import text
+import text_ru as text
 
 
 class Widgets:

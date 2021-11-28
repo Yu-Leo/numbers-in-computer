@@ -167,7 +167,7 @@ def get_float_format(entries, mantissa, exponent, save):
     return float_format
 
 
-def copy_to_buffer(entries, index):
+def copy_to_clipboard(entries, index):
     """
     Copy value from entry to clipboard by its index
     :param entries: list of tkinter's entries objects

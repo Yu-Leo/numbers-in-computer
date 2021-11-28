@@ -210,7 +210,7 @@ class Entries:
         for i in args:
             self._list[i].delete(0, tk.END)
 
-    def _get(self, index):
+    def _get(self, index) -> str:
         """
         :returns value from the field by its index
         """
@@ -293,22 +293,22 @@ class IntEntries(Entries):
     def __set_bin_size(self, bin_size):
         self._list[c.Int.BIN_SIZE_INDEX].insert(0, str(bin_size))
 
-    def get_bin_size(self):
+    def get_bin_size(self) -> str:
         return self._get(c.Int.BIN_SIZE_INDEX)
 
-    def get_dec_num(self):
+    def get_dec_num(self) -> str:
         return self._get(c.Int.DEC_NUM_INDEX)
 
-    def get_bin_num(self):
+    def get_bin_num(self) -> str:
         return self._get(c.Int.BIN_NUM_INDEX)
 
-    def get_str_code(self):
+    def get_str_code(self) -> str:
         return self._get(c.Int.STR_CODE_INDEX)
 
-    def get_rev_code(self):
+    def get_rev_code(self) -> str:
         return self._get(c.Int.REV_CODE_INDEX)
 
-    def get_add_code(self):
+    def get_add_code(self) -> str:
         return self._get(c.Int.ADD_CODE_INDEX)
 
     def print(self, kit):
@@ -381,22 +381,22 @@ class FloatEntries(Entries):
         self._bind_ctrlc_button(c.Float.DEC_NUM_INDEX, copy_func)
         self._bind_ctrlc_button(c.Float.FLOAT_FORMAT_INDEX, copy_func)
 
-    def get_mantissa_bin_size(self):
+    def get_mantissa_bin_size(self) -> str:
         return self._get(c.Float.MANTISSA_BIN_SIZE_INDEX)
 
-    def get_exponent_bin_size(self):
+    def get_exponent_bin_size(self) -> str:
         return self._get(c.Float.EXPONENT_BIN_SIZE_INDEX)
 
-    def get_save_first_digit(self):
+    def get_save_first_digit(self) -> bool:
         return bool(self.__save.get())
 
-    def get_dec_num(self):
+    def get_dec_num(self) -> str:
         return self._get(c.Float.DEC_NUM_INDEX)
 
-    def get_bin_num(self):
+    def get_bin_num(self) -> str:
         return self._get(c.Float.BIN_NUM_INDEX)
 
-    def get_float_format(self):
+    def get_float_format(self) -> str:
         return self._get(c.Float.FLOAT_FORMAT_INDEX)
 
     def print(self, kit):

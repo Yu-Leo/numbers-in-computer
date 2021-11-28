@@ -92,10 +92,10 @@ def int_calc(entries):
         entries.print(kit)
 
 
-def get_bin_size(entries):
+def get_bin_size(entries) -> int:
     """
     :param entries: list of tkinter's entries objects
-    :return: number of binary digits for representations of number in integer type
+    :return: number of binary digits for representations of number
     """
 
     str_bin_size = entries.get_bin_size()
@@ -111,10 +111,10 @@ def get_bin_size(entries):
     return int_bin_size
 
 
-def get_dec_num(entries):
+def get_dec_num(entries) -> int:
     """
     :param entries: list of tkinter's entries objects
-    :return: number in decimal notation in integer type
+    :return: number in decimal notation
     """
 
     input_data = entries.get_dec_num()
@@ -126,7 +126,7 @@ def get_dec_num(entries):
     return dec_num
 
 
-def get_bin_num(entries):
+def get_bin_num(entries) -> str:
     """
     :param entries: list of tkinter's entries objects
     :return: number in binary notation
@@ -139,7 +139,7 @@ def get_bin_num(entries):
     return bin_num
 
 
-def get_str_code(entries, bin_size):
+def get_str_code(entries, bin_size: int) -> str:
     """
     :param entries: list of tkinter's entries objects
     :param bin_size: number of binary digits for representations of number
@@ -156,7 +156,7 @@ def get_str_code(entries, bin_size):
     return str_code
 
 
-def get_rev_code(entries, bin_size):
+def get_rev_code(entries, bin_size: int) -> str:
     """
     :param entries: list of tkinter's entries objects
     :param bin_size: number of binary digits for representations of number
@@ -173,7 +173,7 @@ def get_rev_code(entries, bin_size):
     return rev_code
 
 
-def get_add_code(entries, bin_size):
+def get_add_code(entries, bin_size: int) -> str:
     """
     :param entries: list of tkinter's entries objects
     :param bin_size: number of binary digits for representations of number

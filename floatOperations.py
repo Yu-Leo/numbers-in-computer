@@ -65,10 +65,10 @@ def float_calc(entries):
         raise Warning("Invalid translate_type")
 
 
-def get_mantissa_bin_size(entries):
+def get_mantissa_bin_size(entries) -> int:
     """
     :param entries: list of tkinter's entries objects
-    :returns number of binary digits of the mantissa in integer type
+    :returns number of binary digits of the mantissa
     """
     str_mantissa_bin_size = entries.get_mantissa_bin_size()
     try:
@@ -84,10 +84,10 @@ def get_mantissa_bin_size(entries):
     return int_mantissa_bin_size
 
 
-def get_exponent_bin_size(entries):
+def get_exponent_bin_size(entries) -> int:
     """
     :param entries: list of tkinter's entries objects
-    :returns number of binary digits of the exponent in integer type
+    :returns number of binary digits of the exponent
     """
     str_exponent_bin_size = entries.get_exponent_bin_size()
     try:
@@ -102,7 +102,7 @@ def get_exponent_bin_size(entries):
     return int_exponent_bin_size
 
 
-def get_save_first_digit(entries):
+def get_save_first_digit(entries) -> bool:
     """
     :param entries: list of tkinter's entries objects
     :returns value of checkbox 'save first digit'
@@ -110,7 +110,7 @@ def get_save_first_digit(entries):
     return entries.get_save_first_digit()
 
 
-def is_dec_num_correct(input_data):
+def is_dec_num_correct(input_data: str) -> bool:
     """
     Check, is number is correct real number
     :param input_data: verified data
@@ -122,7 +122,7 @@ def is_dec_num_correct(input_data):
     return input_data != "" and digits_and_punct_only and one_punct
 
 
-def replace_comma(input_data):
+def replace_comma(input_data: str) -> str:
     """
     :returns input_data where the comma is replaced by a dot
     """
@@ -132,10 +132,10 @@ def replace_comma(input_data):
     return input_data
 
 
-def get_dec_num(entries):
+def get_dec_num(entries) -> float:
     """
     :param entries: list of tkinter's entries objects
-    :return: number in decimal notation in float type
+    :return: number in decimal notation
     """
     input_data = entries.get_dec_num()
 
@@ -147,11 +147,11 @@ def get_dec_num(entries):
     return dec_num
 
 
-def get_float_format(entries, mantissa, exponent, save):
+def get_float_format(entries, mantissa: int, exponent: int, save: bool) -> str:
     """
     :param entries: list of tkinter's entries objects
-    :param mantissa: number of binary digits of the mantissa in integer type
-    :param exponent: number of binary digits of the exponent in integer type
+    :param mantissa: number of binary digits of the mantissa
+    :param exponent: number of binary digits of the exponent
     :param save: is the first digit of the mantissa stored
     :return: number in float representation
     """

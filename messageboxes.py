@@ -13,7 +13,7 @@ class WarningMb:
     Messagebox with type 'warning'
     """
 
-    def __init__(self, title, message):
+    def __init__(self, title: str, message: str):
         self.title = title
         self.message = message
 
@@ -26,7 +26,7 @@ class ErrorMb:
     Messagebox with type 'error'
     """
 
-    def __init__(self, title, message):
+    def __init__(self, title: str, message: str):
         self.title = title
         self.message = message
 

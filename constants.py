@@ -16,7 +16,7 @@ class Int:
     NUMBER_OF_PARAMS = 6
 
     @staticmethod
-    def max_positive(bin_size):
+    def max_positive(bin_size: int) -> int:
         """
         :param bin_size: number of binary digits
         :returns: the maximum positive integer that can be represented
@@ -25,7 +25,7 @@ class Int:
         return 2 ** (bin_size - 1) - 1
 
     @staticmethod
-    def max_negative(bin_size):
+    def max_negative(bin_size: int) -> int:
         """
         :param bin_size: number of binary digits
         :returns: the maximum negative integer that can be represented

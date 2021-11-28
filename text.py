@@ -46,7 +46,7 @@ class Exceptions:
     def __init__(self, dictionary):
         self.dictionary = dictionary
 
-    def __getitem__(self, key):
+    def __getitem__(self, key: str) -> str:
         return self.dictionary.get(key, "ERROR")
 
 

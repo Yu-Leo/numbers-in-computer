@@ -8,7 +8,7 @@ class WindowParameters:
         self.resizable = (False, False)
         self.ico_path = "img/program_icon64.ico"  # Path to application icon
 
-    def geometry(self):
+    def geometry(self) -> str:
         """
         :returns window's geometry in tkinter's template
         """

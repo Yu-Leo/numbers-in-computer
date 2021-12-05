@@ -33,8 +33,7 @@
    поле).
 4. Кнопки, очищающие все поля, кроме числа двоичных разрядов (*аналогично*: нажатие **[Delete]** в любом поле).
 
-
-### Демонстрация 
+### Демонстрация
 
 ![int_demo](https://github.com/Yu-Leo/numbers-in-computer/blob/main/docs/int_demo.gif)
 
@@ -47,7 +46,7 @@
 
 ### Интерфейс
 
-![float_interface](https://github.com/Yu-Leo/numbers-in-computer/blob/main/docs/float_interface.jpg)
+![real_interface](https://github.com/Yu-Leo/numbers-in-computer/blob/main/docs/real_interface.jpg)
 
 1. Выбор типа числа, перевод которого требуется осуществить.
 2. Кнопки, осуществляющие расчёт по значению соответствующего поля (*аналогично*: нажатие **[Enter]** в поле).
@@ -55,9 +54,9 @@
    поле).
 4. Кнопки, очищающие все поля, кроме числа двоичных разрядов (*аналогично*: нажатие **[Delete]** в любом поле).
 
-### Демонстрация 
+### Демонстрация
 
-![float_demo](https://github.com/Yu-Leo/numbers-in-computer/blob/main/docs/float_demo.gif)
+![real_demo](https://github.com/Yu-Leo/numbers-in-computer/blob/main/docs/real_demo.gif)
 
 ## Код
 

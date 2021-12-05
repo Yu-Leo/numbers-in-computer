@@ -1,6 +1,6 @@
 # File with application configuration settings
 
-import calculations.constants as c
+import calculations.constants as constants
 
-numbers_type = c.Float.TYPE_NUM  # integer / float numbers
-translate_type = c.Int.DEC_NUM_INDEX  # Default type of number whose representations need to be obtained
+numbers_type = constants.Real.TYPE_NUM  # Translate integer/real numbers
+translate_type = constants.Int.DEC_NUM_INDEX  # Default type of number whose representations need to be obtained

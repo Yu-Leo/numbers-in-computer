@@ -9,19 +9,19 @@ int_labels_text = ["Число двоичных разрядов",
                    "Обратный код числа",
                    "Дополнительный код числа"]
 
-float_labels_text = ["Число двоичных разрядов\nдля мантиссы",
-                     "Число двоичных разрядов\nдля порядка",
-                     "Хранить старший разряд\nмантиссы",
-                     "Число в десятичной с.с.",
-                     "Число в двоичной с.с.",
-                     "Мантисса в двоичной с.с.",
-                     "Порядок в десятичной с.с.",
-                     "Характеристика\nв десятичной с.с.",
-                     "Характеристика\nв двоичной с.с.",
-                     "Формат с плавающей запятой"]
+real_labels_text = ["Число двоичных разрядов\nдля мантиссы",
+                    "Число двоичных разрядов\nдля порядка",
+                    "Хранить старший разряд\nмантиссы",
+                    "Число в десятичной с.с.",
+                    "Число в двоичной с.с.",
+                    "Мантисса в двоичной с.с.",
+                    "Порядок в десятичной с.с.",
+                    "Характеристика\nв десятичной с.с.",
+                    "Характеристика\nв двоичной с.с.",
+                    "Формат с плавающей запятой"]
 
 int_nums_text = "Целые числа"
-float_nums_text = "Вещественные числа"
+real_nums_text = "Вещественные числа"
 number_only = "В данное поле можно ввести только число."
 bin_only = "В данное поле можно ввести только число, состоящее из 0 и 1."
 range_exceeding = "Значение выходит за границы диапазона, заданного числом двоичных разрядов."
@@ -61,11 +61,11 @@ int_dict = {c.Int.BIN_SIZE_INDEX: ExceptionTexts(int_labels_text[0]),
             c.Int.ADD_CODE_INDEX: ExceptionTexts(int_labels_text[5],
                                                  type_error=bin_only)}
 
-float_dict = {c.Float.MANTISSA_BIN_SIZE_INDEX: ExceptionTexts(float_labels_text[0]),
-              c.Float.EXPONENT_BIN_SIZE_INDEX: ExceptionTexts(float_labels_text[1]),
-              c.Float.DEC_NUM_INDEX: ExceptionTexts(float_labels_text[3]),
-              c.Float.FLOAT_FORMAT_INDEX: ExceptionTexts(float_labels_text[9],
-                                                         type_error=bin_only)}
+real_dict = {c.Real.MANTISSA_BIN_SIZE_INDEX: ExceptionTexts(real_labels_text[0]),
+             c.Real.EXPONENT_BIN_SIZE_INDEX: ExceptionTexts(real_labels_text[1]),
+             c.Real.DEC_NUM_INDEX: ExceptionTexts(real_labels_text[3]),
+             c.Real.FLOAT_FORMAT_INDEX: ExceptionTexts(real_labels_text[9],
+                                                        type_error=bin_only)}
 
 int_exceptions = Exceptions(int_dict)
-float_exceptions = Exceptions(float_dict)
+real_exceptions = Exceptions(real_dict)

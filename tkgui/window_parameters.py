@@ -10,6 +10,6 @@ class WindowParameters:
 
     def geometry(self) -> str:
         """
-        :returns window's geometry in tkinter's template
+        :return: window's geometry in tkinter's template
         """
         return f"+{self.__padx}+{self.__pady}"  # The size is determined automatically

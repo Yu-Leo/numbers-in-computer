@@ -5,8 +5,8 @@ import tkinter as tk
 from PIL import Image as PilImage
 from PIL import ImageTk
 
-from calculations import config, constants as c
 import text_ru as text
+from calculations import config, constants as c
 
 
 class Widgets:
@@ -45,13 +45,13 @@ class IntWidgets(Widgets):
                                    calc_func=lambda i: Entries.call_calc(i, calculate_func))
 
 
-class FloatWidgets(Widgets):
+class RealWidgets(Widgets):
     def __init__(self, window, calculate_func, copy_func):
         super().__init__()
-        self._entries_names = FloatLabels(window)
-        self._entries = FloatEntries(window, calculate_func, copy_func)
+        self._entries_names = RealLabels(window)
+        self._entries = RealEntries(window, calculate_func, copy_func)
 
-        self._buttons = FloatButtons(window,
+        self._buttons = RealButtons(window,
                                      del_func=self._entries.clear_except_settings,
                                      copy_func=copy_func,
                                      calc_func=lambda i: Entries.call_calc(i, calculate_func))
@@ -67,9 +67,9 @@ class NumTypeMenu:
         # List of functions for managing widget rendering
         self.__funcs = {"draw_int": lambda: None,
                         "hide_int": lambda: None,
-                        "draw_float": lambda: None,
-                        "hide_float": lambda: None}
-        def_val = (c.Int.TYPE_NUM if config.numbers_type == c.Int.TYPE_NUM else c.Float.TYPE_NUM)
+                        "draw_real": lambda: None,
+                        "hide_real": lambda: None}
+        def_val = (c.Int.TYPE_NUM if config.numbers_type == c.Int.TYPE_NUM else c.Real.TYPE_NUM)
         self.__numbers_type = tk.IntVar(value=def_val)  # Controller of radio-button values
         self.__int_type_button = tk.Radiobutton(window,
                                                 text=text.int_nums_text,
@@ -78,40 +78,40 @@ class NumTypeMenu:
                                                 font="Arial 12",
                                                 command=self.__change_type)
 
-        self.__float_type_button = tk.Radiobutton(window,
-                                                  text=text.float_nums_text,
-                                                  variable=self.__numbers_type,
-                                                  value=1,
-                                                  font="Arial 12",
-                                                  command=self.__change_type)
+        self.__real_type_button = tk.Radiobutton(window,
+                                                 text=text.real_nums_text,
+                                                 variable=self.__numbers_type,
+                                                 value=1,
+                                                 font="Arial 12",
+                                                 command=self.__change_type)
 
-    def set_funcs(self, draw_int, hide_int, draw_float, hide_float):
+    def set_funcs(self, draw_int, hide_int, draw_real, hide_real):
         """
         Initialize the list of functions to control the rendering of widgets
 
         :param draw_int: function for rendering widgets for int mode
         :param hide_int: function for hide widgets for int mode
-        :param draw_float: function for rendering widgets for float mode
-        :param hide_float: function for hide widgets for float mode
+        :param draw_real: function for rendering widgets for real mode
+        :param hide_real: function for hide widgets for real mode
         """
         self.__funcs["draw_int"] = draw_int
         self.__funcs["hide_int"] = hide_int
-        self.__funcs["draw_float"] = draw_float
-        self.__funcs["hide_float"] = hide_float
+        self.__funcs["draw_real"] = draw_real
+        self.__funcs["hide_real"] = hide_real
 
     def draw(self):
         self.__int_type_button.grid(row=0, column=0)
-        self.__float_type_button.grid(row=0, column=1)
+        self.__real_type_button.grid(row=0, column=1)
 
     def __change_type(self):
         num_type = self.__numbers_type.get()
         config.numbers_type = num_type  # Set type of number in config file
         if num_type == c.Int.TYPE_NUM:
-            self.__funcs["hide_float"]()
+            self.__funcs["hide_real"]()
             self.__funcs["draw_int"]()
-        elif num_type == c.Float.TYPE_NUM:
+        elif num_type == c.Real.TYPE_NUM:
             self.__funcs["hide_int"]()
-            self.__funcs["draw_float"]()
+            self.__funcs["draw_real"]()
 
 
 class Labels:
@@ -148,13 +148,13 @@ class IntLabels(Labels):
             self._list[i].grid(row=i + 1, column=0, sticky=tk.W, padx=20, pady=10)
 
 
-class FloatLabels(Labels):
+class RealLabels(Labels):
     """
-    List of labels for float mode
+    List of labels for real mode
     """
 
     def __init__(self, window):
-        super().__init__(window, text.float_labels_text)
+        super().__init__(window, text.real_labels_text)
 
 
 class Entries:
@@ -211,7 +211,7 @@ class Entries:
 
     def _get(self, index) -> str:
         """
-        :returns value from the field by its index
+        :return: value from the field by its index
         """
         return str(self._list[index].get())
 
@@ -328,48 +328,48 @@ class IntEntries(Entries):
             self._list[i].grid(row=(1 + i), column=1)
 
 
-class FloatEntries(Entries):
+class RealEntries(Entries):
     """
-    List of entries fields in float mode
+    List of entries fields in real mode
     """
 
     def __init__(self, window, calculate_func, copy_func):
-        super().__init__(window, c.Float.NUMBER_OF_PARAMS)
-        self._set_settings_entries(c.Float.MANTISSA_BIN_SIZE_INDEX, c.Float.EXPONENT_BIN_SIZE_INDEX,
-                                   c.Float.SAVE_FIRST_DIGIT_INDEX)
-        self._list[c.Float.MANTISSA_BIN_SIZE_INDEX]["width"] = 5
-        self.__set_mantissa_bin_size(c.Float.DEFAULT_MANTISSA_BIN_SIZE)
+        super().__init__(window, c.Real.NUMBER_OF_PARAMS)
+        self._set_settings_entries(c.Real.MANTISSA_BIN_SIZE_INDEX, c.Real.EXPONENT_BIN_SIZE_INDEX,
+                                   c.Real.SAVE_FIRST_DIGIT_INDEX)
+        self._list[c.Real.MANTISSA_BIN_SIZE_INDEX]["width"] = 5
+        self.__set_mantissa_bin_size(c.Real.DEFAULT_MANTISSA_BIN_SIZE)
 
-        self._list[c.Float.EXPONENT_BIN_SIZE_INDEX]["width"] = 5
-        self.__set_exponent_bin_size(c.Float.DEFAULT_EXPONENT_BIN_SIZE)
+        self._list[c.Real.EXPONENT_BIN_SIZE_INDEX]["width"] = 5
+        self.__set_exponent_bin_size(c.Real.DEFAULT_EXPONENT_BIN_SIZE)
 
         self.__save = tk.IntVar(value=0)  # Controller of check-box value
 
-        self._list[c.Float.SAVE_FIRST_DIGIT_INDEX] = tk.Checkbutton(window,
+        self._list[c.Real.SAVE_FIRST_DIGIT_INDEX] = tk.Checkbutton(window,
                                                                     variable=self.__save)
         super()._bind_buttons(calculate_func, copy_func)
 
     def __set_mantissa_bin_size(self, mantissa_bin_size):
-        self._list[c.Float.MANTISSA_BIN_SIZE_INDEX].insert(0, str(mantissa_bin_size))
+        self._list[c.Real.MANTISSA_BIN_SIZE_INDEX].insert(0, str(mantissa_bin_size))
 
     def __set_exponent_bin_size(self, exponent_bin_size):
-        self._list[c.Float.EXPONENT_BIN_SIZE_INDEX].insert(0, str(exponent_bin_size))
+        self._list[c.Real.EXPONENT_BIN_SIZE_INDEX].insert(0, str(exponent_bin_size))
 
     def clear_all_except(self, *args):
-        super().clear_all_except(c.Float.SAVE_FIRST_DIGIT_INDEX, *args)
+        super().clear_all_except(c.Real.SAVE_FIRST_DIGIT_INDEX, *args)
 
     def _bind_enter(self, calculate_func):
         """
         Bind 'Enter' button
         """
-        self._bind_enter_button(c.Float.DEC_NUM_INDEX, calculate_func)
-        self._bind_enter_button(c.Float.FLOAT_FORMAT_INDEX, calculate_func)
+        self._bind_enter_button(c.Real.DEC_NUM_INDEX, calculate_func)
+        self._bind_enter_button(c.Real.FLOAT_FORMAT_INDEX, calculate_func)
 
     def _bind_delete(self):
         """
         Bind 'Delete' button
         """
-        indexes = [c.Float.DEC_NUM_INDEX, c.Float.FLOAT_FORMAT_INDEX]
+        indexes = [c.Real.DEC_NUM_INDEX, c.Real.FLOAT_FORMAT_INDEX]
         for index in indexes:
             self._bind_delete_button(index)
 
@@ -377,38 +377,38 @@ class FloatEntries(Entries):
         """
         Bind 'Ctrl'+'C'
         """
-        self._bind_ctrlc_button(c.Float.DEC_NUM_INDEX, copy_func)
-        self._bind_ctrlc_button(c.Float.FLOAT_FORMAT_INDEX, copy_func)
+        self._bind_ctrlc_button(c.Real.DEC_NUM_INDEX, copy_func)
+        self._bind_ctrlc_button(c.Real.FLOAT_FORMAT_INDEX, copy_func)
 
     def get_mantissa_bin_size(self) -> str:
-        return self._get(c.Float.MANTISSA_BIN_SIZE_INDEX)
+        return self._get(c.Real.MANTISSA_BIN_SIZE_INDEX)
 
     def get_exponent_bin_size(self) -> str:
-        return self._get(c.Float.EXPONENT_BIN_SIZE_INDEX)
+        return self._get(c.Real.EXPONENT_BIN_SIZE_INDEX)
 
     def get_save_first_digit(self) -> bool:
         return bool(self.__save.get())
 
     def get_dec_num(self) -> str:
-        return self._get(c.Float.DEC_NUM_INDEX)
+        return self._get(c.Real.DEC_NUM_INDEX)
 
     def get_bin_num(self) -> str:
-        return self._get(c.Float.BIN_NUM_INDEX)
+        return self._get(c.Real.BIN_NUM_INDEX)
 
-    def get_float_format(self) -> str:
-        return self._get(c.Float.FLOAT_FORMAT_INDEX)
+    def get_real_format(self) -> str:
+        return self._get(c.Real.FLOAT_FORMAT_INDEX)
 
     def print(self, kit):
         """
         Print all number kit to the entries fields
         """
-        self._write(c.Float.DEC_NUM_INDEX, kit["dec_num"])
-        self._write(c.Float.BIN_NUM_INDEX, kit["bin_num"])
-        self._write(c.Float.BIN_MANTISSA_INDEX, kit["bin_mantissa"])
-        self._write(c.Float.DEC_EXPONENT_INDEX, kit["dec_exponent"])
-        self._write(c.Float.DEC_CHARACTERISTIC_INDEX, kit["dec_characteristic"])
-        self._write(c.Float.BIN_CHARACTERISTIC_INDEX, kit["bin_characteristic"])
-        self._write(c.Float.FLOAT_FORMAT_INDEX, kit["float_format"])
+        self._write(c.Real.DEC_NUM_INDEX, kit["dec_num"])
+        self._write(c.Real.BIN_NUM_INDEX, kit["bin_num"])
+        self._write(c.Real.BIN_MANTISSA_INDEX, kit["bin_mantissa"])
+        self._write(c.Real.DEC_EXPONENT_INDEX, kit["dec_exponent"])
+        self._write(c.Real.DEC_CHARACTERISTIC_INDEX, kit["dec_characteristic"])
+        self._write(c.Real.BIN_CHARACTERISTIC_INDEX, kit["bin_characteristic"])
+        self._write(c.Real.FLOAT_FORMAT_INDEX, kit["real_format"])
 
 
 class ButtonsRow:
@@ -500,11 +500,11 @@ class IntButtons(Buttons):
         self.append(c.Int.ADD_CODE_INDEX)
 
 
-class FloatButtons(Buttons):
+class RealButtons(Buttons):
     def __init__(self, window, del_func, copy_func, calc_func):
         super().__init__(window, del_func, copy_func, calc_func)
-        self.append(c.Float.DEC_NUM_INDEX)
-        self.append(c.Float.FLOAT_FORMAT_INDEX)
+        self.append(c.Real.DEC_NUM_INDEX)
+        self.append(c.Real.FLOAT_FORMAT_INDEX)
 
     def draw(self, **kwargs):
         self._list[0].draw(row_num=4, column_num=2)

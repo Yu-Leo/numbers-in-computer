@@ -3,9 +3,9 @@
 import tkinter.messagebox as mb
 
 from calculations.constants import Exceptions as ConstEx
-from exceptions import FloatEntryContentError as FloatError
+from exceptions import RealEntryContentError as RealError
 from exceptions import IntEntryContentError as IntError
-from text_ru import int_exceptions, float_exceptions
+from text_ru import int_exceptions, real_exceptions
 
 
 class WarningMb:
@@ -41,12 +41,12 @@ class ExceptionMb(ErrorMb, WarningMb):
 
     def __get_text_list(self, exception):
         """
-        :returns the desired list of phrases depending on the type of exception
+        :return: the desired list of phrases depending on the type of exception
         """
         if isinstance(exception, IntError):
             return int_exceptions
-        elif isinstance(exception, FloatError):
-            return float_exceptions
+        elif isinstance(exception, RealError):
+            return real_exceptions
         else:
             raise Warning("Exception.exception_type error")
 

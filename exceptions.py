@@ -24,7 +24,7 @@ class IntEntryContentError(EntryContentError):
         super().__init__(field, exception_type, message)
 
 
-class FloatEntryContentError(EntryContentError):
+class RealEntryContentError(EntryContentError):
     def __init__(self, field, exception_type, message: str = ""):
         """
         :param field: field index

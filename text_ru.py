@@ -1,6 +1,6 @@
 # File with phrases that are used in the application interface in Russian
 
-from calculations import constants as c
+from calculations import constants as constants
 
 int_labels_text = ["Число двоичных разрядов",
                    "Число в десятичной с.с.",
@@ -50,22 +50,22 @@ class Exceptions:
         return self.dictionary.get(key, "ERROR")
 
 
-int_dict = {c.Int.BIN_SIZE_INDEX: ExceptionTexts(int_labels_text[0]),
-            c.Int.DEC_NUM_INDEX: ExceptionTexts(int_labels_text[1]),
-            c.Int.BIN_NUM_INDEX: ExceptionTexts(int_labels_text[2],
-                                                type_error=bin_only),
-            c.Int.STR_CODE_INDEX: ExceptionTexts(int_labels_text[3],
-                                                 type_error=bin_only),
-            c.Int.REV_CODE_INDEX: ExceptionTexts(int_labels_text[4],
-                                                 type_error=bin_only),
-            c.Int.ADD_CODE_INDEX: ExceptionTexts(int_labels_text[5],
-                                                 type_error=bin_only)}
+int_dict = {constants.Int.BIN_SIZE_INDEX: ExceptionTexts(int_labels_text[0]),
+            constants.Int.DEC_NUM_INDEX: ExceptionTexts(int_labels_text[1]),
+            constants.Int.BIN_NUM_INDEX: ExceptionTexts(int_labels_text[2],
+                                                        type_error=bin_only),
+            constants.Int.STR_CODE_INDEX: ExceptionTexts(int_labels_text[3],
+                                                         type_error=bin_only),
+            constants.Int.REV_CODE_INDEX: ExceptionTexts(int_labels_text[4],
+                                                         type_error=bin_only),
+            constants.Int.ADD_CODE_INDEX: ExceptionTexts(int_labels_text[5],
+                                                         type_error=bin_only)}
 
-real_dict = {c.Real.MANTISSA_BIN_SIZE_INDEX: ExceptionTexts(real_labels_text[0]),
-             c.Real.EXPONENT_BIN_SIZE_INDEX: ExceptionTexts(real_labels_text[1]),
-             c.Real.DEC_NUM_INDEX: ExceptionTexts(real_labels_text[3]),
-             c.Real.FLOAT_FORMAT_INDEX: ExceptionTexts(real_labels_text[9],
-                                                        type_error=bin_only)}
+real_dict = {constants.Real.MANTISSA_BIN_SIZE_INDEX: ExceptionTexts(real_labels_text[0]),
+             constants.Real.EXPONENT_BIN_SIZE_INDEX: ExceptionTexts(real_labels_text[1]),
+             constants.Real.DEC_NUM_INDEX: ExceptionTexts(real_labels_text[3]),
+             constants.Real.FLOAT_FORMAT_INDEX: ExceptionTexts(real_labels_text[9],
+                                                               type_error=bin_only)}
 
 int_exceptions = Exceptions(int_dict)
 real_exceptions = Exceptions(real_dict)

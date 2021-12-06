@@ -1,6 +1,6 @@
 # File with classes of sets of numbers in various number systems and representations
 
-import calculations.constants as c
+import calculations.constants as constants
 
 
 class IntKit:
@@ -35,22 +35,22 @@ class IntKit:
         """
         if self.__dec_num >= 0:  # Positive number
             self.__bin_num = self.__abs_bin_by_dec()
-            if self.__dec_num > c.Int.max_positive(bin_size):  # Out of range
-                self.__fill_codes_errors(self, c.Int.STR_CODE_INDEX,
-                                         c.Int.REV_CODE_INDEX,
-                                         c.Int.ADD_CODE_INDEX)
+            if self.__dec_num > constants.Int.max_positive(bin_size):  # Out of range
+                self.__fill_codes_errors(self, constants.Int.STR_CODE_INDEX,
+                                         constants.Int.REV_CODE_INDEX,
+                                         constants.Int.ADD_CODE_INDEX)
             else:
                 self.__str_code = self.__rev_code = self.__add_code = self.__straight_by_bin(bin_size)
 
         else:  # Negative number
             self.__abs_bin_num = self.__abs_bin_by_dec()
             self.__bin_num = self.__abs_bin_num if self.__dec_num > 0 else "-"
-            if self.__dec_num < c.Int.max_negative(bin_size):  # Out of range
-                self.__fill_codes_errors(self, c.Int.STR_CODE_INDEX,
-                                         c.Int.REV_CODE_INDEX,
-                                         c.Int.ADD_CODE_INDEX)
-            elif self.__dec_num == c.Int.max_negative(bin_size):  # At the border of the range
-                self.__fill_codes_errors(self, c.Int.STR_CODE_INDEX, c.Int.REV_CODE_INDEX)
+            if self.__dec_num < constants.Int.max_negative(bin_size):  # Out of range
+                self.__fill_codes_errors(self, constants.Int.STR_CODE_INDEX,
+                                         constants.Int.REV_CODE_INDEX,
+                                         constants.Int.ADD_CODE_INDEX)
+            elif self.__dec_num == constants.Int.max_negative(bin_size):  # At the border of the range
+                self.__fill_codes_errors(self, constants.Int.STR_CODE_INDEX, constants.Int.REV_CODE_INDEX)
                 self.__add_code = self.__get_add_for_lower_bound(bin_size)
             else:
                 self.__str_code = self.__straight_by_bin(bin_size)
@@ -103,11 +103,11 @@ class IntKit:
         """
         :param args: list of indexes of fields to write the error to
         """
-        if c.Int.STR_CODE_INDEX in args:
+        if constants.Int.STR_CODE_INDEX in args:
             self.__str_code = "-"
-        if c.Int.REV_CODE_INDEX in args:
+        if constants.Int.REV_CODE_INDEX in args:
             self.__rev_code = "-"
-        if c.Int.ADD_CODE_INDEX in args:
+        if constants.Int.ADD_CODE_INDEX in args:
             self.__add_code = "-"
 
     def __abs_bin_by_dec(self) -> str:
@@ -211,7 +211,7 @@ class RealKit:
             res += str(int(dec_real_part))
             dec_real_part = dec_real_part - int(dec_real_part)
 
-            if len(res) > c.Real.MAX_FLOAT_SIZE:  # If the number of decimal places is greater than maximum
+            if len(res) > constants.Real.MAX_FLOAT_SIZE:  # If the number of decimal places is greater than maximum
                 break
         return res
 

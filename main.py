@@ -1,6 +1,6 @@
 import tkinter as tk
 
-from calculations import config, constants as c
+from calculations import config, constants as constants
 from tkgui.int_operations import calculate as int_calc
 from tkgui.int_operations import copy_to_clipboard as int_copy
 from tkgui.real_operations import calculate as real_calc
@@ -31,8 +31,8 @@ class Window:
                                       copy_func=lambda index: int_copy(self.int_widgets.entries, index))
         # Widgets for working with real type (real mode)
         self.real_widgets = RealWidgets(self.__root,
-                                         calculate_func=lambda: real_calc(self.real_widgets.entries),
-                                         copy_func=lambda index: real_copy(self.real_widgets.entries, index))
+                                        calculate_func=lambda: real_calc(self.real_widgets.entries),
+                                        copy_func=lambda index: real_copy(self.real_widgets.entries, index))
 
         self.num_type_menu.set_funcs(self.int_widgets.draw, self.int_widgets.hide,
                                      self.real_widgets.draw, self.real_widgets.hide)
@@ -42,9 +42,9 @@ class Window:
         Run application
         """
         self.num_type_menu.draw()
-        if config.numbers_type == c.Int.TYPE_NUM:
+        if config.numbers_type == constants.Int.TYPE_NUM:
             self.int_widgets.draw()
-        elif config.numbers_type == c.Real.TYPE_NUM:
+        elif config.numbers_type == constants.Real.TYPE_NUM:
             self.real_widgets.draw()
         self.__root.mainloop()
 

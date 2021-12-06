@@ -6,7 +6,7 @@ from PIL import Image as PilImage
 from PIL import ImageTk
 
 import text_ru as text
-from calculations import config, constants as c
+from calculations import config, constants as constants
 
 
 class Widgets:
@@ -38,6 +38,7 @@ class IntWidgets(Widgets):
     """
     Widgets for int mode
     """
+
     def __init__(self, window, calculate_func, copy_func):
         super().__init__()
         self._entries_names = IntLabels(window)
@@ -76,7 +77,7 @@ class NumTypeMenu:
                         "hide_int": lambda: None,
                         "draw_real": lambda: None,
                         "hide_real": lambda: None}
-        def_val = (c.Int.TYPE_NUM if config.numbers_type == c.Int.TYPE_NUM else c.Real.TYPE_NUM)
+        def_val = (constants.Int.TYPE_NUM if config.numbers_type == constants.Int.TYPE_NUM else constants.Real.TYPE_NUM)
         self.__numbers_type = tk.IntVar(value=def_val)  # Controller of radio-button values
         self.__int_type_button = tk.Radiobutton(window,
                                                 text=text.int_nums_text,
@@ -113,10 +114,10 @@ class NumTypeMenu:
     def __change_type(self):
         num_type = self.__numbers_type.get()
         config.numbers_type = num_type  # Set type of number in config file
-        if num_type == c.Int.TYPE_NUM:
+        if num_type == constants.Int.TYPE_NUM:
             self.__funcs["hide_real"]()
             self.__funcs["draw_int"]()
-        elif num_type == c.Real.TYPE_NUM:
+        elif num_type == constants.Real.TYPE_NUM:
             self.__funcs["hide_int"]()
             self.__funcs["draw_real"]()
 
@@ -261,29 +262,29 @@ class IntEntries(Entries):
     """
 
     def __init__(self, window, calculate_func, copy_func):
-        super().__init__(window, c.Int.NUMBER_OF_PARAMS)
-        self._set_settings_entries(c.Int.BIN_SIZE_INDEX)
-        self._list[c.Int.BIN_SIZE_INDEX]["width"] = 5
-        self.__set_bin_size(c.Int.DEFAULT_BIN_SIZE)
+        super().__init__(window, constants.Int.NUMBER_OF_PARAMS)
+        self._set_settings_entries(constants.Int.BIN_SIZE_INDEX)
+        self._list[constants.Int.BIN_SIZE_INDEX]["width"] = 5
+        self.__set_bin_size(constants.Int.DEFAULT_BIN_SIZE)
         super()._bind_buttons(calculate_func, copy_func)
 
     def _bind_enter(self, calculate_func):
         """
         Bind 'Enter' button
         """
-        self._bind_enter_button(c.Int.DEC_NUM_INDEX, calculate_func)
-        self._bind_enter_button(c.Int.BIN_NUM_INDEX, calculate_func)
-        self._bind_enter_button(c.Int.STR_CODE_INDEX, calculate_func)
-        self._bind_enter_button(c.Int.REV_CODE_INDEX, calculate_func)
-        self._bind_enter_button(c.Int.ADD_CODE_INDEX, calculate_func)
+        self._bind_enter_button(constants.Int.DEC_NUM_INDEX, calculate_func)
+        self._bind_enter_button(constants.Int.BIN_NUM_INDEX, calculate_func)
+        self._bind_enter_button(constants.Int.STR_CODE_INDEX, calculate_func)
+        self._bind_enter_button(constants.Int.REV_CODE_INDEX, calculate_func)
+        self._bind_enter_button(constants.Int.ADD_CODE_INDEX, calculate_func)
 
     def _bind_delete(self):
         """
         Bind 'Delete' button
         """
-        indexes = [c.Int.DEC_NUM_INDEX, c.Int.BIN_NUM_INDEX,
-                   c.Int.STR_CODE_INDEX, c.Int.REV_CODE_INDEX,
-                   c.Int.ADD_CODE_INDEX]
+        indexes = [constants.Int.DEC_NUM_INDEX, constants.Int.BIN_NUM_INDEX,
+                   constants.Int.STR_CODE_INDEX, constants.Int.REV_CODE_INDEX,
+                   constants.Int.ADD_CODE_INDEX]
         for index in indexes:
             self._bind_delete_button(index)
 
@@ -291,47 +292,47 @@ class IntEntries(Entries):
         """
         Bind 'Ctrl'+'C'
         """
-        self._bind_ctrlc_button(c.Int.DEC_NUM_INDEX, copy_func)
-        self._bind_ctrlc_button(c.Int.BIN_NUM_INDEX, copy_func)
-        self._bind_ctrlc_button(c.Int.STR_CODE_INDEX, copy_func)
-        self._bind_ctrlc_button(c.Int.REV_CODE_INDEX, copy_func)
-        self._bind_ctrlc_button(c.Int.ADD_CODE_INDEX, copy_func)
+        self._bind_ctrlc_button(constants.Int.DEC_NUM_INDEX, copy_func)
+        self._bind_ctrlc_button(constants.Int.BIN_NUM_INDEX, copy_func)
+        self._bind_ctrlc_button(constants.Int.STR_CODE_INDEX, copy_func)
+        self._bind_ctrlc_button(constants.Int.REV_CODE_INDEX, copy_func)
+        self._bind_ctrlc_button(constants.Int.ADD_CODE_INDEX, copy_func)
 
     def __set_bin_size(self, bin_size):
-        self._list[c.Int.BIN_SIZE_INDEX].insert(0, str(bin_size))
+        self._list[constants.Int.BIN_SIZE_INDEX].insert(0, str(bin_size))
 
     def get_bin_size(self) -> str:
-        return self._get(c.Int.BIN_SIZE_INDEX)
+        return self._get(constants.Int.BIN_SIZE_INDEX)
 
     def get_dec_num(self) -> str:
-        return self._get(c.Int.DEC_NUM_INDEX)
+        return self._get(constants.Int.DEC_NUM_INDEX)
 
     def get_bin_num(self) -> str:
-        return self._get(c.Int.BIN_NUM_INDEX)
+        return self._get(constants.Int.BIN_NUM_INDEX)
 
     def get_str_code(self) -> str:
-        return self._get(c.Int.STR_CODE_INDEX)
+        return self._get(constants.Int.STR_CODE_INDEX)
 
     def get_rev_code(self) -> str:
-        return self._get(c.Int.REV_CODE_INDEX)
+        return self._get(constants.Int.REV_CODE_INDEX)
 
     def get_add_code(self) -> str:
-        return self._get(c.Int.ADD_CODE_INDEX)
+        return self._get(constants.Int.ADD_CODE_INDEX)
 
     def print(self, kit):
         """
         Print all number kit to the entries fields
         """
-        self._write(c.Int.DEC_NUM_INDEX, kit["dec_num"])
-        self._write(c.Int.BIN_NUM_INDEX, kit["bin_num"])
-        self._write(c.Int.STR_CODE_INDEX, kit["str_code"])
-        self._write(c.Int.REV_CODE_INDEX, kit["rev_code"])
-        self._write(c.Int.ADD_CODE_INDEX, kit["add_code"])
+        self._write(constants.Int.DEC_NUM_INDEX, kit["dec_num"])
+        self._write(constants.Int.BIN_NUM_INDEX, kit["bin_num"])
+        self._write(constants.Int.STR_CODE_INDEX, kit["str_code"])
+        self._write(constants.Int.REV_CODE_INDEX, kit["rev_code"])
+        self._write(constants.Int.ADD_CODE_INDEX, kit["add_code"])
 
     def draw(self, **kwargs):
         self._list[0].grid(row=1, column=1, sticky=tk.W, padx=10, pady=(0, 10))
         self._list[0]["state"] = tk.NORMAL
-        for i in range(1, c.Int.NUMBER_OF_PARAMS):
+        for i in range(1, constants.Int.NUMBER_OF_PARAMS):
             self._list[i]["state"] = tk.NORMAL
             self._list[i].grid(row=(1 + i), column=1)
 
@@ -342,42 +343,42 @@ class RealEntries(Entries):
     """
 
     def __init__(self, window, calculate_func, copy_func):
-        super().__init__(window, c.Real.NUMBER_OF_PARAMS)
-        self._set_settings_entries(c.Real.MANTISSA_BIN_SIZE_INDEX, c.Real.EXPONENT_BIN_SIZE_INDEX,
-                                   c.Real.SAVE_FIRST_DIGIT_INDEX)
-        self._list[c.Real.MANTISSA_BIN_SIZE_INDEX]["width"] = 5
-        self.__set_mantissa_bin_size(c.Real.DEFAULT_MANTISSA_BIN_SIZE)
+        super().__init__(window, constants.Real.NUMBER_OF_PARAMS)
+        self._set_settings_entries(constants.Real.MANTISSA_BIN_SIZE_INDEX, constants.Real.EXPONENT_BIN_SIZE_INDEX,
+                                   constants.Real.SAVE_FIRST_DIGIT_INDEX)
+        self._list[constants.Real.MANTISSA_BIN_SIZE_INDEX]["width"] = 5
+        self.__set_mantissa_bin_size(constants.Real.DEFAULT_MANTISSA_BIN_SIZE)
 
-        self._list[c.Real.EXPONENT_BIN_SIZE_INDEX]["width"] = 5
-        self.__set_exponent_bin_size(c.Real.DEFAULT_EXPONENT_BIN_SIZE)
+        self._list[constants.Real.EXPONENT_BIN_SIZE_INDEX]["width"] = 5
+        self.__set_exponent_bin_size(constants.Real.DEFAULT_EXPONENT_BIN_SIZE)
 
         self.__save = tk.IntVar(value=0)  # Controller of check-box value
 
-        self._list[c.Real.SAVE_FIRST_DIGIT_INDEX] = tk.Checkbutton(window,
-                                                                   variable=self.__save)
+        self._list[constants.Real.SAVE_FIRST_DIGIT_INDEX] = tk.Checkbutton(window,
+                                                                           variable=self.__save)
         super()._bind_buttons(calculate_func, copy_func)
 
     def __set_mantissa_bin_size(self, mantissa_bin_size):
-        self._list[c.Real.MANTISSA_BIN_SIZE_INDEX].insert(0, str(mantissa_bin_size))
+        self._list[constants.Real.MANTISSA_BIN_SIZE_INDEX].insert(0, str(mantissa_bin_size))
 
     def __set_exponent_bin_size(self, exponent_bin_size):
-        self._list[c.Real.EXPONENT_BIN_SIZE_INDEX].insert(0, str(exponent_bin_size))
+        self._list[constants.Real.EXPONENT_BIN_SIZE_INDEX].insert(0, str(exponent_bin_size))
 
     def clear_all_except(self, *args):
-        super().clear_all_except(c.Real.SAVE_FIRST_DIGIT_INDEX, *args)
+        super().clear_all_except(constants.Real.SAVE_FIRST_DIGIT_INDEX, *args)
 
     def _bind_enter(self, calculate_func):
         """
         Bind 'Enter' button
         """
-        self._bind_enter_button(c.Real.DEC_NUM_INDEX, calculate_func)
-        self._bind_enter_button(c.Real.FLOAT_FORMAT_INDEX, calculate_func)
+        self._bind_enter_button(constants.Real.DEC_NUM_INDEX, calculate_func)
+        self._bind_enter_button(constants.Real.FLOAT_FORMAT_INDEX, calculate_func)
 
     def _bind_delete(self):
         """
         Bind 'Delete' button
         """
-        indexes = [c.Real.DEC_NUM_INDEX, c.Real.FLOAT_FORMAT_INDEX]
+        indexes = [constants.Real.DEC_NUM_INDEX, constants.Real.FLOAT_FORMAT_INDEX]
         for index in indexes:
             self._bind_delete_button(index)
 
@@ -385,38 +386,38 @@ class RealEntries(Entries):
         """
         Bind 'Ctrl'+'C'
         """
-        self._bind_ctrlc_button(c.Real.DEC_NUM_INDEX, copy_func)
-        self._bind_ctrlc_button(c.Real.FLOAT_FORMAT_INDEX, copy_func)
+        self._bind_ctrlc_button(constants.Real.DEC_NUM_INDEX, copy_func)
+        self._bind_ctrlc_button(constants.Real.FLOAT_FORMAT_INDEX, copy_func)
 
     def get_mantissa_bin_size(self) -> str:
-        return self._get(c.Real.MANTISSA_BIN_SIZE_INDEX)
+        return self._get(constants.Real.MANTISSA_BIN_SIZE_INDEX)
 
     def get_exponent_bin_size(self) -> str:
-        return self._get(c.Real.EXPONENT_BIN_SIZE_INDEX)
+        return self._get(constants.Real.EXPONENT_BIN_SIZE_INDEX)
 
     def get_save_first_digit(self) -> bool:
         return bool(self.__save.get())
 
     def get_dec_num(self) -> str:
-        return self._get(c.Real.DEC_NUM_INDEX)
+        return self._get(constants.Real.DEC_NUM_INDEX)
 
     def get_bin_num(self) -> str:
-        return self._get(c.Real.BIN_NUM_INDEX)
+        return self._get(constants.Real.BIN_NUM_INDEX)
 
     def get_real_format(self) -> str:
-        return self._get(c.Real.FLOAT_FORMAT_INDEX)
+        return self._get(constants.Real.FLOAT_FORMAT_INDEX)
 
     def print(self, kit):
         """
         Print all number kit to the entries fields
         """
-        self._write(c.Real.DEC_NUM_INDEX, kit["dec_num"])
-        self._write(c.Real.BIN_NUM_INDEX, kit["bin_num"])
-        self._write(c.Real.BIN_MANTISSA_INDEX, kit["bin_mantissa"])
-        self._write(c.Real.DEC_EXPONENT_INDEX, kit["dec_exponent"])
-        self._write(c.Real.DEC_CHARACTERISTIC_INDEX, kit["dec_characteristic"])
-        self._write(c.Real.BIN_CHARACTERISTIC_INDEX, kit["bin_characteristic"])
-        self._write(c.Real.FLOAT_FORMAT_INDEX, kit["real_format"])
+        self._write(constants.Real.DEC_NUM_INDEX, kit["dec_num"])
+        self._write(constants.Real.BIN_NUM_INDEX, kit["bin_num"])
+        self._write(constants.Real.BIN_MANTISSA_INDEX, kit["bin_mantissa"])
+        self._write(constants.Real.DEC_EXPONENT_INDEX, kit["dec_exponent"])
+        self._write(constants.Real.DEC_CHARACTERISTIC_INDEX, kit["dec_characteristic"])
+        self._write(constants.Real.BIN_CHARACTERISTIC_INDEX, kit["bin_characteristic"])
+        self._write(constants.Real.FLOAT_FORMAT_INDEX, kit["real_format"])
 
 
 class ButtonsRow:
@@ -501,18 +502,18 @@ class Buttons:
 class IntButtons(Buttons):
     def __init__(self, window, del_func, copy_func, calc_func):
         super().__init__(window, del_func, copy_func, calc_func)
-        self.append(c.Int.DEC_NUM_INDEX)
-        self.append(c.Int.BIN_NUM_INDEX)
-        self.append(c.Int.STR_CODE_INDEX)
-        self.append(c.Int.REV_CODE_INDEX)
-        self.append(c.Int.ADD_CODE_INDEX)
+        self.append(constants.Int.DEC_NUM_INDEX)
+        self.append(constants.Int.BIN_NUM_INDEX)
+        self.append(constants.Int.STR_CODE_INDEX)
+        self.append(constants.Int.REV_CODE_INDEX)
+        self.append(constants.Int.ADD_CODE_INDEX)
 
 
 class RealButtons(Buttons):
     def __init__(self, window, del_func, copy_func, calc_func):
         super().__init__(window, del_func, copy_func, calc_func)
-        self.append(c.Real.DEC_NUM_INDEX)
-        self.append(c.Real.FLOAT_FORMAT_INDEX)
+        self.append(constants.Real.DEC_NUM_INDEX)
+        self.append(constants.Real.FLOAT_FORMAT_INDEX)
 
     def draw(self, **kwargs):
         self._list[0].draw(row_num=4, column_num=2)

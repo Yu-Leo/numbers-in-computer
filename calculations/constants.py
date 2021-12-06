@@ -72,7 +72,7 @@ class Exceptions:
     """
     Constants for exceptions
     """
-    
+
     TYPE_ERROR = 0
     RANGE_ERROR = 1
     WARNING = 2

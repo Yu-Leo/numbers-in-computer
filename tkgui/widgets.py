@@ -35,6 +35,9 @@ class Widgets:
 
 
 class IntWidgets(Widgets):
+    """
+    Widgets for int mode
+    """
     def __init__(self, window, calculate_func, copy_func):
         super().__init__()
         self._entries_names = IntLabels(window)
@@ -46,15 +49,19 @@ class IntWidgets(Widgets):
 
 
 class RealWidgets(Widgets):
+    """
+    Widgets for real mode
+    """
+
     def __init__(self, window, calculate_func, copy_func):
         super().__init__()
         self._entries_names = RealLabels(window)
         self._entries = RealEntries(window, calculate_func, copy_func)
 
         self._buttons = RealButtons(window,
-                                     del_func=self._entries.clear_except_settings,
-                                     copy_func=copy_func,
-                                     calc_func=lambda i: Entries.call_calc(i, calculate_func))
+                                    del_func=self._entries.clear_except_settings,
+                                    copy_func=copy_func,
+                                    calc_func=lambda i: Entries.call_calc(i, calculate_func))
 
 
 class NumTypeMenu:
@@ -162,9 +169,10 @@ class Entries:
     @staticmethod
     def call_calc(i, calculate_func):
         """
+        Change the translation mode to the one in which Enter was pressed, and translate
+
         :param i: index of the field where enter was pressed
         :param calculate_func: function of starting calculations
-        Change the translation mode to the one in which Enter was pressed, and translate
         """
         config.translate_type = i
         calculate_func()
@@ -346,7 +354,7 @@ class RealEntries(Entries):
         self.__save = tk.IntVar(value=0)  # Controller of check-box value
 
         self._list[c.Real.SAVE_FIRST_DIGIT_INDEX] = tk.Checkbutton(window,
-                                                                    variable=self.__save)
+                                                                   variable=self.__save)
         super()._bind_buttons(calculate_func, copy_func)
 
     def __set_mantissa_bin_size(self, mantissa_bin_size):

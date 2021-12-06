@@ -2,9 +2,9 @@
 
 import pyperclip  # Module for working with clipboard
 
-from calculations import config, constants as c
 import exceptions as e
 import tkgui.messageboxes as mb
+from calculations import config, constants as c
 from calculations.numbers_kits import RealKit
 
 
@@ -74,11 +74,11 @@ def get_mantissa_bin_size(entries) -> int:
         int_mantissa_bin_size = int(str_mantissa_bin_size)
     except ValueError:
         raise e.RealEntryContentError(field=c.Real.MANTISSA_BIN_SIZE_INDEX,
-                                       exception_type=c.Exceptions.TYPE_ERROR)
+                                      exception_type=c.Exceptions.TYPE_ERROR)
 
     if not (c.Real.MIN_MANT_BIN_SIZE <= int_mantissa_bin_size <= c.Real.MAX_MANT_BIN_SIZE):
         raise e.RealEntryContentError(field=c.Real.MANTISSA_BIN_SIZE_INDEX,
-                                       exception_type=c.Exceptions.RANGE_ERROR)
+                                      exception_type=c.Exceptions.RANGE_ERROR)
 
     return int_mantissa_bin_size
 
@@ -93,11 +93,11 @@ def get_exponent_bin_size(entries) -> int:
         int_exponent_bin_size = int(str_exponent_bin_size)
     except ValueError:
         raise e.RealEntryContentError(field=c.Real.MANTISSA_BIN_SIZE_INDEX,
-                                       exception_type=c.Exceptions.TYPE_ERROR)
+                                      exception_type=c.Exceptions.TYPE_ERROR)
 
     if not (c.Real.MIN_EXP_BIN_SIZE <= int_exponent_bin_size <= c.Real.MAX_EXP_BIN_SIZE):
         raise e.RealEntryContentError(field=c.Real.EXPONENT_BIN_SIZE_INDEX,
-                                       exception_type=c.Exceptions.RANGE_ERROR)
+                                      exception_type=c.Exceptions.RANGE_ERROR)
     return int_exponent_bin_size
 
 
@@ -112,6 +112,7 @@ def get_save_first_digit(entries) -> bool:
 def is_dec_num_correct(input_data: str) -> bool:
     """
     Check, is number is correct real number
+
     :param input_data: verified data
     :return: is input_data contains correct real number
     """
@@ -140,7 +141,7 @@ def get_dec_num(entries) -> float:
 
     if not is_dec_num_correct(input_data):
         raise e.RealEntryContentError(field=c.Real.DEC_NUM_INDEX,
-                                       exception_type=c.Exceptions.TYPE_ERROR)
+                                      exception_type=c.Exceptions.TYPE_ERROR)
     input_data = replace_comma(input_data)
     dec_num = float(input_data)
     return dec_num
@@ -158,17 +159,18 @@ def get_real_format(entries, mantissa: int, exponent: int, save: bool) -> str:
     real_format = entries.get_real_format()
     if not set(real_format).issubset({"0", "1"}) or real_format == "":  # If string include not only '0' and '1'
         raise e.RealEntryContentError(field=c.Real.FLOAT_FORMAT_INDEX,
-                                       exception_type=c.Exceptions.TYPE_ERROR)
+                                      exception_type=c.Exceptions.TYPE_ERROR)
     sum_len = 1 + exponent + (1 if save else 0) + mantissa  # Length of real representation
     if len(real_format) != sum_len:
         raise e.RealEntryContentError(field=c.Real.FLOAT_FORMAT_INDEX,
-                                       exception_type=c.Exceptions.RANGE_ERROR)
+                                      exception_type=c.Exceptions.RANGE_ERROR)
     return real_format
 
 
 def copy_to_clipboard(entries, index):
     """
     Copy value from entry to clipboard by its index
+
     :param entries: list of tkinter's entries objects
     :param index - index of entry field
     """

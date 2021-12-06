@@ -1,7 +1,9 @@
 # File with application exceptions
 
 class EntryContentError(ValueError):
-    """Invalid values in entry fields"""
+    """
+    Invalid values in entry fields
+    """
 
     def __init__(self, field, exception_type, message: str = ""):
         """

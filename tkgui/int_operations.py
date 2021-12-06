@@ -2,9 +2,9 @@
 
 import pyperclip  # Module for working with clipboard
 
-from calculations import config, constants as c
 import exceptions as e
 import tkgui.messageboxes as mb
+from calculations import config, constants as c
 from calculations.numbers_kits import IntKit
 
 
@@ -54,8 +54,8 @@ def int_calc(entries):
     """
 
     bin_size = get_bin_size(entries)  # Number of binary digits
-    # Delete old values
-    entries.clear_all_except(c.Int.BIN_SIZE_INDEX, config.translate_type)
+
+    entries.clear_all_except(c.Int.BIN_SIZE_INDEX, config.translate_type)  # Delete old values
 
     if config.translate_type == c.Int.DEC_NUM_INDEX:  # Source value - number in decimal notation
         dec_num = get_dec_num(entries)
@@ -192,6 +192,7 @@ def get_add_code(entries, bin_size: int) -> str:
 def copy_to_clipboard(entries, index):
     """
     Copy value from entry to clipboard by its index
+
     :param entries: list of tkinter's entries objects
     :param index - index of entry field
     """

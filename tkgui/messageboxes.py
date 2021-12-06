@@ -2,9 +2,8 @@
 
 import tkinter.messagebox as mb
 
+import exceptions
 from calculations.constants import Exceptions as ConstEx
-from exceptions import RealEntryContentError as RealError
-from exceptions import IntEntryContentError as IntError
 from text_ru import int_exceptions, real_exceptions
 
 
@@ -39,18 +38,22 @@ class ExceptionMb(ErrorMb, WarningMb):
     Messagebox for custom exceptions
     """
 
-    def __get_text_list(self, exception):
+    def __get_text_list(self, exception: exceptions.EntryContentError):
         """
+        :param exception: exception's object which needs to be displayed
         :return: the desired list of phrases depending on the type of exception
         """
-        if isinstance(exception, IntError):
+        if isinstance(exception, exceptions.IntEntryContentError):
             return int_exceptions
-        elif isinstance(exception, RealError):
+        elif isinstance(exception, exceptions.RealEntryContentError):
             return real_exceptions
         else:
             raise Warning("Exception.exception_type error")
 
-    def __init__(self, exception):
+    def __init__(self, exception: exceptions.EntryContentError):
+        """
+        :param exception: exception's object which needs to be displayed
+        """
         text_list = self.__get_text_list(exception)
 
         if exception.exception_type == ConstEx.TYPE_ERROR:

@@ -1,6 +1,8 @@
-# File with class of parameters for main application window\
-
 class WindowParameters:
+    """
+    Class with parameters for main application window (tkinter's window object)
+    """
+
     def __init__(self):
         self.title = "Numbers in computer"
         self.__padx = 100  # Horizontal offset from the upper left corner of the screen

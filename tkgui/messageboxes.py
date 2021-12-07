@@ -13,8 +13,8 @@ class WarningMb:
     """
 
     def __init__(self, title: str, message: str):
-        self.title = title
-        self.message = message
+        self.title: str = title
+        self.message: str = message
 
     def show(self):
         mb.showwarning(self.title, self.message)
@@ -26,8 +26,8 @@ class ErrorMb:
     """
 
     def __init__(self, title: str, message: str):
-        self.title = title
-        self.message = message
+        self.title: str = title
+        self.message: str = message
 
     def show(self):
         mb.showerror(self.title, self.message)

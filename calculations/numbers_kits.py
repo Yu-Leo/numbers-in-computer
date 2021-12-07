@@ -1,5 +1,7 @@
 # File with classes of sets of numbers in various number systems and representations
 
+from typing import Tuple
+
 import calculations.constants as constants
 
 
@@ -8,12 +10,13 @@ class IntKit:
     Kit for integer numbers
     """
 
-    def __init__(self, dec_num=0, bin_num="0", str_code="0", rev_code="0", add_code="0"):
-        self.__dec_num = dec_num  # Number in decimal notation
-        self.__bin_num = bin_num  # Number in binary notation
-        self.__str_code = str_code  # Straight number's code
-        self.__rev_code = rev_code  # Reverse number's code
-        self.__add_code = add_code  # Additional number's code
+    def __init__(self, dec_num: int = 0, bin_num: str = "0",
+                 str_code: str = "0", rev_code: str = "0", add_code: str = "0"):
+        self.__dec_num: int = dec_num  # Number in decimal notation
+        self.__bin_num: str = bin_num  # Number in binary notation
+        self.__str_code: str = str_code  # Straight number's code
+        self.__rev_code: str = rev_code  # Reverse number's code
+        self.__add_code: str = add_code  # Additional number's code
 
     def __getitem__(self, key: str) -> str:
         """
@@ -27,7 +30,7 @@ class IntKit:
                     "add_code": self.__add_code}
         return kit_dict.get(key, "ERROR")
 
-    def by_dec_num(self, bin_size):
+    def by_dec_num(self, bin_size: int):
         """
         Translate a number into all representations by its decimal notation
 
@@ -57,7 +60,7 @@ class IntKit:
                 self.__rev_code = self.__reversed_by_straight()
                 self.__add_code = self.__additional_by_reversed()
 
-    def by_bin_num(self, bin_size):
+    def by_bin_num(self, bin_size: int):
         """
         Translate a number into all representations by its binary notation
 
@@ -66,7 +69,7 @@ class IntKit:
         self.__dec_num = int(self.__bin_num, base=2)
         self.by_dec_num(bin_size)
 
-    def by_str_code(self, bin_size):
+    def by_str_code(self, bin_size: int):
         """
         Translate a number into all representations by its straight code
 
@@ -75,7 +78,7 @@ class IntKit:
         self.__bin_num = self.__bin_by_straight()
         self.by_bin_num(bin_size)
 
-    def by_rev_code(self, bin_size):
+    def by_rev_code(self, bin_size: int):
         """
         Translate a number into all representations by its reverse code
 
@@ -84,7 +87,7 @@ class IntKit:
         self.__str_code = self.__straight_by_reversed()
         self.by_str_code(bin_size)
 
-    def by_add_code(self, bin_size):
+    def by_add_code(self, bin_size: int):
         """
         Translate a number into all representations by its additional code
 
@@ -188,7 +191,7 @@ class IntKit:
 class RealKit:
 
     @staticmethod
-    def get_dec_parts(a: float):
+    def get_dec_parts(a: float) -> Tuple[int, float]:
         """
         :return: integer and fractional part of the number
         """
@@ -203,7 +206,7 @@ class RealKit:
 
         :param dec_real_part: real part of number in decimal notation
         """
-        if abs(dec_real_part - 0) <= 0.001:  # real part == 0
+        if abs(dec_real_part - 0) <= 0.001:  # Real part == 0
             return "0"
         res = ""
         while abs(dec_real_part - int(dec_real_part)) >= 0.001:
@@ -227,15 +230,15 @@ class RealKit:
             res += int(bin_real_part[i]) * 2 ** (-(i + 1))
         return res
 
-    def __init__(self, dec_num=0.0, bin_num="0", real_format="0"):
-        self.__dec_num = dec_num  # Number in decimal notation
-        self.__bin_num = bin_num  # Number in binary notation
-        self.__bin_mantissa = "0"
-        self.__dec_exponent = 0
-        self.__dec_characteristic = "0"
-        self.__bin_characteristic = "0"
-        self.__float_format = real_format
-        self.__sign = "0"
+    def __init__(self, dec_num: float = 0.0, bin_num: str = "0", real_format: str = "0"):
+        self.__dec_num: float = dec_num  # Number in decimal notation
+        self.__bin_num: str = bin_num  # Number in binary notation
+        self.__bin_mantissa: str = "0"
+        self.__dec_exponent: int = 0
+        self.__dec_characteristic: str = "0"
+        self.__bin_characteristic: str = "0"
+        self.__float_format: str = real_format
+        self.__sign: str = "0"
 
     def __getitem__(self, key: str) -> str:
         """
@@ -285,7 +288,7 @@ class RealKit:
         self.__bin_num = self.__get_bin_by_mantissa()
         self.__dec_num = self.__get_dec_by_bin()
 
-    def __get_mantissa_and_exponent_by_bin(self) -> tuple:
+    def __get_mantissa_and_exponent_by_bin(self) -> Tuple[str, int]:
         bin_num = self.__bin_num
         sign = "-" if self.__sign == "1" else ""
         if self.__sign == "1":

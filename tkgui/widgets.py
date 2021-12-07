@@ -1,12 +1,14 @@
 # File with widget list classes
 
 import tkinter as tk
+from typing import List, Optional
 
 from PIL import Image as PilImage
 from PIL import ImageTk
 
 import text_ru as text
-from calculations import config, constants as constants
+from calculations import config, constants
+from calculations.numbers_kits import IntKit, RealKit
 
 
 class Widgets:
@@ -41,12 +43,12 @@ class IntWidgets(Widgets):
 
     def __init__(self, window, calculate_func, copy_func):
         super().__init__()
-        self._entries_names = IntLabels(window)
-        self._entries = IntEntries(window, calculate_func, copy_func)
-        self._buttons = IntButtons(window,
-                                   del_func=self._entries.clear_except_settings,
-                                   copy_func=copy_func,
-                                   calc_func=lambda i: Entries.call_calc(i, calculate_func))
+        self._entries_names: IntLabels = IntLabels(window)
+        self._entries: IntEntries = IntEntries(window, calculate_func, copy_func)
+        self._buttons: IntButtons = IntButtons(window,
+                                               del_func=self._entries.clear_except_settings,
+                                               copy_func=copy_func,
+                                               calc_func=lambda i: Entries.call_calc(i, calculate_func))
 
 
 class RealWidgets(Widgets):
@@ -56,13 +58,13 @@ class RealWidgets(Widgets):
 
     def __init__(self, window, calculate_func, copy_func):
         super().__init__()
-        self._entries_names = RealLabels(window)
-        self._entries = RealEntries(window, calculate_func, copy_func)
+        self._entries_names: RealLabels = RealLabels(window)
+        self._entries: RealEntries = RealEntries(window, calculate_func, copy_func)
 
-        self._buttons = RealButtons(window,
-                                    del_func=self._entries.clear_except_settings,
-                                    copy_func=copy_func,
-                                    calc_func=lambda i: Entries.call_calc(i, calculate_func))
+        self._buttons: RealButtons = RealButtons(window,
+                                                 del_func=self._entries.clear_except_settings,
+                                                 copy_func=copy_func,
+                                                 calc_func=lambda i: Entries.call_calc(i, calculate_func))
 
 
 class NumTypeMenu:
@@ -78,20 +80,20 @@ class NumTypeMenu:
                         "draw_real": lambda: None,
                         "hide_real": lambda: None}
         def_val = (constants.Int.TYPE_NUM if config.numbers_type == constants.Int.TYPE_NUM else constants.Real.TYPE_NUM)
-        self.__numbers_type = tk.IntVar(value=def_val)  # Controller of radio-button values
-        self.__int_type_button = tk.Radiobutton(window,
-                                                text=text.int_nums_text,
-                                                variable=self.__numbers_type,
-                                                value=0,
-                                                font="Arial 12",
-                                                command=self.__change_type)
+        self.__numbers_type: tk.IntVar = tk.IntVar(value=def_val)  # Controller of radio-button values
+        self.__int_type_button: tk.Radiobutton = tk.Radiobutton(window,
+                                                                text=text.int_nums_text,
+                                                                variable=self.__numbers_type,
+                                                                value=0,
+                                                                font="Arial 12",
+                                                                command=self.__change_type)
 
-        self.__real_type_button = tk.Radiobutton(window,
-                                                 text=text.real_nums_text,
-                                                 variable=self.__numbers_type,
-                                                 value=1,
-                                                 font="Arial 12",
-                                                 command=self.__change_type)
+        self.__real_type_button: tk.Radiobutton = tk.Radiobutton(window,
+                                                                 text=text.real_nums_text,
+                                                                 variable=self.__numbers_type,
+                                                                 value=1,
+                                                                 font="Arial 12",
+                                                                 command=self.__change_type)
 
     def set_funcs(self, draw_int, hide_int, draw_real, hide_real):
         """
@@ -123,8 +125,8 @@ class NumTypeMenu:
 
 
 class Labels:
-    def __init__(self, window, names):
-        self._list = []  # Labels list
+    def __init__(self, window, names: List[str]):
+        self._list: List[tk.Label] = []  # Labels list
         for name in names:
             self._list.append(tk.Label(window,
                                        text=name + ":",
@@ -133,7 +135,7 @@ class Labels:
                                        anchor=tk.W,
                                        justify=tk.LEFT))
 
-    def draw(self, row=1, column=0):
+    def draw(self, row: int = 1, column: int = 0):
         for i in range(len(self._list)):
             self._list[i].grid(row=i + row, column=column, sticky=tk.W, padx=20, pady=5)
 
@@ -178,8 +180,8 @@ class Entries:
         config.translate_type = i
         calculate_func()
 
-    def __init__(self, window, number_of_params):
-        self._list = []  # List of entry fields
+    def __init__(self, window, number_of_params: int):
+        self._list: List[tk.Entry] = []
         for i in range(1, number_of_params + 1):
             self._list.append(tk.Entry(window, font=("Arial", 12), width=18))
         self._settings_list = set()
@@ -187,7 +189,7 @@ class Entries:
     def _set_settings_entries(self, *args):
         self._settings_list = set(args)
 
-    def draw(self, row=1, column=1):
+    def draw(self, row: int = 1, column: int = 1):
         for i in range(len(self._list)):
             self._list[i]["state"] = tk.NORMAL
             self._list[i].grid(row=(1 + i), column=1, sticky=tk.W)
@@ -224,7 +226,7 @@ class Entries:
         """
         return str(self._list[index].get())
 
-    def _write(self, index, value):
+    def _write(self, index, value: str):
         """
         Write value to the field by its index
         """
@@ -298,7 +300,7 @@ class IntEntries(Entries):
         self._bind_ctrlc_button(constants.Int.REV_CODE_INDEX, copy_func)
         self._bind_ctrlc_button(constants.Int.ADD_CODE_INDEX, copy_func)
 
-    def __set_bin_size(self, bin_size):
+    def __set_bin_size(self, bin_size: int):
         self._list[constants.Int.BIN_SIZE_INDEX].insert(0, str(bin_size))
 
     def get_bin_size(self) -> str:
@@ -319,7 +321,7 @@ class IntEntries(Entries):
     def get_add_code(self) -> str:
         return self._get(constants.Int.ADD_CODE_INDEX)
 
-    def print(self, kit):
+    def print(self, kit: IntKit):
         """
         Print all number kit to the entries fields
         """
@@ -352,16 +354,16 @@ class RealEntries(Entries):
         self._list[constants.Real.EXPONENT_BIN_SIZE_INDEX]["width"] = 5
         self.__set_exponent_bin_size(constants.Real.DEFAULT_EXPONENT_BIN_SIZE)
 
-        self.__save = tk.IntVar(value=0)  # Controller of check-box value
+        self.__save: tk.IntVar = tk.IntVar(value=0)  # Controller of check-box value
 
         self._list[constants.Real.SAVE_FIRST_DIGIT_INDEX] = tk.Checkbutton(window,
                                                                            variable=self.__save)
         super()._bind_buttons(calculate_func, copy_func)
 
-    def __set_mantissa_bin_size(self, mantissa_bin_size):
+    def __set_mantissa_bin_size(self, mantissa_bin_size: int):
         self._list[constants.Real.MANTISSA_BIN_SIZE_INDEX].insert(0, str(mantissa_bin_size))
 
-    def __set_exponent_bin_size(self, exponent_bin_size):
+    def __set_exponent_bin_size(self, exponent_bin_size: int):
         self._list[constants.Real.EXPONENT_BIN_SIZE_INDEX].insert(0, str(exponent_bin_size))
 
     def clear_all_except(self, *args):
@@ -407,7 +409,7 @@ class RealEntries(Entries):
     def get_real_format(self) -> str:
         return self._get(constants.Real.FLOAT_FORMAT_INDEX)
 
-    def print(self, kit):
+    def print(self, kit: RealKit):
         """
         Print all number kit to the entries fields
         """
@@ -426,7 +428,7 @@ class ButtonsRow:
     """
 
     @staticmethod
-    def __get_image(name):
+    def __get_image(name: str) -> ImageTk:
         try:
             image = PilImage.open(f"img/{name}.ico")
             image = image.resize((18, 18), PilImage.ANTIALIAS)
@@ -435,24 +437,24 @@ class ButtonsRow:
             return None
 
     def __init__(self, window, del_func, copy_func, calc_func, row_ind):
-        self.__frame = tk.Frame(window)  # Frame for all three buttons
+        self.__frame: tk.Frame = tk.Frame(window)  # Frame for all three buttons
 
-        self.calc_image = ButtonsRow.__get_image("calc_icon32")
+        self.calc_image: Optional[ImageTk] = ButtonsRow.__get_image("calc_icon32")
 
-        self.del_image = ButtonsRow.__get_image("del_icon32")
+        self.del_image: Optional[ImageTk] = ButtonsRow.__get_image("del_icon32")
 
-        self.copy_image = ButtonsRow.__get_image("copy_icon32")
+        self.copy_image: Optional[ImageTk] = ButtonsRow.__get_image("copy_icon32")
 
-        self.__calc_button = tk.Button(self.__frame,
-                                       image=self.calc_image,
-                                       command=lambda: calc_func(row_ind))
-        self.__copy_button = tk.Button(self.__frame,
-                                       image=self.copy_image,
-                                       command=lambda: copy_func(row_ind))
+        self.__calc_button: tk.Button = tk.Button(self.__frame,
+                                                  image=self.calc_image,
+                                                  command=lambda: calc_func(row_ind))
+        self.__copy_button: tk.Button = tk.Button(self.__frame,
+                                                  image=self.copy_image,
+                                                  command=lambda: copy_func(row_ind))
 
-        self.__del_button = tk.Button(self.__frame,
-                                      image=self.del_image,
-                                      command=lambda: del_func())
+        self.__del_button: tk.Button = tk.Button(self.__frame,
+                                                 image=self.del_image,
+                                                 command=lambda: del_func())
 
         self.__calc_button.grid(row=0, column=0, padx=5)
         self.__copy_button.grid(row=0, column=1, padx=5)
@@ -471,7 +473,7 @@ class ButtonsRow:
             self.__copy_button["width"] = 3
             self.__copy_button["text"] = "copy"
 
-    def draw(self, row_num, column_num):
+    def draw(self, row_num: int, column_num: int):
         self.__frame.grid(row=row_num, column=column_num, padx=(0, 25))
 
     def hide(self):
@@ -480,7 +482,7 @@ class ButtonsRow:
 
 class Buttons:
     def __init__(self, window, del_func, copy_func, calc_func):
-        self._list = []
+        self._list: List[ButtonsRow] = []
         self.__window = window
         self.__funcs = {"del_func": del_func,
                         "copy_func": copy_func,
@@ -490,7 +492,7 @@ class Buttons:
         self._list.append(ButtonsRow(self.__window, self.__funcs["del_func"], self.__funcs["copy_func"],
                                      self.__funcs["calc_func"], index))
 
-    def draw(self, row=2, column=2):
+    def draw(self, row: int = 2, column: int = 2):
         for i in range(len(self._list)):
             self._list[i].draw(row_num=(row + i), column_num=column)
 

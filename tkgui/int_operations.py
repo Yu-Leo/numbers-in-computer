@@ -6,13 +6,14 @@ import exceptions
 import tkgui.messageboxes as mb
 from calculations import config, constants as constants
 from calculations.numbers_kits import IntKit
+from tkgui.widgets import IntEntries
 
 
-def calculate(entries):
+def calculate(entries: IntEntries):
     """
     Calculation in int mode with exceptions tracking
 
-    :param entries: list of tkinter's entries objects
+    :param entries: list of entries in int mode
     """
 
     try:
@@ -47,11 +48,11 @@ def calculate(entries):
             raise Warning("exception.field Error")
 
 
-def int_calc(entries):
+def int_calc(entries: IntEntries):
     """
     Calculation in int mode
 
-    :param entries: list of tkinter's entries objects
+    :param entries: list of entries in int mode
     """
 
     bin_size = get_bin_size(entries)  # Number of binary digits
@@ -92,9 +93,9 @@ def int_calc(entries):
         entries.print(kit)
 
 
-def get_bin_size(entries) -> int:
+def get_bin_size(entries: IntEntries) -> int:
     """
-    :param entries: list of tkinter's entries objects
+    :param entries: list of entries in int mode
     :return: number of binary digits for representations of number
     """
 
@@ -111,9 +112,9 @@ def get_bin_size(entries) -> int:
     return int_bin_size
 
 
-def get_dec_num(entries) -> int:
+def get_dec_num(entries: IntEntries) -> int:
     """
-    :param entries: list of tkinter's entries objects
+    :param entries: list of entries in int mode
     :return: number in decimal notation
     """
 
@@ -126,9 +127,9 @@ def get_dec_num(entries) -> int:
     return dec_num
 
 
-def get_bin_num(entries) -> str:
+def get_bin_num(entries: IntEntries) -> str:
     """
-    :param entries: list of tkinter's entries objects
+    :param entries: list of entries in int mode
     :return: number in binary notation
     """
 
@@ -139,9 +140,9 @@ def get_bin_num(entries) -> str:
     return bin_num
 
 
-def get_str_code(entries, bin_size: int) -> str:
+def get_str_code(entries: IntEntries, bin_size: int) -> str:
     """
-    :param entries: list of tkinter's entries objects
+    :param entries: list of entries in int mode
     :param bin_size: number of binary digits for representations of number
     :return: number in straight code's representation
     """
@@ -156,9 +157,9 @@ def get_str_code(entries, bin_size: int) -> str:
     return str_code
 
 
-def get_rev_code(entries, bin_size: int) -> str:
+def get_rev_code(entries: IntEntries, bin_size: int) -> str:
     """
-    :param entries: list of tkinter's entries objects
+    :param entries: list of entries in int mode
     :param bin_size: number of binary digits for representations of number
     :return: number in reversed code's representation
     """
@@ -173,9 +174,9 @@ def get_rev_code(entries, bin_size: int) -> str:
     return rev_code
 
 
-def get_add_code(entries, bin_size: int) -> str:
+def get_add_code(entries: IntEntries, bin_size: int) -> str:
     """
-    :param entries: list of tkinter's entries objects
+    :param entries: list of entries in int mode
     :param bin_size: number of binary digits for representations of number
     :return: number in additional code's representation
     """
@@ -190,11 +191,11 @@ def get_add_code(entries, bin_size: int) -> str:
     return add_code
 
 
-def copy_to_clipboard(entries, index):
+def copy_to_clipboard(entries: IntEntries, index):
     """
     Copy value from entry to clipboard by its index
 
-    :param entries: list of tkinter's entries objects
+    :param entries: list of entries in int mode
     :param index - index of entry field
     """
     if index == constants.Int.DEC_NUM_INDEX:

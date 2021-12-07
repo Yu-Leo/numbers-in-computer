@@ -6,13 +6,14 @@ import exceptions
 import tkgui.messageboxes as mb
 from calculations import config, constants as constants
 from calculations.numbers_kits import RealKit
+from tkgui.widgets import RealEntries
 
 
-def calculate(entries):
+def calculate(entries: RealEntries):
     """
     Calculation in real mode with exceptions tracking
 
-    :param entries: list of tkinter's entries objects
+    :param entries: list of entries in real mode
     """
     try:
         real_calc(entries)
@@ -34,11 +35,11 @@ def calculate(entries):
             entries.clear_except_settings()
 
 
-def real_calc(entries):
+def real_calc(entries: RealEntries):
     """
     Calculation in real mode
 
-    :param entries: list of tkinter's entries objects
+    :param entries: list of entries in real mode
     """
     mantissa_bin_size = get_mantissa_bin_size(entries)
     exponent_bin_size = get_exponent_bin_size(entries)
@@ -64,9 +65,9 @@ def real_calc(entries):
         raise Warning("Invalid translate_type")
 
 
-def get_mantissa_bin_size(entries) -> int:
+def get_mantissa_bin_size(entries: RealEntries) -> int:
     """
-    :param entries: list of tkinter's entries objects
+    :param entries: list of entries in real mode
     :return: number of binary digits of the mantissa
     """
     str_mantissa_bin_size = entries.get_mantissa_bin_size()
@@ -83,9 +84,9 @@ def get_mantissa_bin_size(entries) -> int:
     return int_mantissa_bin_size
 
 
-def get_exponent_bin_size(entries) -> int:
+def get_exponent_bin_size(entries: RealEntries) -> int:
     """
-    :param entries: list of tkinter's entries objects
+    :param entries: list of entries in real mode
     :return: number of binary digits of the exponent
     """
     str_exponent_bin_size = entries.get_exponent_bin_size()
@@ -101,9 +102,9 @@ def get_exponent_bin_size(entries) -> int:
     return int_exponent_bin_size
 
 
-def get_save_first_digit(entries) -> bool:
+def get_save_first_digit(entries: RealEntries) -> bool:
     """
-    :param entries: list of tkinter's entries objects
+    :param entries: list of entries in real mode
     :return: value of checkbox 'save first digit'
     """
     return entries.get_save_first_digit()
@@ -132,9 +133,9 @@ def replace_comma(input_data: str) -> str:
     return input_data
 
 
-def get_dec_num(entries) -> float:
+def get_dec_num(entries: RealEntries) -> float:
     """
-    :param entries: list of tkinter's entries objects
+    :param entries: list of entries in real mode
     :return: number in decimal notation
     """
     input_data = entries.get_dec_num()
@@ -147,9 +148,9 @@ def get_dec_num(entries) -> float:
     return dec_num
 
 
-def get_real_format(entries, mantissa: int, exponent: int, save: bool) -> str:
+def get_real_format(entries: RealEntries, mantissa: int, exponent: int, save: bool) -> str:
     """
-    :param entries: list of tkinter's entries objects
+    :param entries: list of entries in real mode
     :param mantissa: number of binary digits of the mantissa
     :param exponent: number of binary digits of the exponent
     :param save: is the first digit of the mantissa stored
@@ -167,11 +168,11 @@ def get_real_format(entries, mantissa: int, exponent: int, save: bool) -> str:
     return real_format
 
 
-def copy_to_clipboard(entries, index):
+def copy_to_clipboard(entries: RealEntries, index):
     """
     Copy value from entry to clipboard by its index
 
-    :param entries: list of tkinter's entries objects
+    :param entries: list of entries in real mode
     :param index - index of entry field
     """
     if index == constants.Real.DEC_NUM_INDEX:

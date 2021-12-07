@@ -15,7 +15,7 @@ class Window:
     """
 
     def __init__(self):
-        self.__root = tk.Tk()
+        self.__root: tk.Tk = tk.Tk()
         self.__parameters = WindowParameters()
         self.__root.title(self.__parameters.title)
         self.__root.geometry(self.__parameters.geometry())

@@ -32,7 +32,7 @@ def error_in_field(field):
 
 
 class ExceptionTexts:
-    def __init__(self, field_name="", type_error=number_only, range_error=range_exceeding):
+    def __init__(self, field_name: str = "", type_error=number_only, range_error=range_exceeding):
         self.title = error_in_field(field_name)
         self.type_error = type_error
         self.range_error = range_error

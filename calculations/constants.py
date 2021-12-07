@@ -6,9 +6,10 @@ class Int:
     """
 
     TYPE_NUM = 0
-    MIN_BIN_SIZE = 1  # Minimum number of binary digits
-    MAX_BIN_SIZE = 100  # Maximum number of binary digits
-    DEFAULT_BIN_SIZE = 8  # Default binary digits number
+
+    MIN_BIN_SIZE: int = 1  # Minimum number of binary digits
+    MAX_BIN_SIZE: int = 100  # Maximum number of binary digits
+    DEFAULT_BIN_SIZE: int = 8  # Default binary digits number
 
     BIN_SIZE_INDEX = 0  # Index of field 'bin size'
     DEC_NUM_INDEX = 1  # Index of field 'dec num'
@@ -17,7 +18,7 @@ class Int:
     REV_CODE_INDEX = 4  # Index of field 'rev code'
     ADD_CODE_INDEX = 5  # Index of field 'add code'
 
-    NUMBER_OF_PARAMS = 6
+    NUMBER_OF_PARAMS: int = 6
 
     @staticmethod
     def max_positive(bin_size: int) -> int:
@@ -43,16 +44,16 @@ class Real:
 
     TYPE_NUM = 1
 
-    MIN_MANT_BIN_SIZE = 1  # Minimum number of binary digits for mantissa
-    MAX_MANT_BIN_SIZE = 100  # Maximum number of binary digits for mantissa
+    MIN_MANT_BIN_SIZE: int = 1  # Minimum number of binary digits for mantissa
+    MAX_MANT_BIN_SIZE: int = 100  # Maximum number of binary digits for mantissa
 
-    MIN_EXP_BIN_SIZE = 1  # Minimum number of binary digits for exponent
-    MAX_EXP_BIN_SIZE = 100  # Maximum number of binary digits for exponent
+    MIN_EXP_BIN_SIZE: int = 1  # Minimum number of binary digits for exponent
+    MAX_EXP_BIN_SIZE: int = 100  # Maximum number of binary digits for exponent
 
-    MAX_FLOAT_SIZE = 10  # Maximum number of decimal places
+    MAX_FLOAT_SIZE: int = 10  # Maximum number of decimal places
 
-    DEFAULT_MANTISSA_BIN_SIZE = 10  # Default number of binary digits for mantissa
-    DEFAULT_EXPONENT_BIN_SIZE = 5  # Default number of binary digits for exponent
+    DEFAULT_MANTISSA_BIN_SIZE: int = 10  # Default number of binary digits for mantissa
+    DEFAULT_EXPONENT_BIN_SIZE: int = 5  # Default number of binary digits for exponent
 
     MANTISSA_BIN_SIZE_INDEX = 0  # Index of field 'mantissa bin size'
     EXPONENT_BIN_SIZE_INDEX = 1  # Index of field 'exponent bin size'
@@ -65,7 +66,7 @@ class Real:
     BIN_CHARACTERISTIC_INDEX = 8  # Index of field 'bin characteristic'
     FLOAT_FORMAT_INDEX = 9  # Index of field 'float format'
 
-    NUMBER_OF_PARAMS = 10
+    NUMBER_OF_PARAMS: int = 10
 
 
 class Exceptions:

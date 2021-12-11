@@ -1,6 +1,6 @@
 # File with classes of sets of numbers in various number systems and representations
 
-from typing import Tuple
+from typing import Tuple, Optional
 
 import calculations.constants as constants
 
@@ -17,6 +17,7 @@ class IntKit:
         self.__str_code: str = str_code  # Straight number's code
         self.__rev_code: str = rev_code  # Reverse number's code
         self.__add_code: str = add_code  # Additional number's code
+        self.__abs_bin_num: Optional[str] = None
 
     def __getitem__(self, key: str) -> str:
         """

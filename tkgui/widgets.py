@@ -1,7 +1,7 @@
 # File with widget list classes
 
 import tkinter as tk
-from typing import List, Optional
+from typing import List, Optional, Callable
 
 from PIL import Image as PilImage
 from PIL import ImageTk
@@ -41,7 +41,7 @@ class IntWidgets(Widgets):
     Widgets for int mode
     """
 
-    def __init__(self, window, calculate_func, copy_func):
+    def __init__(self, window, calculate_func: Callable[[], None], copy_func: Callable[[int], None]):
         super().__init__()
         self._entries_names: IntLabels = IntLabels(window)
         self._entries: IntEntries = IntEntries(window, calculate_func, copy_func)
@@ -56,7 +56,7 @@ class RealWidgets(Widgets):
     Widgets for real mode
     """
 
-    def __init__(self, window, calculate_func, copy_func):
+    def __init__(self, window, calculate_func: Callable[[], None], copy_func: Callable[[int], None]):
         super().__init__()
         self._entries_names: RealLabels = RealLabels(window)
         self._entries: RealEntries = RealEntries(window, calculate_func, copy_func)
@@ -95,7 +95,8 @@ class NumTypeMenu:
                                                                  font="Arial 12",
                                                                  command=self.__change_type)
 
-    def set_funcs(self, draw_int, hide_int, draw_real, hide_real):
+    def set_funcs(self, draw_int: Callable[[], None], hide_int: Callable[[], None],
+                  draw_real: Callable[[], None], hide_real: Callable[[], None]):
         """
         Initialize the list of functions to control the rendering of widgets
 
@@ -170,7 +171,7 @@ class RealLabels(Labels):
 class Entries:
 
     @staticmethod
-    def call_calc(i, calculate_func):
+    def call_calc(i, calculate_func: Callable[[], None]):
         """
         Change the translation mode to the one in which Enter was pressed, and translate
 
@@ -233,7 +234,7 @@ class Entries:
         self._list[index].delete(0, tk.END)
         self._list[index].insert(0, value)
 
-    def _bind_buttons(self, calculate_func, copy_func):
+    def _bind_buttons(self, calculate_func: Callable[[], None], copy_func: Callable[[int], None]):
         self._bind_enter(calculate_func)
         self._bind_delete()
         self._bind_ctrlc(copy_func)
@@ -247,7 +248,7 @@ class Entries:
     def _bind_ctrlc(self, copy_func):
         pass
 
-    def _bind_enter_button(self, index, func):
+    def _bind_enter_button(self, index, func: Callable[[], None]):
         self._list[index].bind("<Return>",
                                lambda x: Entries.call_calc(index, func))
 
@@ -263,14 +264,14 @@ class IntEntries(Entries):
     List of entries fields in int mode
     """
 
-    def __init__(self, window, calculate_func, copy_func):
+    def __init__(self, window, calculate_func: Callable[[], None], copy_func: Callable[[int], None]):
         super().__init__(window, constants.Int.NUMBER_OF_PARAMS)
         self._set_settings_entries(constants.Int.BIN_SIZE_INDEX)
         self._list[constants.Int.BIN_SIZE_INDEX]["width"] = 5
         self.__set_bin_size(constants.Int.DEFAULT_BIN_SIZE)
         super()._bind_buttons(calculate_func, copy_func)
 
-    def _bind_enter(self, calculate_func):
+    def _bind_enter(self, calculate_func: Callable[[], None]):
         """
         Bind 'Enter' button
         """
@@ -290,7 +291,7 @@ class IntEntries(Entries):
         for index in indexes:
             self._bind_delete_button(index)
 
-    def _bind_ctrlc(self, copy_func):
+    def _bind_ctrlc(self, copy_func: Callable[[int], None]):
         """
         Bind 'Ctrl'+'C'
         """
@@ -344,7 +345,7 @@ class RealEntries(Entries):
     List of entries fields in real mode
     """
 
-    def __init__(self, window, calculate_func, copy_func):
+    def __init__(self, window, calculate_func: Callable[[], None], copy_func: Callable[[int], None]):
         super().__init__(window, constants.Real.NUMBER_OF_PARAMS)
         self._set_settings_entries(constants.Real.MANTISSA_BIN_SIZE_INDEX, constants.Real.EXPONENT_BIN_SIZE_INDEX,
                                    constants.Real.SAVE_FIRST_DIGIT_INDEX)
@@ -369,7 +370,7 @@ class RealEntries(Entries):
     def clear_all_except(self, *args):
         super().clear_all_except(constants.Real.SAVE_FIRST_DIGIT_INDEX, *args)
 
-    def _bind_enter(self, calculate_func):
+    def _bind_enter(self, calculate_func: Callable[[], None]):
         """
         Bind 'Enter' button
         """
@@ -384,7 +385,7 @@ class RealEntries(Entries):
         for index in indexes:
             self._bind_delete_button(index)
 
-    def _bind_ctrlc(self, copy_func):
+    def _bind_ctrlc(self, copy_func: Callable[[int], None]):
         """
         Bind 'Ctrl'+'C'
         """
@@ -436,7 +437,9 @@ class ButtonsRow:
         except FileNotFoundError:
             return None
 
-    def __init__(self, window, del_func, copy_func, calc_func, row_ind):
+    # calculate_func: Callable[[], None], copy_func: Callable[[int], None]
+    def __init__(self, window, del_func: Callable[[], None], copy_func: Callable[[int], None],
+                 calc_func: Callable[[int], None], row_ind: int):
         self.__frame: tk.Frame = tk.Frame(window)  # Frame for all three buttons
 
         self.calc_image: Optional[ImageTk] = ButtonsRow.__get_image("calc_icon32")
@@ -481,7 +484,8 @@ class ButtonsRow:
 
 
 class Buttons:
-    def __init__(self, window, del_func, copy_func, calc_func):
+    def __init__(self, window, del_func: Callable[[], None], copy_func: Callable[[int], None],
+                 calc_func: Callable[[int], None]):
         self._list: List[ButtonsRow] = []
         self.__window = window
         self.__funcs = {"del_func": del_func,
@@ -502,7 +506,8 @@ class Buttons:
 
 
 class IntButtons(Buttons):
-    def __init__(self, window, del_func, copy_func, calc_func):
+    def __init__(self, window, del_func: Callable[[], None], copy_func: Callable[[int], None],
+                 calc_func: Callable[[int], None]):
         super().__init__(window, del_func, copy_func, calc_func)
         self.append(constants.Int.DEC_NUM_INDEX)
         self.append(constants.Int.BIN_NUM_INDEX)
@@ -512,7 +517,8 @@ class IntButtons(Buttons):
 
 
 class RealButtons(Buttons):
-    def __init__(self, window, del_func, copy_func, calc_func):
+    def __init__(self, window, del_func: Callable[[], None], copy_func: Callable[[int], None],
+                 calc_func: Callable[[int], None]):
         super().__init__(window, del_func, copy_func, calc_func)
         self.append(constants.Real.DEC_NUM_INDEX)
         self.append(constants.Real.FLOAT_FORMAT_INDEX)

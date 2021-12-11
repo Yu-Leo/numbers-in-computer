@@ -72,7 +72,7 @@ def int_calc(entries: IntEntries):
         entries.print(kit)
         # If it's impossible to calculate representations for a given number of binary digits
         if kit.codes_error():
-            raise exceptions.BinNumValueCodesWarning
+            raise exceptions.IntEntryContentError(constants.Int.BIN_NUM_INDEX, constants.Exceptions.RANGE_ERROR)
 
     elif config.translate_type == constants.Int.STR_CODE_INDEX:  # Source value - straight code of number
         str_code = get_str_code(entries, bin_size)

@@ -38,7 +38,8 @@ class ExceptionMb(ErrorMb, WarningMb):
     Messagebox for custom exceptions
     """
 
-    def __get_text_list(self, exception: exceptions.EntryContentError):
+    @staticmethod
+    def __get_text_list(exception: exceptions.EntryContentError):
         """
         :param exception: exception's object which needs to be displayed
         :return: the desired list of phrases depending on the type of exception
